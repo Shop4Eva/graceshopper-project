@@ -6,16 +6,29 @@ import { Link } from 'react-router-dom';
 const AllProjects = (props) => {
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
+<<<<<<< HEAD
   let products = props.projects || [];
+=======
+  let products = [];
+  const { history } = this.props;
+>>>>>>> main
 
   useEffect(async () => {
     try {
       setLoading(true);
+<<<<<<< HEAD
       props.setProductsThunk();
       setLoading(false);
     } catch (e) {
       console.error(e);
       setError(e);
+=======
+      await props.setProductsThunk();
+      setLoading(false);
+    } catch (e) {
+      console.error(e);
+      setError(e.message);
+>>>>>>> main
       setLoading(false);
     }
   });
