@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { setProductsThunk, setProducts } from '../store/products';
 import { Link } from 'react-router-dom';
+import AddToCart from './AddToCart';
 
 const AllProducts = (props) => {
   const [error, setError] = useState(null);
@@ -9,18 +10,26 @@ const AllProducts = (props) => {
   let products = props.products || [];
 
   useEffect(() => {
+    let mounted = true;
     const fetchProducts = async () => {
       try {
         setLoading(true);
         await props.setProductsThunk();
-        setLoading(false);
+        if (mounted) {
+          setLoading(false);
+        }
       } catch (e) {
         console.error(e);
         setError(e.message);
         setLoading(false);
       }
     };
+
     fetchProducts();
+
+    return function cleanup() {
+      mounted = false;
+    };
   }, []);
 
   return (
@@ -50,6 +59,7 @@ const AllProducts = (props) => {
                     {product.description && (
                       <p>description: {product.description}</p>
                     )}
+                    <AddToCart productId={product.id} />
                   </div>
                 </div>
               </div>
