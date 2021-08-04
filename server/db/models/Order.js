@@ -1,15 +1,17 @@
 const Sequelize = require('sequelize')
 const db = require('../db')
-const jwt = require('jsonwebtoken')
-const bcrypt = require('bcrypt');
-const axios = require('axios');
 
 const Order = db.define('order', {
   productList: {
     type: Sequelize.JSONB
   },
   totalPrice: {
-    type: Sequelize.INTEGER
+    type: Sequelize.INTEGER,
+    defaultValue: 0
+  },
+  fulfilled: {
+    type: Sequelize.BOOLEAN,
+    defaultValue: false
   }
 })
 
