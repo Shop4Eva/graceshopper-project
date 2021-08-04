@@ -4,6 +4,7 @@ const jwt = require('jsonwebtoken')
 const bcrypt = require('bcrypt');
 const axios = require('axios');
 
+// o: is this for users and guests?
 const Cart = db.define('cart', {
   productList: {
     type: Sequelize.JSONB

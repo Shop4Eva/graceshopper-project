@@ -19,7 +19,8 @@ class Product extends React.Component {
   }
 
   render() {
-    const product = this.props.product || {};
+    // o: better to use nullish coalescing here https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Nullish_coalescing_operator
+    const product = this.props.product ?? {};
     return (
       <div id="single-product">
         <h1>{product.name}</h1>

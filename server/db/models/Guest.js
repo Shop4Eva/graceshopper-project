@@ -4,6 +4,7 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const axios = require('axios');
 
+// o: I have thoughts about this
 const Guest = db.define('guest', {
   email: {
     type: Sequelize.STRING,

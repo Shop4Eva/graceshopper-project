@@ -4,6 +4,8 @@ const initialState = [];
 
 const SET_PRODUCTS = 'SET_PRODUCTS';
 
+// o: please have someone remove all unused code before presentations
+
 // const CREATE_PRODUCT = 'CREATE_PRODUCT';
 // const DELETE_PRODUCT = 'DELETE_PRODUCT';
 // const UPDATE_PRODUCT = 'UPDATE_PRODUCT';

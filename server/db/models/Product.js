@@ -13,11 +13,13 @@ const Product = db.define('product', {
       notEmpty: true
     }
   },
+  // o: let's 🌮 bout price
   price: {
     type: Sequelize.DECIMAL(10,2),
     allowNull: false,
     defaultValue: 1.99
   },
+  // o: neither of these need long text
   imgUrl: {
     type: Sequelize.TEXT
   },

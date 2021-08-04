@@ -25,6 +25,7 @@ const AllProducts = (props) => {
 
   return (
     <div className="all-superpowers-container">
+      {/* o: double ternaries are hard to read */}
       {error ? (
         <div>Error: {error}</div>
       ) : loading ? (
