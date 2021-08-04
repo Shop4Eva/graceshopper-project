@@ -3,6 +3,7 @@ const db = require('../db');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const axios = require('axios');
+const Cart = require('./Cart');
 
 const SALT_ROUNDS = 5;
 
@@ -41,9 +42,6 @@ const User = db.define('user', {
     type: Sequelize.BOOLEAN,
     defaultValue: false,
   },
-  cartId: {
-    type: Sequelize.STRING,
-  },
 });
 
 module.exports = User;
@@ -76,7 +74,7 @@ User.authenticate = async function ({ email, password }) {
 User.findByToken = async function (token) {
   try {
     const { id } = await jwt.verify(token, process.env.JWT);
-    const user = User.findByPk(id);
+    const user = User.findByPk(id, { include: [Cart] });
     if (!user) {
       throw 'nooo';
     }

@@ -59,7 +59,7 @@ const AllProducts = (props) => {
                     {product.description && (
                       <p>description: {product.description}</p>
                     )}
-                    <AddToCart productId={product.id} />
+                    <AddToCart productId={product.id} price={product.price} />
                   </div>
                 </div>
               </div>
