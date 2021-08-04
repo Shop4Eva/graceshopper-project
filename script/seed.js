@@ -187,7 +187,31 @@ async function seed() {
       imgUrl: 'https://foodal.com/wp-content/uploads/2020/04/The-Best-Variety-of-Pantry-Snacks.jpg',
       price: 499.99,
       description: 'Tasty treats for any occasion!'
-    })
+    }),
+    Product.create({
+      name: "Ultimate Language Pack",
+      imgUrl: "https://proverbsy.com/wp-content/uploads/Languages.jpg",
+      price: 299.99,
+      description: 'Understand every language you hear!'
+    }),
+    Product.create({
+      name: "SuperHuman Invention Skills",
+      imgUrl: "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.youtube.com%2Fwatch%3Fv%3DxkZv3N9Gr8o&psig=AOvVaw00x4ABeFbHKdp_fSOsVyaW&ust=1628189229231000&source=images&cd=vfe&ved=0CAsQjRxqFwoTCPDAz9qDmPICFQAAAAAdAAAAABAD",
+      price: 59.99,
+      description: "Invent to your heart's content!",
+    }),
+    Product.create({
+      name: "Underwater Breathing",
+      imgUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcThuDNIShL75in_rW9GjP6TC7FD5IkAorKtYw&usqp=CAU",
+      price: 59.99,
+      description: 'Live like a fish!',
+    }),
+    Product.create({
+      name: "Steel Skin",
+      imgUrl: "http://www.hearinglikeme.com/wp-content/uploads/2014/05/blueeardeafsuperhero.jpg",
+      price: 59.99,
+      description: 'Built-in armor for any occasion!'
+    }),
   ]);
 
   console.log(`seeded successfully`);
