@@ -18,7 +18,7 @@ const SET_PRODUCTS = 'SET_PRODUCTS';
 export const setProducts = (products) => {
   return {
     type: SET_PRODUCTS,
-    robots: products,
+    products: products,
   };
 };
 
@@ -68,17 +68,17 @@ export const setProductsThunk = () => {
 //   };
 // };
 
-export const deleteProductThunk = (productId, history) => {
-  return async (dispatch) => {
-    try {
-      const { data } = await axios.delete(`/api/products/${productId}`);
-      dispatch(deleteProduct(data));
-      history.push('/products');
-    } catch (err) {
-      console.log(err);
-    }
-  };
-};
+// export const deleteProductThunk = (productId, history) => {
+//   return async (dispatch) => {
+//     try {
+//       const { data } = await axios.delete(`/api/products/${productId}`);
+//       dispatch(deleteProduct(data));
+//       history.push('/products');
+//     } catch (err) {
+//       console.log(err);
+//     }
+//   };
+// };
 
 // export const updateProductThunk = (updatedProduct, history) => {
 //   return async (dispatch) => {

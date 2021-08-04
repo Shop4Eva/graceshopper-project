@@ -1,37 +1,27 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
-import { setProductsThunk, setProducts } from '../redux/products';
+import { setProductsThunk, setProducts } from '../store/products';
 import { Link } from 'react-router-dom';
 
-const AllProjects = (props) => {
+const AllProducts = (props) => {
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
-<<<<<<< HEAD
-  let products = props.projects || [];
-=======
-  let products = [];
-  const { history } = this.props;
->>>>>>> main
+  let products = props.products || [];
 
-  useEffect(async () => {
-    try {
-      setLoading(true);
-<<<<<<< HEAD
-      props.setProductsThunk();
-      setLoading(false);
-    } catch (e) {
-      console.error(e);
-      setError(e);
-=======
-      await props.setProductsThunk();
-      setLoading(false);
-    } catch (e) {
-      console.error(e);
-      setError(e.message);
->>>>>>> main
-      setLoading(false);
-    }
-  });
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        setLoading(true);
+        await props.setProductsThunk();
+        setLoading(false);
+      } catch (e) {
+        console.error(e);
+        setError(e.message);
+        setLoading(false);
+      }
+    };
+    fetchProducts();
+  }, []);
 
   return (
     <div>
@@ -56,7 +46,7 @@ const AllProjects = (props) => {
                         <img src={product.imgUrl} width={200} height={200} />
                       </div>
                     )}
-                    <p>price: {product.price}</p>
+                    <p>price: ${product.price}</p>
                     {product.description && (
                       <p>description: {product.description}</p>
                     )}
@@ -80,8 +70,8 @@ const mapState = (state) => {
 const mapDispatch = (dispatch) => {
   return {
     setProductsThunk: () => dispatch(setProductsThunk()),
-    setProducts: (products) => dispatch(setProducts(products)),
+    // setProducts: (products) => dispatch(setProducts(products)),
   };
 };
 
-export default connect(mapState, mapDispatch)(AllProjects);
+export default connect(mapState, mapDispatch)(AllProducts);
