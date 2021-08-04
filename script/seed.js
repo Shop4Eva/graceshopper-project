@@ -70,22 +70,21 @@ async function seed() {
   const products = await Promise.all([
     Product.create({
       name: 'Time Travel',
-      imgUrl:
-        'https://dynaimage.cdn.cnn.com/cnn/c_fill,g_auto,w_1200,h_675,ar_16:9/https%3A%2F%2Fcdn.cnn.com%2Fcnnnext%2Fdam%2Fassets%2F210730141728-jodie-whitaker-doctor-who.jpg',
+      imgUrl: 'https://dynaimage.cdn.cnn.com/cnn/c_fill,g_auto,w_1200,h_675,ar_16:9/https%3A%2F%2Fcdn.cnn.com%2Fcnnnext%2Fdam%2Fassets%2F210730141728-jodie-whitaker-doctor-who.jpg',
       price: 399.99,
       description: 'Travel through time like the Doctor!',
     }),
     Product.create({
       name: 'Teleportation',
-      imgUrl:
-        'https://cdn0.tnwcdn.com/wp-content/blogs.dir/1/files/2015/11/teleportation-portals.jpg',
+      imgUrl: 'https://cdn0.tnwcdn.com/wp-content/blogs.dir/1/files/2015/11/teleportation-portals.jpg',
       price: 299.99,
       description: 'Never wait in traffic again!',
     }),
     Product.create({
       name: 'Invisibility',
+      imgUrl: 'https://static.wikia.nocookie.net/mario/images/a/a1/Boo_CTTT.png',
       price: 399.99,
-      description: 'Not even your shadow will find you!'
+      description: 'Boo!'
     }),
     Product.create({
       name: 'Flying',
@@ -95,84 +94,97 @@ async function seed() {
     }),
     Product.create({
       name: 'Superhuman Strength',
+      imgUrl: 'https://www.clipartmax.com/png/small/464-4646391_girl-clipart-weightlifting-weight-lifting-emoji.png',
       price: 299.99,
       description: 'Weightlift your house!'
     }),
     Product.create({
       name: 'Shapeshifting',
+      imgUrl: 'https://img.webmd.com/dtmcms/live/webmd/consumer_assets/site_images/article_thumbnails/slideshows/is_my_cat_normal_slideshow/1800x1200_is_my_cat_normal_slideshow.jpg',
       price: 299.99,
-      description: 'Everyday is Halloween!'
+      description: 'You can be anything you want to be!'
     }),
     Product.create({
       name: 'Super Speed',
+      imgUrl: 'https://www.clipartmax.com/png/middle/332-3321328_download-looney-tunes-roadrunner-clipart-tasmanian-looney-tunes-stickers-road-runner.png',
       price: 199.99,
       description: 'Blink and you might miss it!'
     }),
     Product.create({
       name: 'Telekinesis',
+      imgUrl: 'https://image.flaticon.com/icons/png/512/779/779473.png',
       price: 99.99,
+      description: 'Just think of all the things you can do!'
     }),
     Product.create({
       name: 'Power Absorption',
+      imgUrl: 'https://cdn.shopify.com/s/files/1/0701/1713/products/Screen_Shot_2016-10-25_at_9.10.42_AM_300x300.png',
       price: 99.99,
       description: 'Works like a sponge!'
     }),
     Product.create({
       name: 'Transform Into a Plant!',
-      imgUrl:
-        'https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/247749f3-079e-4553-bce4-c972bc97807e/dbrwu7o-20eb4c47-2a50-4c37-8598-31c361103083.jpg/v1/fill/w_286,h_350,q_70,strp/paje_makes_like_a_tree_by_fullmoonmaster_dbrwu7o-350t.jpg?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7ImhlaWdodCI6Ijw9MTI1MyIsInBhdGgiOiJcL2ZcLzI0Nzc0OWYzLTA3OWUtNDU1My1iY2U0LWM5NzJiYzk3ODA3ZVwvZGJyd3U3by0yMGViNGM0Ny0yYTUwLTRjMzctODU5OC0zMWMzNjExMDMwODMuanBnIiwid2lkdGgiOiI8PTEwMjQifV1dLCJhdWQiOlsidXJuOnNlcnZpY2U6aW1hZ2Uub3BlcmF0aW9ucyJdfQ.1IaD6mTXLexcDTmN3_PQUnWTrzHHXjxy5DfGbjeMXWM',
+      imgUrl: 'https://i0.wp.com/i.pinimg.com/originals/c2/20/82/c22082e1376a7021830baa6bb277c589.jpg',
       price: 59.99,
       description: 'Go green!'
     }),
     Product.create({
       name: 'Tolerance for Disgusting Smells',
-      imgUrl:
-        'https://images.theconversation.com/files/351273/original/file-20200805-24-z254sc.jpg?ixlib=rb-1.1.0&q=45&auto=format&w=1200&h=1200.0&fit=crop',
+      imgUrl: 'https://images.theconversation.com/files/351273/original/file-20200805-24-z254sc.jpg',
       price: 59.99,
       description: 'Your nose will thank you!'
     }),
     Product.create({
       name: 'Patience with Small Children',
+      imgUrl: 'https://us.123rf.com/450wm/dopop/dopop1501/dopop150100027/37661889-happy-kids.jpg',
       price: 199.99,
-      description: 'The very best for your little one!'
+      description: 'The very best for your little one(s)!'
     }),
     Product.create({
       name: 'Cure for Allergies',
+      imgUrl: 'https://img1.10bestmedia.com/Images/Photos/380645/GettyImages-613758084_54_990x660.jpg',
       price: 99.99,
       description: 'You can stop and smell all the roses!'
     }),
     Product.create({
       name: 'Foresight about Purchases',
+      imgUrl: 'https://www.petalrepublic.com/wp-content/uploads/2020/08/Ultimate-Guide-to-Growing-and-Caring-for-Money-Tree-Plants-scaled.jpg',
       price: 599.99,
       description: 'Make FOMO a thing of the past!'
     }),
     Product.create({
       name: 'Perfect Spelling in the English Language',
+      imgUrl: 'https://www.theconfidentteacher.com/wp-content/uploads/2017/04/Spelling-tree.png',
       price: 199.99,
       description: 'Be your own spell-checker!'
     }),
     Product.create({
       name: 'Supersonic Hearing',
+      imgUrl: 'https://www.treehugger.com/thmb/Oj9b_bSY1KCRiYT-Q67zdlxigoU=/644x439/filters:no_upscale():max_bytes(150000):strip_icc()/__opt__aboutcom__coeus__resources__content_migration__mnn__images__2014__03__Dwarf-epauletted-fruit-bat-a4e1590e0ba74b75a33415600c5db4e3.jpg',
       price: 99.99,
       description: 'Befriend some bats!'
     }),
     Product.create({
       name: 'X-Ray Vision',
+      imgUrl: 'https://media-ecn.s3.amazonaws.com/embedded_image/2017/10/xray%20vision.jpg',
       price: 399.99,
       description: 'Like skeletons? See them all!'
     }),
     Product.create({
       name: 'Microscopic Vision',
+      imgUrl: 'https://cdn.technologynetworks.com/tn/images/thumbs/jpeg/640_360/7-stunning-cell-images-from-2017-294838.jpg',
       price: 399.99,
       description: 'Explore a whole new world!'
     }),
     Product.create({
       name: 'Retain Body Temperature in All Climates',
+      imgUrl: 'https://www.france-voyage.com/visuals/pratique/enjoying-climate-year-round-27-1_w500.jpg',
       price: 399.99,
       description: 'Travel the world without a suitcase!'
     }),
     Product.create({
       name: 'Make Snacks Appear at Will',
+      imgUrl: 'https://foodal.com/wp-content/uploads/2020/04/The-Best-Variety-of-Pantry-Snacks.jpg',
       price: 499.99,
       description: 'Tasty treats for any occasion!'
     })
