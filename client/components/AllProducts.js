@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 const AllProducts = (props) => {
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
-  let products = props.products || [];
+  let products = props.products ?? [];
 
   useEffect(() => {
     const fetchProducts = async () => {

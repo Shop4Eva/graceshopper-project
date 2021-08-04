@@ -4,22 +4,12 @@ import { fetchProduct } from "../store/singleProduct";
 import { Link } from "react-router-dom";
 
 class Product extends React.Component {
-  // constructor(props) {
-  //   super(props);
-  //   this.state = {
-  //     product: [],
-  //     loading: true,
-  //     error: null,
-  //   };
-  //   this.handleUnassign = this.handleUnassign.bind(this);
-  // }
-
   async componentDidMount() {
     await this.props.getProduct(this.props.match.params.id);
   }
 
   render() {
-    const product = this.props.product || {};
+    const product = this.props.product ?? {};
     return (
       <div id="single-product">
         <h1>{product.name}</h1>
