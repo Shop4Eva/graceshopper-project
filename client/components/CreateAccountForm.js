@@ -40,18 +40,6 @@ import {authenticate} from '../store'
         </React.Fragment>
         }
         <div>
-          <label htmlFor="first-name">
-            <small>First Name</small>
-          </label>
-          <input name="first-name" type="string" />
-        </div>
-        <div>
-          <label htmlFor="last-name">
-            <small>Last Name</small>
-          </label>
-          <input name="last-name" type="string" />
-        </div>
-        <div>
           <button type="submit">{displayName}</button>
         </div>
         {error && error.response && <div> {error.response.data} </div>}
