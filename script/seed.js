@@ -180,10 +180,8 @@ async function seed() {
 
   console.log(`seeded successfully`);
   return {
-    users: {
-      cody: users[0],
-      murphy: users[1],
-    },
+    users,
+    products
   };
 }
 
