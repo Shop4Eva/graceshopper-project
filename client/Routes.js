@@ -1,11 +1,11 @@
-import React, { Component, Fragment } from "react";
-import { connect } from "react-redux";
-import { withRouter, Route, Switch, Redirect } from "react-router-dom";
-import { Login, Signup } from "./components/CreateAccountForm";
-import Home from "./components/Home";
-import AllProducts from "./components/AllProducts";
-import Product from "./components/Product";
-import { me } from "./store";
+import React, { Component, Fragment } from 'react';
+import { connect } from 'react-redux';
+import { withRouter, Route, Switch, Redirect } from 'react-router-dom';
+import { Login, Signup } from './components/CreateAccountForm';
+import Home from './components/Home';
+import AllProducts from './components/AllProducts';
+import Product from './components/Product';
+import { me } from './store';
 
 /**
  * COMPONENT
@@ -23,7 +23,8 @@ class Routes extends Component {
         {isLoggedIn ? (
           <Switch>
             <Route path="/home" component={Home} />
-            <Redirect to="/home" />
+            <Route path="/products" exact component={AllProducts} />
+            <Route path="/products/:id" exact component={Product} />
           </Switch>
         ) : (
           <Switch>
