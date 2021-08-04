@@ -42,7 +42,7 @@ import {authenticate} from '../store'
         <div>
           <button type="submit">{displayName}</button>
         </div>
-        {error && error.response && <div> {error.response.data} </div>}
+        {error?.response?.data}
       </form>
     </div>
   )
