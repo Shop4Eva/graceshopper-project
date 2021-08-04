@@ -9,7 +9,7 @@ const Order = db.define('order', {
     type: Sequelize.JSONB
   },
   totalPrice: {
-    type: Sequelize.DECIMAL(10,2)
+    type: Sequelize.INTEGER
   }
 })
 
