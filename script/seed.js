@@ -18,23 +18,58 @@ async function seed() {
     User.create({
       email: 'iris123@gmail.com',
       password: '123',
-      firstName: 'iris',
-      lastName: 'h',
+      firstName: 'Iris',
+      lastName: 'H',
       isAdmin: true,
     }),
     User.create({
       email: 'shristi123@gmail.com',
       password: '123',
-      firstName: 'shristi',
-      lastName: 'g',
+      firstName: 'Shristi',
+      lastName: 'G',
       isAdmin: true,
+    }),
+    User.create({
+      email: 'nate123@gmail.com',
+      password: '123',
+      firstName: 'Nate',
+      lastName: 'M',
+      isAdmin: true,
+    }),
+    User.create({
+      email: 'allie123@gmail.com',
+      password: '123',
+      firstName: 'Allison',
+      lastName: 'C',
+      isAdmin: true,
+    }),
+    User.create({
+      email: 'cody@gmail.com',
+      password: '123',
+      firstName: 'Cody',
+      lastName: 'Pug',
+      isAdmin: false,
+    }),
+    User.create({
+      email: 'winniethepooh@gmail.com',
+      password: '123',
+      firstName: 'Winnie',
+      lastName: 'Pooh',
+      isAdmin: false,
+    }),
+    User.create({
+      email: 'piglet@gmail.com',
+      password: '123',
+      firstName: 'Piglet',
+      lastName: 'Piglet',
+      isAdmin: false,
     }),
   ]);
 
   // Creating products
   const products = await Promise.all([
     Product.create({
-      name: 'Time travel',
+      name: 'Time Travel',
       imgUrl:
         'https://dynaimage.cdn.cnn.com/cnn/c_fill,g_auto,w_1200,h_675,ar_16:9/https%3A%2F%2Fcdn.cnn.com%2Fcnnnext%2Fdam%2Fassets%2F210730141728-jodie-whitaker-doctor-who.jpg',
       price: 399.99,
@@ -44,31 +79,105 @@ async function seed() {
       name: 'Teleportation',
       imgUrl:
         'https://cdn0.tnwcdn.com/wp-content/blogs.dir/1/files/2015/11/teleportation-portals.jpg',
-      description: '',
+      price: 299.99,
+      description: 'Never wait in traffic again!',
+    }),
+    Product.create({
+      name: 'Invisibility',
+      price: 399.99,
+      description: 'Not even your shadow will find you!'
     }),
     Product.create({
       name: 'Flying',
       imgUrl: 'https://i.ytimg.com/vi/U6v1K3-Ssfc/maxresdefault.jpg',
-      description:
-        'Want to fly through the air with the greatest of ease! Look no further!',
+      price: 199.99,
+      description: 'Want to fly through the air with the greatest of ease? Look no further!',
     }),
     Product.create({
-      name: 'Transform into a plant!',
+      name: 'Superhuman Strength',
+      price: 299.99,
+      description: 'Weightlift your house!'
+    }),
+    Product.create({
+      name: 'Shapeshifting',
+      price: 299.99,
+      description: 'Everyday is Halloween!'
+    }),
+    Product.create({
+      name: 'Super Speed',
+      price: 199.99,
+      description: 'Blink and you might miss it!'
+    }),
+    Product.create({
+      name: 'Telekinesis',
+      price: 99.99,
+    }),
+    Product.create({
+      name: 'Power Absorption',
+      price: 99.99,
+      description: 'Works like a sponge!'
+    }),
+    Product.create({
+      name: 'Transform Into a Plant!',
       imgUrl:
         'https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/247749f3-079e-4553-bce4-c972bc97807e/dbrwu7o-20eb4c47-2a50-4c37-8598-31c361103083.jpg/v1/fill/w_286,h_350,q_70,strp/paje_makes_like_a_tree_by_fullmoonmaster_dbrwu7o-350t.jpg?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7ImhlaWdodCI6Ijw9MTI1MyIsInBhdGgiOiJcL2ZcLzI0Nzc0OWYzLTA3OWUtNDU1My1iY2U0LWM5NzJiYzk3ODA3ZVwvZGJyd3U3by0yMGViNGM0Ny0yYTUwLTRjMzctODU5OC0zMWMzNjExMDMwODMuanBnIiwid2lkdGgiOiI8PTEwMjQifV1dLCJhdWQiOlsidXJuOnNlcnZpY2U6aW1hZ2Uub3BlcmF0aW9ucyJdfQ.1IaD6mTXLexcDTmN3_PQUnWTrzHHXjxy5DfGbjeMXWM',
+      price: 59.99,
+      description: 'Go green!'
     }),
     Product.create({
-      name: 'Tolerance for disgusting smells',
+      name: 'Tolerance for Disgusting Smells',
       imgUrl:
         'https://images.theconversation.com/files/351273/original/file-20200805-24-z254sc.jpg?ixlib=rb-1.1.0&q=45&auto=format&w=1200&h=1200.0&fit=crop',
+      price: 59.99,
+      description: 'Your nose will thank you!'
     }),
     Product.create({
-      name: 'Patience with small children',
+      name: 'Patience with Small Children',
+      price: 199.99,
+      description: 'The very best for your little one!'
     }),
+    Product.create({
+      name: 'Cure for Allergies',
+      price: 99.99,
+      description: 'You can stop and smell all the roses!'
+    }),
+    Product.create({
+      name: 'Foresight about Purchases',
+      price: 599.99,
+      description: 'Make FOMO a thing of the past!'
+    }),
+    Product.create({
+      name: 'Perfect Spelling in the English Language',
+      price: 199.99,
+      description: 'Be your own spell-checker!'
+    }),
+    Product.create({
+      name: 'Supersonic Hearing',
+      price: 99.99,
+      description: 'Befriend some bats!'
+    }),
+    Product.create({
+      name: 'X-Ray Vision',
+      price: 399.99,
+      description: 'Like skeletons? See them all!'
+    }),
+    Product.create({
+      name: 'Microscopic Vision',
+      price: 399.99,
+      description: 'Explore a whole new world!'
+    }),
+    Product.create({
+      name: 'Retain Body Temperature in All Climates',
+      price: 399.99,
+      description: 'Travel the world without a suitcase!'
+    }),
+    Product.create({
+      name: 'Make Snacks Appear at Will',
+      price: 499.99,
+      description: 'Tasty treats for any occasion!'
+    })
   ]);
 
-  console.log(`seeded ${users.length} users`);
-  console.log(`seeded ${products.length} users`);
   console.log(`seeded successfully`);
   return {
     users: {
