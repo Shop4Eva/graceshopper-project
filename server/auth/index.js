@@ -4,7 +4,7 @@ module.exports = router
 
 router.post('/login', async (req, res, next) => {
   try {
-    res.send({ token: await User.authenticate(req.body)}); 
+    res.send({ token: await User.authenticate(req.body)});
   } catch (err) {
     next(err)
   }
@@ -14,6 +14,8 @@ router.post('/login', async (req, res, next) => {
 router.post('/signup', async (req, res, next) => {
   try {
     const user = await User.create(req.body)
+    const order = await Order.create()
+    order.setUser(user)
     res.send({token: await user.generateToken()})
   } catch (err) {
     if (err.name === 'SequelizeUniqueConstraintError') {
@@ -31,3 +33,12 @@ router.get('/me', async (req, res, next) => {
     next(ex)
   }
 })
+
+// IMPLEMENTATION WITH LOCAL STORAGE CART (TIER 2)
+// at sign-up, await user.create and order.create; set cart to user; if cart already exists before sign-in (local storage, in window), add that cart to this cart; cart in req.body?; otherwise create cart and connect to user
+
+// in log-in, when someone signs up, check if they have an order associated with the window that is not empty (redux store), maybe separate routes?
+// 1. nothing in local storage, cart associated with user is empty
+// 2. nothing in local storage, cart associated with user has saved items
+// 3. items in local storage, cart associated with user has saved items => combine items in frontend/backend
+// 4. items in local storage, cart associated with user is empty => unassociate empty cart from user and transfer user id to local storage cart OR transfer items from local storage cart to the cart associated with user
