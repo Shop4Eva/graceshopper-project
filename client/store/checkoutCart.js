@@ -25,7 +25,11 @@ export const getCartThunk = (auth) => {
   return async (dispatch) => {
     try {
       if (!auth.id) {
-        //get cart from localStorage
+        // test this logic
+        const currentCart = localStorage.getItem('guestCart');
+        if (currentCart === null) {
+         currentCart === []
+        }
       } else {
         //getCart from back end
       }
@@ -46,7 +50,6 @@ export const addToCartThunk = (product, userId) => {
         if (currentCart === null) {
          currentCart === []
         }
-        //
         JSON.parse(currentCart).push(product);
         localStorage.setItem("guestCart", JSON.stringify(currentCart));
         //else logged in user

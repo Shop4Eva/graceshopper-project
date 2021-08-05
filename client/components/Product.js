@@ -19,7 +19,7 @@ class Product extends React.Component {
         <img src={product.imgUrl} width={200} height={200} />
         <p>price: ${product.price}</p>
         {product.description && <p>description: {product.description}</p>}
-        <button className="add-to-cart-button" onclick={()=> addToCartThunk(product.id, userId)}>Add To Cart</button>
+        <button className="add-to-cart-button" onclick={()=> addToCartThunk(product.id, this.props.userId)}>Add To Cart</button>
       </div>
     );
   }
@@ -27,14 +27,13 @@ class Product extends React.Component {
 const mapState = (state) => {
   return {
     product: state.product,
-    userId: state.userId
+    userId: state.auth.id
   };
 };
 
 const mapDispatch = (dispatch) => {
   return {
     getProduct: (id) => dispatch(fetchProduct(id)),
-    getUser: (id) => dispatch()
   };
 };
 
