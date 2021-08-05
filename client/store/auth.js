@@ -16,6 +16,9 @@ const setAuth = auth => ({type: SET_AUTH, auth})
 /**
  * THUNK CREATORS
  */
+
+//create fetchUser thunk to get user id
+
 export const me = () => async dispatch => {
   const token = window.localStorage.getItem(TOKEN)
   if (token) {
@@ -50,7 +53,11 @@ export const logout = () => {
 /**
  * REDUCER
  */
-export default function(state = {}, action) {
+const initialState = {
+  userId: null
+}
+
+export default function(initialState, action) {
   switch (action.type) {
     case SET_AUTH:
       return action.auth

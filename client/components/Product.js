@@ -13,6 +13,9 @@ class Product extends React.Component {
 
   async componentDidMount() {
     await this.props.getProduct(this.props.match.params.id);
+
+    //check to see if user is logged in
+    //put user in local state
     await this.props.getCart(this.props.auth)
   }
 
@@ -26,9 +29,10 @@ class Product extends React.Component {
   //   localStorage.setItem(loggedOutUserCart, currentCart);
   // }
 
-  addItemToCart() {
-    this.props.addProduct(this.props.product, this.props.cart)
-  }
+//   addItemToCart() {
+//     this.props.addProduct(this.props.product, this.props.cart)
+// >>>>>>> main
+//   }
 
   render() {
     const product = this.props.product ?? {};
@@ -41,7 +45,7 @@ class Product extends React.Component {
         <img src={product.imgUrl} width={200} height={200} />
         <p>price: ${product.price}</p>
         {product.description && <p>description: {product.description}</p>}
-        <button className="add-to-cart-button" onClick={this.addItemToCart}>Add To Cart</button>
+        <button className="add-to-cart-button" onclick={()=> addToCartThunk(product.id, userId)}>Add To Cart</button>
       </div>
     );
   }
@@ -51,7 +55,9 @@ const mapState = (state) => {
   return {
     auth: state.auth,
     product: state.product,
+    userId: state.userId
     cart: state.cart
+
   };
 };
 
@@ -59,7 +65,7 @@ const mapDispatch = (dispatch) => {
   return {
     addProduct: (product, cart) => dispatch(addToCartThunk(product, cart)),
     getProduct: (id) => dispatch(fetchProduct(id)),
-    getCart: (auth) => dispatch(getCartThunk(auth))
+    getCart: (userId) => dispatch(getCartThunk(userId))
   };
 };
 
