@@ -3,14 +3,17 @@ import ReactDOM from 'react-dom';
 import App from '../App';
 import {connect} from 'react-redux'
 import { deleteItem } from '../store/checkoutCart'
+import { getCartThunk } from '../store/checkoutCart';
 
 class CheckoutCart extends React.Component {
-  // async componentDidMount() {
-  //   await this.props.getProduct(this.props.match.params.id);
-  // }
+  async componentDidMount() {
+    // await this.props.getProduct(this.props.match.params.id);
+    await this.props.getCart(this.props.auth)
+  }
 
   render() {
     const product = this.props.product ?? {};
+    console.log('cart', this.props.cart);
 
     return (
       <div id="single-product">
@@ -41,12 +44,14 @@ class CheckoutCart extends React.Component {
 }
 const mapState = (state) => {
   return {
-
+    auth: state.auth,
+    cart: state.cart
   };
 };
 
 const mapDispatch = (dispatch) => {
   return {
+    getCart: (auth) => dispatch(getCartThunk(auth))
   };
 };
 
