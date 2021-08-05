@@ -21,8 +21,10 @@ export const getCartThunk = (auth) => {
         //get cart from localStorage
       } else {
         //getCart from back end
+        console.log('auth.id', auth.id)
+        const { data } = await axios.get(`/api/users/${auth.id}/cart`);
+        dispatch(getCart(data));
       }
-      dispatch(getCart(cart));
     } catch (err) {
       console.log(err);
     }
@@ -36,6 +38,9 @@ export const addToCartThunk = (product, cart) => {
         //dispatch to logged-out thunk
       } else {
         //dispatch to logged-in thunk
+        const cartAndProduct = { cart, product };
+        const { data } = await axios.put(`/api/users/${cart.userId}/addtocart`, cartAndProduct);
+        dispatch(addToCart(data));
       }
     } catch (err) {
       console.log(err);
@@ -80,6 +85,7 @@ export default function checkoutReducer(state = initialState, action) {
       return action.cart;
     case ADD_TO_CART:
 
+      return action.cart;
     default:
       return state;
   }

@@ -1,6 +1,6 @@
 const router = require('express').Router();
 const {
-  models: { User, Cart, Product_Cart },
+  models: { User, Cart, Product, Product_Cart },
 } = require('../db');
 module.exports = router;
 
@@ -18,22 +18,36 @@ router.get('/', async (req, res, next) => {
   }
 });
 
-router.put('/:userId/:productId', async (req, res, next) => {
+router.get('/:userId/cart', async (req, res, next) => {
   try {
-    const userCart = await Cart.findOne({
+    const cart = await Cart.findOne({
       include: {
-        model: Product_Cart,
+        model: Product
       },
       where: {
-        userId: req.params.userId,
-        fulfilled: false,
-      },
+        userId: req.params.userId
+      }
     });
-    // const cart = req.body[0];
-    // const productCart = req.body[1];
-    // const updatedCart = await userCart.update(cart);
-    // const updatedProductCart = await userProductCart.update(productCart);
-    // res.json(updatedProject);
+    if (!cart) {
+      res.sendStatus(404);
+    }
+    console.log('cart route', cart)
+    res.json(cart);
+  } catch (err) {
+    next(err)
+  }
+});
+
+router.put('/:userId/addtocart', async (req, res, next) => {
+  try {
+    const oldCart = req.body.cart;
+    const cart = await Cart.findByPk(oldCart.id);
+
+    console.log('magic methods', Object.keys(cart.__proto__))
+    const product = req.body.product;
+    cart.totalPrice += product.price;
+    await cart.addProduct(product);
+    res.json(cart);
   } catch (err) {
     next(err);
   }
