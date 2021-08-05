@@ -1,6 +1,47 @@
-import axios from "axios";
+import axios from 'axios';
 
-const SET_CHECKOUT = "SET_CHECKOUT";
+const SET_CHECKOUT = 'SET_CHECKOUT';
+const ADD_TO_CART = 'ADD_TO_CART';
+const GET_CART = 'GET_CART';
+
+const addToCart = (cart) => ({
+  type: ADD_TO_CART,
+  cart,
+});
+
+const getCart = (cart) => ({
+  type: GET_CART,
+  cart,
+});
+
+export const getCartThunk = (auth) => {
+  return async (dispatch) => {
+    try {
+      if (!auth.id) {
+        //get cart from localStorage
+      } else {
+        //getCart from back end
+      }
+      dispatch(getCart(cart));
+    } catch (err) {
+      console.log(err);
+    }
+  };
+};
+
+export const addToCartThunk = (product, cart) => {
+  return async (dispatch) => {
+    try {
+      if (!cart.userId) {
+        //dispatch to logged-out thunk
+      } else {
+        //dispatch to logged-in thunk
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
+};
 
 const setCheckout = (checkout) => ({
   type: SET_CHECKOUT,
@@ -21,8 +62,7 @@ export const fetchCheckout = (id) => {
 export const setCartProductsThunk = () => {
   return async (dispatch) => {
     try {
-      const { data } = //look
-      dispatch(setProducts(data));
+      const { data } = dispatch(setProducts(data)); //look
     } catch (err) {
       console.log(err);
     }
@@ -32,11 +72,14 @@ export const setCartProductsThunk = () => {
 const initialState = {};
 //create a reducer to look in local store list of productIDs in cart
 
-
 export default function checkoutReducer(state = initialState, action) {
   switch (action.type) {
     case SET_CHECKOUT:
       return action.checkout;
+    case GET_CART:
+      return action.cart;
+    case ADD_TO_CART:
+
     default:
       return state;
   }
