@@ -2,6 +2,7 @@ import React from 'react'
 import ReactDOM from 'react-dom';
 import App from '../App';
 import {connect} from 'react-redux'
+import { deleteItem } from '../store/checkoutCart'
 
 class CheckoutCart extends React.Component {
   // async componentDidMount() {
@@ -20,7 +21,7 @@ class CheckoutCart extends React.Component {
         <img src={product.imgUrl}  />
         <div className="cart-product-info">
           <p>Price: ${product.price/100}</p>
-          {/* double check if works!!!! */}
+          {/* have to check if user is logged in or not, if not go to local storage - if yes then changes in db */}
           <button type="button" className="add-quantity-button" onClick={product.quantity++}>+</button>
             <p>Quantity: {product.quantity}</p>
           <button type="button" className="remove-quantity-button" onClick={product.quantity--}>-</button>

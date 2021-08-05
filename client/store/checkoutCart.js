@@ -1,18 +1,25 @@
 import axios from 'axios';
 
-const SET_CHECKOUT = 'SET_CHECKOUT';
 const ADD_TO_CART = 'ADD_TO_CART';
 const GET_CART = 'GET_CART';
+const DELETE_ITEM = 'DELETE_ITEM'
 
-const addToCart = (cart) => ({
+export const addToCart = (cart) => ({
   type: ADD_TO_CART,
   cart,
 });
 
-const getCart = (cart) => ({
+export const getCart = (cart) => ({
   type: GET_CART,
   cart,
 });
+
+export const _deleteItem = (productID) => {
+  return {
+    type: DELETE_ITEM,
+    productID
+  }
+}
 
 export const getCartThunk = (auth) => {
   return async (dispatch) => {
@@ -29,11 +36,20 @@ export const getCartThunk = (auth) => {
   };
 };
 
-export const addToCartThunk = (product, cart) => {
+export const addToCartThunk = (product, userId) => {
   return async (dispatch) => {
     try {
-      if (!cart.userId) {
-        //dispatch to logged-out thunk
+      //if guest
+      if (!userId) {
+        const currentCart = localStorage.getItem('guestCart');
+        //currentCart is a string
+        if (currentCart === null) {
+         currentCart === []
+        }
+        //
+        JSON.parse(currentCart).push(product);
+        localStorage.setItem("guestCart", JSON.stringify(currentCart));
+        //else logged in user
       } else {
         //dispatch to logged-in thunk
       }
@@ -42,11 +58,6 @@ export const addToCartThunk = (product, cart) => {
     }
   };
 };
-
-const setCheckout = (checkout) => ({
-  type: SET_CHECKOUT,
-  checkout,
-});
 
 export const fetchCheckout = (id) => {
   return async (dispatch) => {
@@ -69,17 +80,30 @@ export const setCartProductsThunk = () => {
   };
 };
 
+export const deleteItem = (product) => {
+  return async (dispatch) => {
+    try {
+      if (!cart.userId) {
+        localStorage.removeItem("product")
+      }
+      else {
+      //dispatch to logged-in thunk
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
+};
+
 const initialState = {};
 //create a reducer to look in local store list of productIDs in cart
 
 export default function checkoutReducer(state = initialState, action) {
   switch (action.type) {
-    case SET_CHECKOUT:
-      return action.checkout;
     case GET_CART:
       return action.cart;
     case ADD_TO_CART:
-
+      return action.cart;
     default:
       return state;
   }
