@@ -2,7 +2,7 @@
 
 const {
   db,
-  models: { User, Product },
+  models: { User, Product, Order, Product_Order },
 } = require('../server/db');
 
 async function seed() {
@@ -40,13 +40,6 @@ async function seed() {
       isAdmin: true,
     }),
     User.create({
-      email: 'cody@gmail.com',
-      password: '123',
-      firstName: 'Cody',
-      lastName: 'Pug',
-      isAdmin: false,
-    }),
-    User.create({
       email: 'winniethepooh@gmail.com',
       password: '123',
       firstName: 'Winnie',
@@ -62,20 +55,35 @@ async function seed() {
     }),
   ]);
 
+  const cody = User.create({
+    email: 'cody@gmail.com',
+    password: '123',
+    firstName: 'Cody',
+    lastName: 'Pug',
+    isAdmin: false,
+  });
+
+  const timeTravel = await Product.create({
+    name: 'Time Travel',
+    imgUrl: 'https://dynaimage.cdn.cnn.com/cnn/c_fill,g_auto,w_1200,h_675,ar_16:9/https%3A%2F%2Fcdn.cnn.com%2Fcnnnext%2Fdam%2Fassets%2F210730141728-jodie-whitaker-doctor-who.jpg',
+    price: 39999,
+    description: 'Travel through time like the Doctor!',
+  });
+
+  const teleportation = await Product.create({
+    name: 'Teleportation',
+    imgUrl: 'https://cdn0.tnwcdn.com/wp-content/blogs.dir/1/files/2015/11/teleportation-portals.jpg',
+    price: 29999,
+    description: 'Never wait in traffic again!',
+  });
+
+  const codyOrder = await Order.create();
+  await cody.setOrders(codyOrder);
+  await codyOrder.setProducts([timeTravel, teleportation]);
+
+
   // Creating products
   const products = await Promise.all([
-    Product.create({
-      name: 'Time Travel',
-      imgUrl: 'https://dynaimage.cdn.cnn.com/cnn/c_fill,g_auto,w_1200,h_675,ar_16:9/https%3A%2F%2Fcdn.cnn.com%2Fcnnnext%2Fdam%2Fassets%2F210730141728-jodie-whitaker-doctor-who.jpg',
-      price: 39999,
-      description: 'Travel through time like the Doctor!',
-    }),
-    Product.create({
-      name: 'Teleportation',
-      imgUrl: 'https://cdn0.tnwcdn.com/wp-content/blogs.dir/1/files/2015/11/teleportation-portals.jpg',
-      price: 29999,
-      description: 'Never wait in traffic again!',
-    }),
     Product.create({
       name: 'Invisibility',
       imgUrl: 'https://static.wikia.nocookie.net/mario/images/a/a1/Boo_CTTT.png',
@@ -209,6 +217,17 @@ async function seed() {
       description: 'Built-in armor for any occasion!'
     }),
   ]);
+
+  users.forEach(async (user) => {
+    try {
+      const newOrder = await Order.create();
+      newOrder.setUser(user);
+    } catch (e) {
+      console.error(e);
+    }
+  });
+
+
 
   console.log(`seeded successfully`);
   return {
