@@ -43,7 +43,7 @@ const AllProducts = (props) => {
               </div>
               <div className="card-info">
                 <div className="card-title">
-                  <h4 className="superpower-title">Superpower:
+                  <h4 className="superpower-title">
                   <Link className="superpower-name" to={`/products/${product.id}`}>
                       {product.name}
                   </Link>
