@@ -22,29 +22,32 @@ router.get('/:userId/cart', async (req, res, next) => {
   try {
     const cart = await Cart.findOne({
       include: {
-        model: Product
+        model: Product,
       },
       where: {
-        userId: req.params.userId
-      }
+        userId: req.params.userId,
+      },
     });
     if (!cart) {
       res.sendStatus(404);
     }
-    console.log('cart route', cart)
+    console.log('cart route', cart);
     res.json(cart);
   } catch (err) {
-    next(err)
+    next(err);
   }
 });
 
-router.put('/:userId/addtocart', async (req, res, next) => {
+router.put('/:userId/addtocart/:productId', async (req, res, next) => {
   try {
-    const oldCart = req.body.cart;
-    const cart = await Cart.findByPk(oldCart.id);
-
-    console.log('magic methods', Object.keys(cart.__proto__))
-    const product = req.body.product;
+    const product = await Product.findByPk(req.params.productId);
+    const cart = await Cart.findOne({
+      include: [Product],
+      where: {
+        userId: req.params.userId,
+        fulfilled: false,
+      },
+    });
     cart.totalPrice += product.price;
     await cart.addProduct(product);
     res.json(cart);

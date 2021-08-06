@@ -2,7 +2,7 @@ import axios from 'axios';
 
 const ADD_TO_CART = 'ADD_TO_CART';
 const GET_CART = 'GET_CART';
-const DELETE_ITEM = 'DELETE_ITEM'
+const DELETE_ITEM = 'DELETE_ITEM';
 
 export const addToCart = (cart) => ({
   type: ADD_TO_CART,
@@ -17,19 +17,25 @@ export const getCart = (cart) => ({
 export const _deleteItem = (productID) => {
   return {
     type: DELETE_ITEM,
-    productID
-  }
-}
+    productID,
+  };
+};
 
 export const getCartThunk = (userId) => {
   return async (dispatch) => {
     try {
+      console.log('hello', userId);
       if (!userId) {
         //get cart from localStorage
+        // test this logic
+        const currentCart = localStorage.getItem('guestCart');
+        if (currentCart === null) {
+          currentCart === [];
+        }
       } else {
+        console.log('userId', userId);
         //getCart from back end
-        console.log('auth.id', auth.id)
-        const { data } = await axios.get(`/api/users/${auth.id}/cart`);
+        const { data } = await axios.get(`/api/users/${userId}/cart`);
         dispatch(getCart(data));
       }
     } catch (err) {
@@ -38,24 +44,27 @@ export const getCartThunk = (userId) => {
   };
 };
 
-export const addToCartThunk = (product, userId) => {
+export const addToCartThunk = (productId, userId) => {
   return async (dispatch) => {
     try {
+      console.log('my userID is:', userId);
       //if guest
       if (!userId) {
         const currentCart = localStorage.getItem('guestCart');
         //currentCart is a string
         if (currentCart === null) {
-         currentCart === []
+          currentCart === [];
         }
         //
         JSON.parse(currentCart).push(product);
-        localStorage.setItem("guestCart", JSON.stringify(currentCart));
+        localStorage.setItem('guestCart', JSON.stringify(currentCart));
         //else logged in user
       } else {
+        console.log('i got this far');
         //dispatch to logged-in thunk
-        const cartAndProduct = { cart, product };
-        const { data } = await axios.put(`/api/users/${cart.userId}/addtocart`, cartAndProduct);
+        const { data } = await axios.put(
+          `/api/users/${userId}/addtocart/${productId}`
+        );
         dispatch(addToCart(data));
       }
     } catch (err) {
@@ -89,10 +98,9 @@ export const deleteItem = (product) => {
   return async (dispatch) => {
     try {
       if (!cart.userId) {
-        localStorage.removeItem("product")
-      }
-      else {
-      //dispatch to logged-in thunk
+        localStorage.removeItem('product');
+      } else {
+        //dispatch to logged-in thunk
       }
     } catch (err) {
       console.log(err);

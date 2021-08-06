@@ -6,6 +6,7 @@ import { connect } from 'react-redux';
  */
 export const Home = (props) => {
   const { firstName } = props;
+  console.log(props.auth);
 
   return (
     <div>
