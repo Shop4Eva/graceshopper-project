@@ -2,9 +2,10 @@ const router = require('express').Router();
 const {
   models: { User, Cart, Product, Product_Cart },
 } = require('../db');
+const { requireToken, isLoggedIn, isAdmin } = require('./gatekeepingMiddleware');
 module.exports = router;
 
-router.get('/', async (req, res, next) => {
+router.get('/', requireToken, isAdmin, async (req, res, next) => {
   try {
     const users = await User.findAll({
       // explicitly select only the id and username fields - even though
