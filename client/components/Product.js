@@ -1,17 +1,26 @@
 import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
 import { fetchProduct } from "../store/singleProduct";
-import { Link } from "react-router-dom";
+import { getCartThunk, addToCartThunk } from '../store/checkoutCart';
 
 class Product extends React.Component {
+  constructor(props) {
+    super(props)
+
+    this.addItemToCart = this.addItemToCart.bind(this);
+  }
+
   async componentDidMount() {
     await this.props.getProduct(this.props.match.params.id);
     //check to see if user is logged in
     //put user in local state
+    await this.props.getCart(this.props.auth)
   }
 
   render() {
     const product = this.props.product ?? {};
+    console.log('cart', this.props.cart);
+
     return (
       <div id="single-product">
         <h1>{product.name}</h1>
@@ -24,16 +33,21 @@ class Product extends React.Component {
     );
   }
 }
+
 const mapState = (state) => {
   return {
+    auth: state.auth,
     product: state.product,
-    userId: state.auth.id
+    userId: state.auth.id,
+    cart: state.cart
   };
 };
 
 const mapDispatch = (dispatch) => {
   return {
+    addProduct: (product, cart) => dispatch(addToCartThunk(product, cart)),
     getProduct: (id) => dispatch(fetchProduct(id)),
+    getCart: (userId) => dispatch(getCartThunk(userId))
   };
 };
 

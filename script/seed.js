@@ -55,7 +55,7 @@ async function seed() {
     }),
   ]);
 
-  const cody = User.create({
+  const cody = await User.create({
     email: 'cody@gmail.com',
     password: '123',
     firstName: 'Cody',
@@ -63,28 +63,23 @@ async function seed() {
     isAdmin: false,
   });
 
-  const timeTravel = await Product.create({
-    name: 'Time Travel',
-    imgUrl:
-      'https://dynaimage.cdn.cnn.com/cnn/c_fill,g_auto,w_1200,h_675,ar_16:9/https%3A%2F%2Fcdn.cnn.com%2Fcnnnext%2Fdam%2Fassets%2F210730141728-jodie-whitaker-doctor-who.jpg',
-    price: 39999,
-    description: 'Travel through time like the Doctor!',
-  });
-
-  const teleportation = await Product.create({
-    name: 'Teleportation',
-    imgUrl:
-      'https://cdn0.tnwcdn.com/wp-content/blogs.dir/1/files/2015/11/teleportation-portals.jpg',
-    price: 29999,
-    description: 'Never wait in traffic again!',
-  });
-
-  const codyCart = await Cart.create();
-  await cody.setCarts(codyCart);
-  await codyCart.setProducts([timeTravel, teleportation]);
 
   // Creating products
   const products = await Promise.all([
+    Product.create({
+      name: 'Time Travel',
+      imgUrl:
+        'https://dynaimage.cdn.cnn.com/cnn/c_fill,g_auto,w_1200,h_675,ar_16:9/https%3A%2F%2Fcdn.cnn.com%2Fcnnnext%2Fdam%2Fassets%2F210730141728-jodie-whitaker-doctor-who.jpg',
+      price: 39999,
+      description: 'Travel through time like the Doctor!',
+    }),
+    Product.create({
+      name: 'Teleportation',
+      imgUrl:
+        'https://cdn0.tnwcdn.com/wp-content/blogs.dir/1/files/2015/11/teleportation-portals.jpg',
+      price: 29999,
+      description: 'Never wait in traffic again!',
+    }),
     Product.create({
       name: 'Invisibility',
       imgUrl:
@@ -239,14 +234,24 @@ async function seed() {
     }),
   ]);
 
+  const carts = [];
+
   users.forEach(async (user) => {
     try {
       const newCart = await Cart.create();
       newCart.setUser(user);
+      carts.push(newCart);
     } catch (e) {
       console.error(e);
     }
   });
+
+  users.push(cody);
+
+  const codyCart = await Cart.create();
+  await cody.setCarts(codyCart);
+  carts.push(codyCart);
+  await codyCart.setProducts([products[0], products[1]]);
 
   console.log(`seeded successfully`);
   return {
