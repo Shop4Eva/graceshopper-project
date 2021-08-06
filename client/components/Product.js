@@ -45,7 +45,7 @@ const mapState = (state) => {
 
 const mapDispatch = (dispatch) => {
   return {
-    addProduct: (product, cart) => dispatch(addToCartThunk(product, cart)),
+    addProduct: (product, userId, cart) => dispatch(addToCartThunk(product, userId, cart)),
     getProduct: (id) => dispatch(fetchProduct(id)),
     getCart: (userId) => dispatch(getCartThunk(userId))
   };

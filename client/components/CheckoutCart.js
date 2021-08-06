@@ -1,19 +1,28 @@
 import React from 'react'
-import ReactDOM from 'react-dom';
-import App from '../App';
 import {connect} from 'react-redux'
 import { deleteItem } from '../store/checkoutCart'
 import { getCartThunk } from '../store/checkoutCart';
+import { Link } from 'react-router-dom';
 
 class CheckoutCart extends React.Component {
   async componentDidMount() {
     // await this.props.getProduct(this.props.match.params.id);
-    await this.props.getCart(this.props.auth)
+    await this.props.getCart(this.props.auth.userId)
+  }
+
+  deleteItem(productId) {
+    console.log("TODO: Delete item " + productId)
   }
 
   render() {
-    const product = this.props.product ?? {};
-    console.log('cart', this.props.cart);
+    // TODO: actually use the items from the cart
+    const product = this.props.product ?? {
+      name: "Flight",
+      imgUrl: "fake_image_url.jpg",
+      price: "1000",
+      quantity: 5,
+      id: 1
+    };
 
     return (
       <div id="single-product">
@@ -25,10 +34,10 @@ class CheckoutCart extends React.Component {
         <div className="cart-product-info">
           <p>Price: ${product.price/100}</p>
           {/* have to check if user is logged in or not, if not go to local storage - if yes then changes in db */}
-          <button type="button" className="add-quantity-button" onClick={product.quantity++}>+</button>
+          <button type="button" className="add-quantity-button" onClick={() => console.log("add quantity clicked")}>+</button>
             <p>Quantity: {product.quantity}</p>
-          <button type="button" className="remove-quantity-button" onClick={product.quantity--}>-</button>
-          <button type="button" className="remove-button" onClick={deleteItem()}>remove item</button>
+          <button type="button" className="remove-quantity-button" onClick={() => console.log("remove quantity clicked")}>-</button>
+          <button type="button" className="remove-button" onClick={() => console.log("remove button clicked")}>remove item</button>
         </div>
         <div>
         <button type="button" className="continue-shopping-button" >
@@ -51,7 +60,7 @@ const mapState = (state) => {
 
 const mapDispatch = (dispatch) => {
   return {
-    getCart: (auth) => dispatch(getCartThunk(auth))
+    getCart: (userId) => dispatch(getCartThunk(userId))
   };
 };
 

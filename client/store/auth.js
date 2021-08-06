@@ -57,9 +57,10 @@ const initialState = {
   userId: null
 }
 
-export default function(initialState, action) {
+export default function(state = initialState, action) {
   switch (action.type) {
     case SET_AUTH:
+      action.auth.userId = action.auth.id
       return action.auth
     default:
       return state

@@ -32,8 +32,8 @@ export const getCartThunk = (userId) => {
         }
       } else {
         //getCart from back end
-        console.log('auth.id', auth.id)
-        const { data } = await axios.get(`/api/users/${auth.id}/cart`);
+        console.log('userId', userId)
+        const { data } = await axios.get(`/api/users/${userId}/cart`);
         dispatch(getCart(data));
       }
     } catch (err) {
@@ -42,7 +42,7 @@ export const getCartThunk = (userId) => {
   };
 };
 
-export const addToCartThunk = (product, userId) => {
+export const addToCartThunk = (product, userId, cart) => {
   return async (dispatch) => {
     try {
       //if guest
@@ -58,7 +58,7 @@ export const addToCartThunk = (product, userId) => {
       } else {
         //dispatch to logged-in thunk
         const cartAndProduct = { cart, product };
-        const { data } = await axios.put(`/api/users/${cart.userId}/addtocart`, cartAndProduct);
+        const { data } = await axios.put(`/api/users/${userId}/addtocart`, cartAndProduct);
         dispatch(addToCart(data));
       }
     } catch (err) {
