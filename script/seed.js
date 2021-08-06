@@ -97,7 +97,7 @@ async function seed() {
     Product.create({
       name: 'Superhuman Strength',
       imgUrl:
-        'https://www.clipartmax.com/png/small/464-4646391_girl-clipart-weightlifting-weight-lifting-emoji.png',
+        'https://images.emojiterra.com/google/android-nougat/512px/1f3cb-2640.png',
       price: 29999,
       description: 'Weightlift your house!',
     }),
@@ -111,7 +111,7 @@ async function seed() {
     Product.create({
       name: 'Super Speed',
       imgUrl:
-        'https://www.clipartmax.com/png/middle/332-3321328_download-looney-tunes-roadrunner-clipart-tasmanian-looney-tunes-stickers-road-runner.png',
+        'http://playingwithsuperpower.com/wp-content/uploads/2013/08/Death-Valley-Rally-4.png',
       price: 19999,
       description: 'Blink and you might miss it!',
     }),
@@ -213,8 +213,7 @@ async function seed() {
     }),
     Product.create({
       name: 'SuperHuman Invention Skills',
-      imgUrl:
-        'https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.youtube.com%2Fwatch%3Fv%3DxkZv3N9Gr8o&psig=AOvVaw00x4ABeFbHKdp_fSOsVyaW&ust=1628189229231000&source=images&cd=vfe&ved=0CAsQjRxqFwoTCPDAz9qDmPICFQAAAAAdAAAAABAD',
+      imgUrl: 'https://static.scientificamerican.com/sciam/cache/file/987F7B3E-85C1-47D6-91416FCA62F71B37_source.jpg',
       price: 5999,
       description: "Invent to your heart's content!",
     }),
