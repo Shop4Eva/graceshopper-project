@@ -40,16 +40,14 @@ router.get('/:userId/cart', async (req, res, next) => {
 
 router.put('/:userId/addtocart/:productId', async (req, res, next) => {
   try {
-    const product = await Product.findbyPk(req.params.productId);
+    const product = await Product.findByPk(req.params.productId);
     const cart = await Cart.findOne({
-      include: [Product, Product_Cart],
+      include: [Product],
       where: {
         userId: req.params.userId,
         fulfilled: false,
       },
     });
-    console.log('CART', cart);
-    console.log('magic methods', Object.keys(cart.__proto__));
     cart.totalPrice += product.price;
     await cart.addProduct(product);
     res.json(cart);

@@ -47,6 +47,7 @@ export const getCartThunk = (userId) => {
 export const addToCartThunk = (productId, userId) => {
   return async (dispatch) => {
     try {
+      console.log('my userID is:', userId);
       //if guest
       if (!userId) {
         const currentCart = localStorage.getItem('guestCart');
@@ -59,6 +60,7 @@ export const addToCartThunk = (productId, userId) => {
         localStorage.setItem('guestCart', JSON.stringify(currentCart));
         //else logged in user
       } else {
+        console.log('i got this far');
         //dispatch to logged-in thunk
         const { data } = await axios.put(
           `/api/users/${userId}/addtocart/${productId}`

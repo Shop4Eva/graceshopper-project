@@ -8,11 +8,11 @@ class Product extends React.Component {
   constructor(props) {
     super(props);
 
-    // this.addItemToCart = this.addItemToCart.bind(this);
+    this.addItemToCart = this.addItemToCart.bind(this);
   }
 
   async componentDidMount() {
-    console.log(this.props);
+    //how to get the user id before trying to get cart
     await this.props.getCart(this.props.userId);
     await this.props.getProduct(this.props.match.params.id);
 
@@ -30,15 +30,14 @@ class Product extends React.Component {
   //   localStorage.setItem(loggedOutUserCart, currentCart);
   // }
 
-  //   addItemToCart() {
-  //     this.props.addProduct(this.props.product, this.props.cart)
-  // >>>>>>> main
-  //   }
+  async addItemToCart() {
+    console.log('before add', this.props.cart);
+    await this.props.addProduct(this.props.product.id, this.props.userId);
+    console.log(this.props.cart);
+  }
 
   render() {
     const product = this.props.product || {};
-    console.log('cart', this.props.cart);
-    console.log('auth', this.props.auth);
 
     return (
       <div id="single-product">
@@ -47,10 +46,7 @@ class Product extends React.Component {
         <img src={product.imgUrl} width={200} height={200} />
         <p>price: ${product.price}</p>
         {product.description && <p>description: {product.description}</p>}
-        <button
-          className="add-to-cart-button"
-          onClick={() => addToCartThunk(product.id, this.props.userId)}
-        >
+        <button className="add-to-cart-button" onClick={this.addItemToCart}>
           Add To Cart
         </button>
       </div>
@@ -61,7 +57,7 @@ class Product extends React.Component {
 const mapState = (state) => {
   return {
     product: state.product,
-    auth: state.auth,
+    userId: state.auth.id,
     cart: state.cart,
   };
 };
