@@ -19,7 +19,7 @@ router.get('/', requireToken, isLoggedIn, isAdmin, async (req, res, next) => {
   }
 });
 
-// need to add gatekeeping fn to check if cart belongs to that cart's user
+// ih: need to add gatekeeping functions before 'async' to check if cart belongs to that cart's user, otherwise this route is working
 router.get('/:userId/cart', async (req, res, next) => {
   try {
     const cart = await Cart.findOne({
@@ -39,7 +39,7 @@ router.get('/:userId/cart', async (req, res, next) => {
   }
 });
 
-// need to add gatekeeping fn to check if cart belongs to that cart's user
+// ih: need to add gatekeeping functions before 'async' to check if cart belongs to that cart's user, otherwise this route is working
 router.put('/:userId/addtocart/:productId', async (req, res, next) => {
   try {
     const product = await Product.findByPk(req.params.productId);

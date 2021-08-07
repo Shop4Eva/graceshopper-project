@@ -75,10 +75,13 @@ export const addToCartThunk = (productId, userId) => {
         console.log('i got this far');
         //dispatch to logged-in thunk
 
+        // ih: adjusted data to data:cart
         const { data: cart } = await axios.put(
           `/api/users/${userId}/addtocart/${productId}`
         );
         console.log('addToCartThunk data', cart)
+
+        // ih: changed data to cart in addToCart
         dispatch(addToCart(cart));
       }
     // } catch (err) {
@@ -145,6 +148,7 @@ export default function checkoutReducer(state = initialState, action) {
     case GET_CART:
       return action.cart;
     case ADD_TO_CART:
+      // ih: changed return statement
       return {
         ...state,
         cart: action.cart
