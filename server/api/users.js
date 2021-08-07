@@ -2,7 +2,11 @@ const router = require('express').Router();
 const {
   models: { User, Cart, Product, Product_Cart },
 } = require('../db');
-const { requireToken, isLoggedIn, isAdmin } = require('./gatekeepingMiddleware');
+const {
+  requireToken,
+  isLoggedIn,
+  isAdmin,
+} = require('./gatekeepingMiddleware');
 module.exports = router;
 
 router.get('/', requireToken, isLoggedIn, isAdmin, async (req, res, next) => {
@@ -57,13 +61,48 @@ router.put('/:userId/addtocart/:productId', async (req, res, next) => {
       include: [Cart],
       where: {
         cartId: cart.id,
-        productId: product.id
-      }
+        productId: product.id,
+      },
     });
 
     productInCart.quantity++;
     productInCart.subtotalPrice = product.price * productInCart.quantity;
     cart.totalPrice += product.price;
+
+    productInCart.save();
+    cart.save();
+
+    res.json(cart);
+  } catch (err) {
+    next(err);
+  }
+});
+
+router.put('/:userId/removefromcart/:productId', async (req, res, next) => {
+  try {
+    const product = await Product.findByPk(req.params.productId);
+
+    const cart = await Cart.findOne({
+      where: {
+        userId: req.params.userId,
+        fulfilled: false,
+      },
+    });
+
+    const productInCart = await Product_Cart.findOne({
+      include: [Cart],
+      where: {
+        cartId: cart.id,
+        productId: product.id,
+      },
+    });
+
+    productInCart.quantity--;
+    productInCart.subtotalPrice = product.price * productInCart.quantity;
+    if (!productInCart.quantity) {
+      await cart.removeProduct(product);
+    }
+    cart.totalPrice -= product.price;
 
     productInCart.save();
     cart.save();

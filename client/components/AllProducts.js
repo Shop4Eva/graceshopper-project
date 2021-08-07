@@ -30,35 +30,45 @@ const AllProducts = (props) => {
       ) : loading ? (
         <div>Get ready. Your superpowers are on their way!</div>
       ) : (
-      <React.Fragment>
-        <header className="Header">
-          <h2 className="title">Superpowers!</h2>
-        </header>
-        <div className="all-products-container">
-          {products.map((product) => (
-            <div className="superpower-card" key={product.id}>
-              <div className="superpower-img-container">
-                {product.imgUrl && (
-                  <img className="superpower-img" src={product.imgUrl} width={200} height={200} />)}
-              </div>
-              <div className="card-info">
-                <div className="card-title">
-                  <h4 className="superpower-title">
-                  <Link className="superpower-name" to={`/products/${product.id}`}>
-                      {product.name}
-                  </Link>
-                  </h4>
+        <React.Fragment>
+          <header className="Header">
+            <h2 className="title">Superpowers!</h2>
+          </header>
+          <div className="all-products-container">
+            {products.map((product) => (
+              <div className="superpower-card" key={product.id}>
+                <div className="superpower-img-container">
+                  {product.imgUrl && (
+                    <img
+                      className="superpower-img"
+                      src={product.imgUrl}
+                      width={200}
+                      height={200}
+                    />
+                  )}
                 </div>
-                <p className="superpower-prop">price: ${product.price}</p>
-                <div className="superpower-prop">
-                  {product.description && (
-                    <p>{product.description}</p>)}
+                <div className="card-info">
+                  <div className="card-title">
+                    <h4 className="superpower-title">
+                      <Link
+                        className="superpower-name"
+                        to={`/products/${product.id}`}
+                      >
+                        {product.name}
+                      </Link>
+                    </h4>
+                  </div>
+                  <p className="superpower-prop">
+                    price: ${product.price / 100}
+                  </p>
+                  <div className="superpower-prop">
+                    {product.description && <p>{product.description}</p>}
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
-        </div>
-      </React.Fragment>
+            ))}
+          </div>
+        </React.Fragment>
       )}
     </div>
   );
