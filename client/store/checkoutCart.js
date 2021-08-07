@@ -2,6 +2,7 @@ import axios from 'axios';
 
 const ADD_TO_CART = 'ADD_TO_CART';
 const GET_CART = 'GET_CART';
+const SET_ITEM = 'SET_ITEM';
 const DELETE_ITEM = 'DELETE_ITEM';
 
 export const addToCart = (cart) => ({
@@ -14,10 +15,18 @@ export const getCart = (cart) => ({
   cart,
 });
 
-export const _deleteItem = (productID) => {
+export const _setItem = (productId, cartId) => {
+  return {
+    type: SET_ITEM,
+    productId,
+    cartId
+  }
+}
+
+export const _deleteItem = (product) => {
   return {
     type: DELETE_ITEM,
-    productID,
+    product,
   };
 };
 
@@ -37,6 +46,7 @@ export const getCartThunk = (userId) => {
         console.log('userId', userId);
         //getCart from back end
         const { data } = await axios.get(`/api/users/${userId}/cart`);
+        console.log('getCartThunk data', data)
         dispatch(getCart(data));
       }
     } catch (err) {
@@ -49,31 +59,32 @@ export const getCartThunk = (userId) => {
 // export const addToCartThunk = (product, userId, cart) => {
 export const addToCartThunk = (productId, userId) => {
   return async (dispatch) => {
-    try {
+    // try {
       console.log('my userID is:', userId);
       //if guest
-      if (!userId) {
-        const currentCart = localStorage.getItem('guestCart');
-        //currentCart is a string
-        if (currentCart === null) {
-          currentCart === [];
-        }
-        JSON.parse(currentCart).push(product);
-        localStorage.setItem('guestCart', JSON.stringify(currentCart));
+      // if (!userId) {
+      //   const currentCart = localStorage.getItem('guestCart');
+      //   //currentCart is a string
+      //   if (currentCart === null) {
+      //     currentCart === [];
+      //   }
+      //   JSON.parse(currentCart).push(product);
+      //   localStorage.setItem('guestCart', JSON.stringify(currentCart));
         //else logged in user
-      } else {
+      // } else {
         console.log('i got this far');
         //dispatch to logged-in thunk
 
-        const { data } = await axios.put(
+        const { data: cart } = await axios.put(
           `/api/users/${userId}/addtocart/${productId}`
         );
-        dispatch(addToCart(data));
+        console.log('addToCartThunk data', cart)
+        dispatch(addToCart(cart));
       }
-    } catch (err) {
-      console.log(err);
-    }
-  };
+    // } catch (err) {
+    //   console.log(err);
+    // }
+//   };
 };
 
 export const fetchCheckout = (id) => {
@@ -90,18 +101,33 @@ export const fetchCheckout = (id) => {
 export const setCartProductsThunk = () => {
   return async (dispatch) => {
     try {
-      const { data } = dispatch(setProducts(data)); //look
+      const { data } = dispatch(_setItem(data)); //look
     } catch (err) {
       console.log(err);
     }
   };
 };
 
+// export const setItemQuantity = (productId, cartId) => {
+//   return async (dispatch) => {
+//     try {
+//       // if (!cart.userId) {
+
+//       // } else {
+//       //   // dispatch to logged-in thunk
+//       // }
+
+//     } catch (err) {
+//       console.log(err)
+//     }
+//   }
+// }
+
 export const deleteItem = (product) => {
   return async (dispatch) => {
     try {
       if (!cart.userId) {
-        localStorage.removeItem('product');
+        localStorage.removeItem(product);
       } else {
         //dispatch to logged-in thunk
       }
@@ -119,7 +145,10 @@ export default function checkoutReducer(state = initialState, action) {
     case GET_CART:
       return action.cart;
     case ADD_TO_CART:
-      return action.cart;
+      return {
+        ...state,
+        cart: action.cart
+      };
     default:
       return state;
   }

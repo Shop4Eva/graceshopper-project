@@ -5,7 +5,7 @@ const {
 const { requireToken, isLoggedIn, isAdmin } = require('./gatekeepingMiddleware');
 module.exports = router;
 
-router.get('/', requireToken, isAdmin, async (req, res, next) => {
+router.get('/', requireToken, isLoggedIn, isAdmin, async (req, res, next) => {
   try {
     const users = await User.findAll({
       // explicitly select only the id and username fields - even though
@@ -19,6 +19,7 @@ router.get('/', requireToken, isAdmin, async (req, res, next) => {
   }
 });
 
+// need to add gatekeeping fn to check if cart belongs to that cart's user
 router.get('/:userId/cart', async (req, res, next) => {
   try {
     const cart = await Cart.findOne({
@@ -32,25 +33,41 @@ router.get('/:userId/cart', async (req, res, next) => {
     if (!cart) {
       res.sendStatus(404);
     }
-    console.log('cart route', cart);
     res.json(cart);
   } catch (err) {
     next(err);
   }
 });
 
+// need to add gatekeeping fn to check if cart belongs to that cart's user
 router.put('/:userId/addtocart/:productId', async (req, res, next) => {
   try {
     const product = await Product.findByPk(req.params.productId);
+
     const cart = await Cart.findOne({
-      include: [Product],
       where: {
         userId: req.params.userId,
         fulfilled: false,
       },
     });
-    cart.totalPrice += product.price;
+
     await cart.addProduct(product);
+
+    const productInCart = await Product_Cart.findOne({
+      include: [Cart],
+      where: {
+        cartId: cart.id,
+        productId: product.id
+      }
+    });
+
+    productInCart.quantity++;
+    productInCart.subtotalPrice = product.price * productInCart.quantity;
+    cart.totalPrice += product.price;
+
+    productInCart.save();
+    cart.save();
+
     res.json(cart);
   } catch (err) {
     next(err);

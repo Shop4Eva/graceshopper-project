@@ -1,4 +1,4 @@
-const { models: { User }} = require('../db')
+const { models: { User, Cart }} = require('../db')
 
 const requireToken = async (req, res, next) => {
   try {
@@ -19,6 +19,16 @@ const isLoggedIn = (req, res, next) => {
     next();
   }
 }
+
+// const usersCart = async (req, res, next) => {
+//   try {
+//     if (req.user.id !== req.cart.userId) {
+//       return res.status(403).send('You can only access your own cart!')
+//     }
+//   } catch (err) {
+//     next(err)
+//   }
+// }
 
 const isAdmin = (req, res, next) => {
   if (!req.user.isAdmin) {
