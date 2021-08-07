@@ -7,7 +7,9 @@ import { Link } from 'react-router-dom';
 class Product extends React.Component {
   constructor(props) {
     super(props);
-
+    this.state = {
+      userId: this.props.userId
+    }
     this.addItemToCart = this.addItemToCart.bind(this);
   }
 
@@ -32,10 +34,11 @@ class Product extends React.Component {
   async addItemToCart() {
     console.log('before add', this.props.cart);
     await this.props.addProduct(this.props.product.id, this.props.userId);
-    console.log(this.props.cart);
+    console.log('addItemToCart', this.props.cart);
   }
 
   render() {
+    console.log(this.props);
     const product = this.props.product || {};
 
     return (
@@ -65,7 +68,7 @@ const mapState = (state) => {
 
 const mapDispatch = (dispatch) => {
   return {
-//     addProduct: (product, userId, cart) => dispatch(addToCartThunk(product, userId, cart)),
+    // addProduct: (product, userId, cart) => dispatch(addToCartThunk(product, userId, cart)),
     addProduct: (productId, userId) =>
       dispatch(addToCartThunk(productId, userId)),
     getProduct: (id) => dispatch(fetchProduct(id)),

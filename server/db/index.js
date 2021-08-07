@@ -9,9 +9,12 @@ const Product_Cart = require('./models/Product_Cart');
 
 //associations could go here!
 
-Cart.belongsToMany(Product, { through: 'products_carts' });
+// ih: added association between Cart and Product_Cart
+Cart.hasMany(Product_Cart);
+Product_Cart.belongsTo(Cart);
 
-Product.belongsToMany(Cart, { through: 'products_carts' });
+Cart.belongsToMany(Product, { through: Product_Cart });
+Product.belongsToMany(Cart, { through: Product_Cart });
 
 User.hasMany(Cart);
 Cart.belongsTo(User);
