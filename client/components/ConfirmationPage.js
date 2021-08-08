@@ -5,23 +5,27 @@ import { Link } from 'react-router-dom';
 
 class Confirmation extends React.Component {
   async componentDidMount() {
+    console.log(this.props.auth)
     await this.props.getCart(this.props.auth.userId)
   }
 
   render() {
     const product = this.props.product ?? {};
-    const user = this.props.auth.firstName;
+    const user = this.props.auth;
     const cart = this.props.cart
+
+    console.log("Cart", JSON.stringify(cart))
 
     return (
       <div id="checkout-wrapper">
         <div className="cart-title-container">
-          <h1 className="cart-title">Congradulations! Your Order Has Been Placed!</h1>
+          <h1 className="cart-title">Congratulations! Your Order Has Been Placed!</h1>
         </div>
         <div>
           <p className="thank-you-message">Thank you for your order {user.firstName}</p>
           <p className="shipping-info">Order will be shipped to: {'fake address goes here'}</p>
         </div>
+        <h3>Order Details: </h3>
         <div className="cart-product-info">
           <img src={product.imgUrl} />
           <p>{product.name}</p>
@@ -38,8 +42,8 @@ class Confirmation extends React.Component {
 const mapState = (state) => {
   return {
     auth: state.auth,
-    cart: state.cart,
-    product: state.
+    cart: state.cart
+    // product: state.
   };
 };
 

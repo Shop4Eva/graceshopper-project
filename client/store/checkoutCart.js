@@ -101,13 +101,13 @@ export const removeFromCartThunk = (productId, userId, history) => {
       console.log('my userID is:', userId);
       //if guest
       if (!userId) {
-        //   const currentCart = localStorage.getItem('guestCart');
-        //   //currentCart is a string
-        //   if (currentCart === null) {
-        //     currentCart === [];
-        //   }
-        //   JSON.parse(currentCart).push(product);
-        //   localStorage.setItem('guestCart', JSON.stringify(currentCart));
+          const currentCart = localStorage.getItem('guestCart');
+          //currentCart is a string
+          if (currentCart === null) {
+            currentCart === [];
+          }
+          JSON.parse(currentCart).push(product);
+          localStorage.setItem('guestCart', JSON.stringify(currentCart));
         //else logged in user
       } else {
         //dispatch to logged-in thunk
