@@ -9,6 +9,7 @@ import { me } from './store';
 import CheckoutCart from './components/CheckoutCart';
 import EditCart from './components/EditCart';
 import LoggedInCheckout from './components/LoggedInCheckout';
+import Confirmation from './components/ConfirmationPage'
 
 /**
  * COMPONENT
@@ -29,8 +30,9 @@ class Routes extends Component {
             <Route path="/products" exact component={AllProducts} />
             <Route path="/products/:id" exact component={Product} />
             {/* <Route path="/checkout" component={CheckoutCart} /> */}
-            <Route path="/editCart" component={EditCart} />
             <Route path="/checkout/:orderId" component={LoggedInCheckout} />
+            <Route path="/users/:userId/editCart" component={EditCart} />
+            <Route path="/carts/:cartId/confirmation" component={Confirmation} />
           </Switch>
         ) : (
           <Switch>
@@ -41,6 +43,7 @@ class Routes extends Component {
             <Route path="/signup" component={Signup} />
             <Route path="/editCart" component={EditCart} />
             <Route path="/checkout" component={CheckoutCart} />
+            <Route path="/carts/:cartId/confirmation" component={Confirmation} />
           </Switch>
         )}
       </div>

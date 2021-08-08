@@ -1,10 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { deleteItem } from '../store/checkoutCart';
 import {
   getCartThunk,
   addToCartThunk,
-  removeFromCartThunk,
 } from '../store/checkoutCart';
 import { Link } from 'react-router-dom';
 
@@ -14,7 +12,6 @@ class CheckoutCart extends React.Component {
     this.state = {
       userId: this.props.userId,
     };
-    // this.removeItemFromCart = this.removeItemFromCart.bind(this);
   }
   async componentDidMount() {
     // await this.props.getProduct(this.props.match.params.id);
@@ -38,7 +35,7 @@ class CheckoutCart extends React.Component {
     return (
       <div id="single-product">
         <div className="cart-title-container">
-          <h3 className="cart-title">Shopping Cart</h3>
+          <h3 className="cart-title">Cart</h3>
         </div>
         <h1>{product.name}</h1>
         <img src={product.imgUrl} />
