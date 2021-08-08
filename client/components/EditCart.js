@@ -7,6 +7,7 @@ import {
   removeFromCartThunk,
 } from '../store/checkoutCart';
 import { Link } from 'react-router-dom';
+import LoggedInCheckoutButton from './LoggedInCheckoutButton';
 
 class EditCart extends React.Component {
   constructor(props) {
@@ -44,18 +45,8 @@ class EditCart extends React.Component {
   }
 
   render() {
-    console.log('props', this.props);
     const cart = this.props.cart || {};
     const products = cart.products || [];
-    console.log(
-      'cart: ',
-      cart,
-      'products',
-      products,
-      'pc',
-      products.product_cart
-    );
-    console.log('i am here in edit');
 
     return (
       <div id="single-product">
@@ -104,14 +95,12 @@ class EditCart extends React.Component {
               <h3>Continue Shopping</h3>
             </Link>
           </button>
-
-          {/* <button
-            type="button"
-            className="checkout-button"
-            onClick={() => this.props.deleteItem(product.id)}
-          >
-            Checkout
-          </button> */}
+          {this.state.userId && (
+            <LoggedInCheckoutButton
+              userId={this.state.userId}
+              cartId={cart.id}
+            />
+          )}
         </div>
       </div>
     );

@@ -37,6 +37,7 @@ router.get(
         },
         where: {
           userId: req.params.userId,
+          fulfilled: false,
         },
       });
       if (!cart) {
@@ -52,6 +53,34 @@ router.get(
   }
 );
 
+router.get(
+  '/:userId/pastOrders',
+  // requireToken,
+  // isLoggedIn,
+  async (req, res, next) => {
+    try {
+      // if (req.user.dataValues.id === Number(req.params.userId)) {
+      const pastOrders = await Cart.findAll({
+        include: {
+          model: Product,
+        },
+        where: {
+          userId: req.params.userId,
+          fulfilled: true,
+        },
+      });
+      if (!pastOrders) {
+        res.sendStatus(404);
+      }
+      res.json(pastOrders);
+      // } else {
+      //   res.status(403).send('You are not authorized to view this cart');
+      // }
+    } catch (err) {
+      next(err);
+    }
+  }
+);
 // ih: need to add gatekeeping functions before 'async' to check if cart belongs to that cart's user, otherwise this route is working
 router.put(
   '/:userId/addtocart/:productId',
@@ -89,6 +118,54 @@ router.put(
       res.json(cart);
       // } else {
       //   res.status(403).send('You are not authorized to change this cart');
+      // }
+    } catch (err) {
+      next(err);
+    }
+  }
+);
+
+router.put(
+  '/:userId/createNewCart/',
+  // requireToken,
+  // isLoggedIn,
+  async (req, res, next) => {
+    try {
+      // if (req.user.dataValues.id === Number(req.params.userId)) {
+      const newCart = await Cart.create();
+      const user = await User.findByPk(req.params.userId);
+      user.addCart(newCart);
+      user.save();
+      res.json(newCart);
+      // } else {
+      //   res.status(403).send('You are not authorized to change this cart');
+      // }
+    } catch (err) {
+      next(err);
+    }
+  }
+);
+
+router.put(
+  '/:userId/pastOrders',
+  // requireToken,
+  // isLoggedIn,
+  async (req, res, next) => {
+    try {
+      // if (req.user.dataValues.id === Number(req.params.userId)) {
+      const order = await Cart.findByPk(req.body, {
+        include: {
+          model: Product,
+        },
+      });
+      if (!order) {
+        res.sendStatus(404);
+      }
+      order.fulfilled = true;
+      order.save();
+      res.json(order);
+      // } else {
+      //   res.status(403).send('You are not authorized to view this cart');
       // }
     } catch (err) {
       next(err);
