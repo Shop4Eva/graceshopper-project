@@ -4,8 +4,14 @@ const ADD_TO_CART = 'ADD_TO_CART';
 const GET_CART = 'GET_CART';
 const SET_ITEM = 'SET_ITEM';
 const DELETE_ITEM = 'DELETE_ITEM';
+const REMOVE_FROM_CART = 'REMOVE_FROM_CART';
 
 export const addToCart = (cart) => ({
+  type: ADD_TO_CART,
+  cart,
+});
+
+export const removeFromCart = (cart) => ({
   type: ADD_TO_CART,
   cart,
 });
@@ -19,9 +25,9 @@ export const _setItem = (productId, cartId) => {
   return {
     type: SET_ITEM,
     productId,
-    cartId
-  }
-}
+    cartId,
+  };
+};
 
 export const _deleteItem = (product) => {
   return {
@@ -35,7 +41,6 @@ export const getCartThunk = (userId) => {
     try {
       console.log('hello', userId);
       if (!userId) {
-
         //get cart from localStorage
         // test this logic
         const currentCart = localStorage.getItem('guestCart');
@@ -46,7 +51,7 @@ export const getCartThunk = (userId) => {
         console.log('userId', userId);
         //getCart from back end
         const { data } = await axios.get(`/api/users/${userId}/cart`);
-        console.log('getCartThunk data', data)
+        console.log('getCartThunk data', data);
         dispatch(getCart(data));
       }
     } catch (err) {
@@ -55,39 +60,73 @@ export const getCartThunk = (userId) => {
   };
 };
 
-
 // export const addToCartThunk = (product, userId, cart) => {
-export const addToCartThunk = (productId, userId) => {
+export const addToCartThunk = (productId, userId, history) => {
   return async (dispatch) => {
     // try {
+    console.log('my userID is:', userId);
+    //if guest
+    // if (!userId) {
+    //   const currentCart = localStorage.getItem('guestCart');
+    //   //currentCart is a string
+    //   if (currentCart === null) {
+    //     currentCart === [];
+    //   }
+    //   JSON.parse(currentCart).push(product);
+    //   localStorage.setItem('guestCart', JSON.stringify(currentCart));
+    //else logged in user
+    // } else {
+    console.log('i got this far');
+    //dispatch to logged-in thunk
+
+    // ih: adjusted data to data:cart
+    const { data: cart } = await axios.put(
+      `/api/users/${userId}/addtocart/${productId}`
+    );
+    console.log('addToCartThunk data', cart);
+
+    // ih: changed data to cart in addToCart
+    dispatch(addToCart(cart));
+    history.push(`/users/${userId}/editCart`);
+  };
+  // } catch (err) {
+  //   console.log(err);
+  // }
+  //   };
+};
+
+export const removeFromCartThunk = (productId, userId, history) => {
+  return async (dispatch) => {
+    try {
       console.log('my userID is:', userId);
       //if guest
-      // if (!userId) {
-      //   const currentCart = localStorage.getItem('guestCart');
-      //   //currentCart is a string
-      //   if (currentCart === null) {
-      //     currentCart === [];
-      //   }
-      //   JSON.parse(currentCart).push(product);
-      //   localStorage.setItem('guestCart', JSON.stringify(currentCart));
+      if (!userId) {
+        //   const currentCart = localStorage.getItem('guestCart');
+        //   //currentCart is a string
+        //   if (currentCart === null) {
+        //     currentCart === [];
+        //   }
+        //   JSON.parse(currentCart).push(product);
+        //   localStorage.setItem('guestCart', JSON.stringify(currentCart));
         //else logged in user
-      // } else {
-        console.log('i got this far');
+      } else {
         //dispatch to logged-in thunk
 
         // ih: adjusted data to data:cart
         const { data: cart } = await axios.put(
-          `/api/users/${userId}/addtocart/${productId}`
+          `/api/users/${userId}/removefromcart/${productId}`
         );
-        console.log('addToCartThunk data', cart)
+        console.log('removeFromCartThunk data', cart);
 
         // ih: changed data to cart in addToCart
-        dispatch(addToCart(cart));
+        dispatch(removeFromCart(cart));
+        history.push(`/users/${userId}/editCart`);
       }
-    // } catch (err) {
-    //   console.log(err);
-    // }
-//   };
+    } catch (err) {
+      console.log(err);
+    }
+    //   };
+  };
 };
 
 export const fetchCheckout = (id) => {
@@ -151,7 +190,12 @@ export default function checkoutReducer(state = initialState, action) {
       // ih: changed return statement
       return {
         ...state,
-        cart: action.cart
+        cart: action.cart,
+      };
+    case REMOVE_FROM_CART:
+      return {
+        ...state,
+        cart: action.cart,
       };
     default:
       return state;

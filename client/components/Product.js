@@ -8,8 +8,8 @@ class Product extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      userId: this.props.userId
-    }
+      userId: this.props.userId,
+    };
     this.addItemToCart = this.addItemToCart.bind(this);
   }
 
@@ -46,7 +46,7 @@ class Product extends React.Component {
         <h1>{product.name}</h1>
 
         <img src={product.imgUrl} width={200} height={200} />
-        <p>price: ${product.price}</p>
+        <p>price: ${product.price / 100}</p>
         {product.description && <p>description: {product.description}</p>}
 
         <button className="add-to-cart-button" onClick={this.addItemToCart}>
@@ -62,15 +62,14 @@ const mapState = (state) => {
     product: state.product,
     userId: state.auth.id,
     cart: state.cart,
-
   };
 };
 
-const mapDispatch = (dispatch) => {
+const mapDispatch = (dispatch, { history }) => {
   return {
     // addProduct: (product, userId, cart) => dispatch(addToCartThunk(product, userId, cart)),
     addProduct: (productId, userId) =>
-      dispatch(addToCartThunk(productId, userId)),
+      dispatch(addToCartThunk(productId, userId, history)),
     getProduct: (id) => dispatch(fetchProduct(id)),
     getCart: (userId) => dispatch(getCartThunk(userId)),
   };
