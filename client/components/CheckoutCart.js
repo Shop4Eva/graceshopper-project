@@ -27,6 +27,7 @@ class CheckoutCart extends React.Component {
 
   render() {
     // TODO: actually use the items from the cart
+<<<<<<< HEAD
     const product = this.props.product ?? {
       name: 'Flight',
       imgUrl: 'fake_image_url.jpg',
@@ -34,6 +35,9 @@ class CheckoutCart extends React.Component {
       quantity: 5,
       id: 1,
     };
+=======
+    const product = this.props.product ?? {};
+>>>>>>> confirmation page structure
 
     return (
       <div id="single-product">
