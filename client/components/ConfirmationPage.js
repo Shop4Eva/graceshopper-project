@@ -39,7 +39,7 @@ const mapState = (state) => {
   return {
     auth: state.auth,
     cart: state.cart,
-    product:
+    product: state.
   };
 };
 
