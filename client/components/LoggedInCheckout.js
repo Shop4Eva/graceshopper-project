@@ -1,24 +1,39 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { deleteItem } from '../store/checkoutCart';
-import { getOrderThunk } from '../store/filteredOrders';
+import { deleteItem, createNewCartThunk } from '../store/checkoutCart';
+import { getOrderThunk, getOrder } from '../store/filteredOrders';
 import { Link } from 'react-router-dom';
 
 class LoggedInCheckout extends React.Component {
   constructor(props) {
     super(props);
   }
-  componentDidMount() {
-    this.props.getOrder(
+  async componentDidMount() {
+    await this.props.getOrder(
       this.props.match.params.userId,
       this.props.match.params.orderId
     );
+    await this.props.createNewCart(this.props.userId);
+  }
+
+  async componentDidUpdate(prevProps) {
+    console.log(prevProps, this.props, 'comparings');
+    // await this.props.getOrder(
+    //   this.props.match.params.userId,
+    //   this.props.match.params.orderId
+    // );
+    // await this.props.createNewCart(this.props.userId);
+  }
+
+  async componentWillUnmount() {
+    this.props.clearPage();
   }
 
   render() {
     const order = this.props.order || {};
     const products = order.products || [];
     const { firstName } = this.props;
+    console.log('ORDER IN FRONT', order);
 
     return (
       <div id="single-product">
@@ -56,7 +71,7 @@ class LoggedInCheckout extends React.Component {
                   </div>
                 </div>
               ))}
-              <p>Total cost: ${cart.totalPrice / 100}</p>
+              <p>Total cost: ${order.totalPrice / 100}</p>
             </div>
           ) : (
             <div>You have nothing in your cart</div>
@@ -86,6 +101,8 @@ const mapState = (state) => {
 const mapDispatch = (dispatch, { history }) => {
   return {
     getOrder: (userId, orderId) => dispatch(getOrderThunk(userId, orderId)),
+    createNewCart: (userId) => dispatch(createNewCartThunk(userId)),
+    clearPage: () => dispatch(getOrder({})),
   };
 };
 

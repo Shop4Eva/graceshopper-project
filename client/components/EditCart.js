@@ -47,6 +47,7 @@ class EditCart extends React.Component {
   render() {
     const cart = this.props.cart || {};
     const products = cart.products || [];
+    const openCartId = cart.id;
 
     return (
       <div id="single-product">
@@ -98,7 +99,8 @@ class EditCart extends React.Component {
           {this.state.userId && (
             <LoggedInCheckoutButton
               userId={this.state.userId}
-              cartId={cart.id}
+              openCartId={openCartId}
+              history={this.props.history}
             />
           )}
         </div>

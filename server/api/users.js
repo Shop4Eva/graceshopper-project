@@ -24,6 +24,7 @@ router.get('/', requireToken, isLoggedIn, isAdmin, async (req, res, next) => {
 });
 
 // ih: need to add gatekeeping functions before 'async' to check if cart belongs to that cart's user, otherwise this route is working
+
 router.get(
   '/:userId/cart',
   // requireToken,
@@ -44,6 +45,36 @@ router.get(
         res.sendStatus(404);
       }
       res.json(cart);
+      // } else {
+      //   res.status(403).send('You are not authorized to view this cart');
+      // }
+    } catch (err) {
+      next(err);
+    }
+  }
+);
+
+router.get(
+  '/:userId/pastSingleOrder/:orderId',
+  // requireToken,
+  // isLoggedIn,
+  async (req, res, next) => {
+    try {
+      // if (req.user.dataValues.id === Number(req.params.userId)) {
+      const order = await Cart.findOne({
+        include: {
+          model: Product,
+        },
+        where: {
+          userId: req.params.userId,
+          fulfilled: true,
+          id: req.params.orderId,
+        },
+      });
+      if (!order) {
+        res.sendStatus(404);
+      }
+      res.json(order);
       // } else {
       //   res.status(403).send('You are not authorized to view this cart');
       // }
@@ -147,13 +178,14 @@ router.put(
 );
 
 router.put(
-  '/:userId/pastOrders',
+  '/:userId/addOrder/:orderId',
   // requireToken,
   // isLoggedIn,
   async (req, res, next) => {
     try {
       // if (req.user.dataValues.id === Number(req.params.userId)) {
-      const order = await Cart.findByPk(req.body, {
+      console.log('BODY', req.body);
+      const order = await Cart.findByPk(req.params.orderId, {
         include: {
           model: Product,
         },

@@ -26,12 +26,12 @@ export const getOrdersThunk = (userId) => {
 
 export const addOrderThunk = (userId, orderId) => {
   return async (dispatch) => {
+    console.log('OrderId', orderId, userId);
     try {
       const { data } = await axios.put(
-        `/api/users/${userId}/addOrder`,
-        orderId
+        `/api/users/${userId}/addOrder/${orderId}`
       );
-      dispatch(getOrders(data));
+      dispatch(addOrder(data));
     } catch (err) {
       console.log(err);
     }

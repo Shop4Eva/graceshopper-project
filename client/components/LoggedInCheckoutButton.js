@@ -5,16 +5,17 @@ import { createNewCartThunk, getCartThunk } from '../store/checkoutCart';
 import { addOrderThunk } from '../store/pastOrders';
 
 class LoggedInCheckoutButton extends React.Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.checkout = this.checkout.bind(this);
   }
 
   async checkout() {
-    await this.props.addOrder(this.props.userId, this.props.cartId);
-    await this.props.createNewCart(this.props.userId);
+    await this.props.addOrder(this.props.userId, this.props.openCartId);
+    // await this.props.createNewCart(this.props.userId);
+    console.log('CARTID', this.props.openCartId);
     this.props.history.push(
-      `./users/${this.props.userId}/checkout/${this.props.cartId}`
+      `/users/${this.props.userId}/checkout/${this.props.openCartId}/`
     );
   }
 
@@ -24,7 +25,7 @@ class LoggedInCheckoutButton extends React.Component {
         <button
           type="button"
           className="checkout-button"
-          onClick={this.props.checkout}
+          onClick={this.checkout}
         >
           Checkout
         </button>
