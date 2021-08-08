@@ -37,9 +37,7 @@ class EditCart extends React.Component {
   }
 
   async removeItemFromCart(productId) {
-    console.log('before remove', this.props.cart);
     await this.props.removeProduct(productId, this.props.userId);
-    console.log('after remove', this.props.cart);
     if (this.props.match.params.userId) {
       await this.props.getCart(this.props.match.params.userId);
     }
