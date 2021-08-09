@@ -89,6 +89,7 @@ export const addToCartThunk = (product, userId, history) => {
       }
       currentCart.push(product);
       localStorage.setItem('guestCart', JSON.stringify(currentCart));
+      history.push(`cart`);
     //else logged in user
     } else {
       console.log('i got this far');
@@ -124,6 +125,7 @@ export const removeFromCartThunk = (productId, userId, history) => {
           }
           JSON.parse(currentCart).push(product);
           localStorage.setItem('guestCart', JSON.stringify(currentCart));
+          history.push(`cart`);
         //else logged in user
       } else {
         //dispatch to logged-in thunk
@@ -136,7 +138,7 @@ export const removeFromCartThunk = (productId, userId, history) => {
 
         // ih: changed data to cart in addToCart
         dispatch(removeFromCart(cart));
-        history.push(`/editCart`);
+        history.push(`cart`);
       }
     } catch (err) {
       console.log(err);
