@@ -20,8 +20,8 @@ class EditCart extends React.Component {
   }
   async componentDidMount() {
     //how to get the user id before trying to get cart
-    if (this.props.match.params.userId) {
-      await this.props.getCart(this.props.match.params.userId);
+    if (this.props.userId) {
+      await this.props.getCart(this.props.userId);
     }
     //check to see if user is logged in
     //put user in local state
@@ -32,15 +32,15 @@ class EditCart extends React.Component {
 
   async addItemToCart(productId) {
     await this.props.addProduct(productId, this.props.userId);
-    if (this.props.match.params.userId) {
-      await this.props.getCart(this.props.match.params.userId);
+    if (this.props.userId) {
+      await this.props.getCart(this.props.userId);
     }
   }
 
   async removeItemFromCart(productId) {
     await this.props.removeProduct(productId, this.props.userId);
-    if (this.props.match.params.userId) {
-      await this.props.getCart(this.props.match.params.userId);
+    if (this.props.userId) {
+      await this.props.getCart(this.props.userId);
     }
   }
 

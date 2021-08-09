@@ -14,7 +14,7 @@ class CheckoutCart extends React.Component {
     this.state = {
       userId: this.props.userId,
     };
-    this.removeItemFromCart = this.removeItemFromCart.bind(this);
+    // this.removeItemFromCart = this.removeItemFromCart.bind(this);
   }
   async componentDidMount() {
     // await this.props.getProduct(this.props.match.params.id);

@@ -10,7 +10,7 @@ class LoggedInCheckout extends React.Component {
   }
   async componentDidMount() {
     await this.props.getOrder(
-      this.props.match.params.userId,
+      this.props.userId,
       this.props.match.params.orderId
     );
     await this.props.createNewCart(this.props.userId);
@@ -19,7 +19,7 @@ class LoggedInCheckout extends React.Component {
   async componentDidUpdate(prevProps) {
     console.log(prevProps, this.props, 'comparings');
     // await this.props.getOrder(
-    //   this.props.match.params.userId,
+    //   this.props.userId,
     //   this.props.match.params.orderId
     // );
     // await this.props.createNewCart(this.props.userId);

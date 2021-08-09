@@ -93,7 +93,7 @@ export const addToCartThunk = (productId, userId, history) => {
 
     // ih: changed data to cart in addToCart
     dispatch(addToCart(cart));
-    history.push(`/users/${userId}/editCart`);
+    history.push(`/editCart`);
   };
   // } catch (err) {
   //   console.log(err);
@@ -126,7 +126,7 @@ export const removeFromCartThunk = (productId, userId, history) => {
 
         // ih: changed data to cart in addToCart
         dispatch(removeFromCart(cart));
-        history.push(`/users/${userId}/editCart`);
+        history.push(`/editCart`);
       }
     } catch (err) {
       console.log(err);
