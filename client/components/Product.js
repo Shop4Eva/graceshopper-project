@@ -33,7 +33,7 @@ class Product extends React.Component {
 
   async addItemToCart() {
     console.log('before add', this.props.cart);
-    await this.props.addProduct(this.props.product.id, this.props.userId);
+    await this.props.addProduct(this.props.product, this.props.userId);
     console.log('addItemToCart', this.props.cart);
   }
 
@@ -68,8 +68,8 @@ const mapState = (state) => {
 const mapDispatch = (dispatch, { history }) => {
   return {
     // addProduct: (product, userId, cart) => dispatch(addToCartThunk(product, userId, cart)),
-    addProduct: (productId, userId) =>
-      dispatch(addToCartThunk(productId, userId, history)),
+    addProduct: (product, userId) =>
+      dispatch(addToCartThunk(product, userId, history)),
     getProduct: (id) => dispatch(fetchProduct(id)),
     getCart: (userId) => dispatch(getCartThunk(userId)),
   };
