@@ -72,7 +72,8 @@ class EditCart extends React.Component {
                     >
                       +
                     </button>
-                    {/* <p>Quantity: {product.product_cart.quantity}</p> */}
+                    <p>Quantity: {product.product_cart.quantity}</p>
+                    {/* if logged in */}
                     <button
                       type="button"
                       className="remove-quantity-button"

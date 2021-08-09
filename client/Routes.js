@@ -30,7 +30,7 @@ class Routes extends Component {
             <Route path="/products/:id" exact component={Product} />
             <Route path="/checkout/:orderId" component={LoggedInCheckout} />
             <Route path="/cart" component={EditCart} />
-            <Route path="/confirmation" component={Confirmation} />
+            {/* <Route path="/confirmation" component={Confirmation} /> */}
           </Switch>
         ) : (
           <Switch>

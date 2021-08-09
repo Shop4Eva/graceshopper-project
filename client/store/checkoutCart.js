@@ -89,6 +89,7 @@ export const addToCartThunk = (product, userId, history) => {
       }
       currentCart.push(product);
       localStorage.setItem('guestCart', JSON.stringify(currentCart));
+      history.push('/cart');
     //else logged in user
     } else {
       console.log('i got this far');
@@ -96,13 +97,13 @@ export const addToCartThunk = (product, userId, history) => {
 
       // ih: adjusted data to data:cart
       const { data: cart } = await axios.put(
-        `/api/users/${userId}/addtocart/${product.productId}`
+        `/api/users/${userId}/addtocart/${product.id}`
       );
       console.log('addToCartThunk data', cart);
 
       // ih: changed data to cart in addToCart
       dispatch(addToCart(cart));
-      history.push(`cart`);
+      history.push('/cart');
     }
   };
   // } catch (err) {
@@ -122,8 +123,9 @@ export const removeFromCartThunk = (productId, userId, history) => {
           if (currentCart === null) {
             currentCart === [];
           }
-          JSON.parse(currentCart).push(product);
+          JSON.parse(currentCart).push(productId);
           localStorage.setItem('guestCart', JSON.stringify(currentCart));
+          history.push('/cart');
         //else logged in user
       } else {
         //dispatch to logged-in thunk
@@ -136,7 +138,7 @@ export const removeFromCartThunk = (productId, userId, history) => {
 
         // ih: changed data to cart in addToCart
         dispatch(removeFromCart(cart));
-        history.push(`/editCart`);
+        history.push('/cart');
       }
     } catch (err) {
       console.log(err);
@@ -150,17 +152,6 @@ export const createNewCartThunk = (userId) => {
     try {
       const { data } = await axios.put(`/api/users/${userId}/createNewCart`);
       dispatch(createNewCart(data));
-    } catch (err) {
-      console.log(err);
-    }
-  };
-};
-
-export const fetchCheckout = (id) => {
-  return async (dispatch) => {
-    try {
-      //const { data } = await axios.get(`/api/products/${id}`); WHAT IS THE AXIOS CALL TO?
-      dispatch(setCheckout(data));
     } catch (err) {
       console.log(err);
     }
