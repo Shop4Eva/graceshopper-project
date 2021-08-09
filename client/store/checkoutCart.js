@@ -5,6 +5,12 @@ const GET_CART = 'GET_CART';
 const SET_ITEM = 'SET_ITEM';
 const DELETE_ITEM = 'DELETE_ITEM';
 const REMOVE_FROM_CART = 'REMOVE_FROM_CART';
+const CREATE_NEW_CART = 'CREATE_NEW_CART';
+
+export const createNewCart = (cart) => ({
+  type: CREATE_NEW_CART,
+  cart,
+});
 
 export const addToCart = (cart) => ({
   type: ADD_TO_CART,
@@ -87,7 +93,7 @@ export const addToCartThunk = (productId, userId, history) => {
 
     // ih: changed data to cart in addToCart
     dispatch(addToCart(cart));
-    history.push(`/users/${userId}/editCart`);
+    history.push(`/editCart`);
   };
   // } catch (err) {
   //   console.log(err);
@@ -120,12 +126,23 @@ export const removeFromCartThunk = (productId, userId, history) => {
 
         // ih: changed data to cart in addToCart
         dispatch(removeFromCart(cart));
-        history.push(`/users/${userId}/editCart`);
+        history.push(`/editCart`);
       }
     } catch (err) {
       console.log(err);
     }
     //   };
+  };
+};
+
+export const createNewCartThunk = (userId) => {
+  return async (dispatch) => {
+    try {
+      const { data } = await axios.put(`/api/users/${userId}/createNewCart`);
+      dispatch(createNewCart(data));
+    } catch (err) {
+      console.log(err);
+    }
   };
 };
 
@@ -184,6 +201,8 @@ const initialState = {};
 
 export default function checkoutReducer(state = initialState, action) {
   switch (action.type) {
+    case CREATE_NEW_CART:
+      return action.cart;
     case GET_CART:
       return action.cart;
     case ADD_TO_CART:

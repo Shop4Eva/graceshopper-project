@@ -7,6 +7,7 @@ import {
   removeFromCartThunk,
 } from '../store/checkoutCart';
 import { Link } from 'react-router-dom';
+import LoggedInCheckoutButton from './LoggedInCheckoutButton';
 
 class EditCart extends React.Component {
   constructor(props) {
@@ -19,8 +20,8 @@ class EditCart extends React.Component {
   }
   async componentDidMount() {
     //how to get the user id before trying to get cart
-    if (this.props.match.params.userId) {
-      await this.props.getCart(this.props.match.params.userId);
+    if (this.props.userId) {
+      await this.props.getCart(this.props.userId);
     }
     //check to see if user is logged in
     //put user in local state
@@ -31,31 +32,22 @@ class EditCart extends React.Component {
 
   async addItemToCart(productId) {
     await this.props.addProduct(productId, this.props.userId);
-    if (this.props.match.params.userId) {
-      await this.props.getCart(this.props.match.params.userId);
+    if (this.props.userId) {
+      await this.props.getCart(this.props.userId);
     }
   }
 
   async removeItemFromCart(productId) {
     await this.props.removeProduct(productId, this.props.userId);
-    if (this.props.match.params.userId) {
-      await this.props.getCart(this.props.match.params.userId);
+    if (this.props.userId) {
+      await this.props.getCart(this.props.userId);
     }
   }
 
   render() {
-    console.log('props', this.props);
     const cart = this.props.cart || {};
     const products = cart.products || [];
-    console.log(
-      'cart: ',
-      cart,
-      'products',
-      products,
-      'pc',
-      products.product_cart
-    );
-    console.log('i am here in edit');
+    const openCartId = cart.id;
 
     return (
       <div id="single-product">
@@ -104,14 +96,13 @@ class EditCart extends React.Component {
               <h3>Continue Shopping</h3>
             </Link>
           </button>
-
-          {/* <button
-            type="button"
-            className="checkout-button"
-            onClick={() => this.props.deleteItem(product.id)}
-          >
-            Checkout
-          </button> */}
+          {this.state.userId && (
+            <LoggedInCheckoutButton
+              userId={this.state.userId}
+              openCartId={openCartId}
+              history={this.props.history}
+            />
+          )}
         </div>
       </div>
     );
