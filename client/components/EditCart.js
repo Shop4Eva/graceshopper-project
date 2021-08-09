@@ -103,6 +103,12 @@ class EditCart extends React.Component {
               history={this.props.history}
             />
           )}
+          {!this.state.userId &&
+          <button type="button" className="place-order-button">
+            <Link to={`/confirmation`}>
+              <h3>Place Order</h3>
+            </Link>
+          </button>}
         </div>
       </div>
     );

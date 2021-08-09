@@ -10,27 +10,33 @@ class Confirmation extends React.Component {
   }
 
   render() {
-    const product = this.props.product ?? {};
+    if (!this.props.cart.products) {
+      return <h1>Loading</h1>
+    }
     const user = this.props.auth;
-    const cart = this.props.cart
+    const cart = this.props.cart;
+    const products = cart.products
 
     console.log("Cart", JSON.stringify(cart))
 
     return (
       <div id="checkout-wrapper">
         <div className="cart-title-container">
-          <h1 className="cart-title">Congratulations! Your Order Has Been Placed!</h1>
+          <h1 className="cart-title">Congratulations, {user.firstName ?? "Superhero"}! Your Order Has Been Placed!</h1>
         </div>
         <div>
-          <p className="thank-you-message">Thank you for your order {user.firstName}</p>
           <p className="shipping-info">Order will be shipped to: {'fake address goes here'}</p>
         </div>
         <h3>Order Details: </h3>
         <div className="cart-product-info">
-          <img src={product.imgUrl} />
-          <p>{product.name}</p>
-          <p>Price: ${product.price/100}</p>
-          <p>Quantity: {product.quantity}</p>
+          {products.map((product) => (
+            <div key={product.id}>
+              <h5>{product.name}</h5>
+              <img src={product.imgUrl} width={200} height={200}/>
+              <p>Price: ${product.price / 100}</p>
+              <p>Quantity: {product.quantity}</p>
+            </div>
+          ))}
         </div>
         <div>
           <p>Cart total: {cart.totalPrice/100}</p>
