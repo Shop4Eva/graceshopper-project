@@ -105,13 +105,11 @@ class EditCart extends React.Component {
             </Link>
           </button>
 
-          {/* <button
-            type="button"
-            className="checkout-button"
-            onClick={() => this.props.deleteItem(product.id)}
-          >
-            Checkout
-          </button> */}
+          <button type="button" className="place-order-button">
+            <Link to={`/confirmation`}>
+              <h3>Place Order</h3>
+            </Link>
+          </button>
         </div>
       </div>
     );
