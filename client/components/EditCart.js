@@ -58,8 +58,8 @@ class EditCart extends React.Component {
         <div>
           {products.length ? (
             <div>
-              {products.map((product) => (
-                <div key={product.id}>
+              {products.map((product, index) => (
+                <div key={index}>
                   <h5>{product.name}</h5>
                   <div className="cart-product-info">
                     <p>Price: ${product.price / 100}</p>
@@ -72,8 +72,9 @@ class EditCart extends React.Component {
                     >
                       +
                     </button>
-                    <p>Quantity: {product.product_cart.quantity}</p>
-                    {/* if logged in */}
+                    {this.state.userId && (
+                      <p>Quantity: {product.product_cart.quantity}</p>
+                    )}
                     <button
                       type="button"
                       className="remove-quantity-button"
@@ -104,12 +105,13 @@ class EditCart extends React.Component {
               history={this.props.history}
             />
           )}
-          {!this.state.userId &&
-          <button type="button" className="place-order-button">
-            <Link to={`/confirmation`}>
-              <h3>Place Order</h3>
-            </Link>
-          </button>}
+          {!this.state.userId && (
+            <button type="button" className="place-order-button">
+              <Link to={`/confirmation`}>
+                <h3>Place Order</h3>
+              </Link>
+            </button>
+          )}
         </div>
       </div>
     );
