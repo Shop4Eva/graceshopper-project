@@ -6,7 +6,6 @@ import Home from './components/Home';
 import AllProducts from './components/AllProducts';
 import Product from './components/Product';
 import { me } from './store';
-import CheckoutCart from './components/CheckoutCart';
 import EditCart from './components/EditCart';
 import LoggedInCheckout from './components/LoggedInCheckout';
 import Confirmation from './components/ConfirmationPage'
@@ -31,8 +30,8 @@ class Routes extends Component {
             <Route path="/products/:id" exact component={Product} />
             {/* <Route path="/checkout" component={CheckoutCart} /> */}
             <Route path="/checkout/:orderId" component={LoggedInCheckout} />
-            <Route path="/users/:userId/editCart" component={EditCart} />
-            <Route path="/carts/:cartId/confirmation" component={Confirmation} />
+            <Route path="/cart" component={EditCart} />
+            <Route path="/confirmation" component={Confirmation} />
           </Switch>
         ) : (
           <Switch>
@@ -41,9 +40,9 @@ class Routes extends Component {
             <Route path="/" exact component={Login} />
             <Route path="/login" component={Login} />
             <Route path="/signup" component={Signup} />
-            <Route path="/editCart" component={EditCart} />
             <Route path="/checkout" component={CheckoutCart} />
-            <Route path="/carts/:cartId/confirmation" component={Confirmation} />
+            <Route path="/cart" component={EditCart} />
+            <Route path="/confirmation" component={Confirmation} />
           </Switch>
         )}
       </div>
