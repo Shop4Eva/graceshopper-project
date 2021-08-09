@@ -13,7 +13,7 @@ const Navbar = ({ handleClick, isLoggedIn, userId }) => (
           <Link to="/home">Home</Link>
           <Link to="/products">Products</Link>
           <Link to="/cart">Cart</Link>
-\          <a href="#" onClick={handleClick}>
+          <a href="#" onClick={handleClick}>
             Logout
           </a>
         </div>
