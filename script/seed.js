@@ -248,6 +248,8 @@ async function seed() {
   users.push(cody);
 
   const codyCart = await Cart.create();
+  const codysProduct = products[0]
+  await codyCart.addProduct(codysProduct);
   await cody.setCarts(codyCart);
   carts.push(codyCart);
 

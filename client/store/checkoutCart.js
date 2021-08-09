@@ -42,17 +42,24 @@ export const _deleteItem = (product) => {
   };
 };
 
+const createGuestCart = (productList) => {
+  return {products: productList};
+}
+
 export const getCartThunk = (userId) => {
   return async (dispatch) => {
     try {
       console.log('hello', userId);
       if (!userId) {
-        //get cart from localStorage
-        // test this logic
-        const currentCart = localStorage.getItem('guestCart');
+        let currentCart = localStorage.getItem('guestCart');
         if (currentCart === null) {
-          currentCart === [];
+          currentCart = [];
         }
+        else {
+          currentCart = JSON.parse(currentCart);
+        }
+        const guestCart = createGuestCart(currentCart);
+        dispatch(getCart(guestCart))
       } else {
         console.log('userId', userId);
         //getCart from back end
@@ -66,34 +73,37 @@ export const getCartThunk = (userId) => {
   };
 };
 
-// export const addToCartThunk = (product, userId, cart) => {
-export const addToCartThunk = (productId, userId, history) => {
+export const addToCartThunk = (product, userId, history) => {
   return async (dispatch) => {
     // try {
     console.log('my userID is:', userId);
     //if guest
-    // if (!userId) {
-    //   const currentCart = localStorage.getItem('guestCart');
-    //   //currentCart is a string
-    //   if (currentCart === null) {
-    //     currentCart === [];
-    //   }
-    //   JSON.parse(currentCart).push(product);
-    //   localStorage.setItem('guestCart', JSON.stringify(currentCart));
+    if (!userId) {
+      let currentCart = localStorage.getItem('guestCart');
+      //currentCart is a string
+      if (currentCart === null) {
+        currentCart = [];
+      }
+      else {
+        currentCart = JSON.parse(currentCart);
+      }
+      currentCart.push(product);
+      localStorage.setItem('guestCart', JSON.stringify(currentCart));
     //else logged in user
-    // } else {
-    console.log('i got this far');
-    //dispatch to logged-in thunk
+    } else {
+      console.log('i got this far');
+      //dispatch to logged-in thunk
 
-    // ih: adjusted data to data:cart
-    const { data: cart } = await axios.put(
-      `/api/users/${userId}/addtocart/${productId}`
-    );
-    console.log('addToCartThunk data', cart);
+      // ih: adjusted data to data:cart
+      const { data: cart } = await axios.put(
+        `/api/users/${userId}/addtocart/${product.productId}`
+      );
+      console.log('addToCartThunk data', cart);
 
-    // ih: changed data to cart in addToCart
-    dispatch(addToCart(cart));
-    history.push(`/editCart`);
+      // ih: changed data to cart in addToCart
+      dispatch(addToCart(cart));
+      history.push(`cart`);
+    }
   };
   // } catch (err) {
   //   console.log(err);
@@ -107,13 +117,13 @@ export const removeFromCartThunk = (productId, userId, history) => {
       console.log('my userID is:', userId);
       //if guest
       if (!userId) {
-        //   const currentCart = localStorage.getItem('guestCart');
-        //   //currentCart is a string
-        //   if (currentCart === null) {
-        //     currentCart === [];
-        //   }
-        //   JSON.parse(currentCart).push(product);
-        //   localStorage.setItem('guestCart', JSON.stringify(currentCart));
+          const currentCart = localStorage.getItem('guestCart');
+          //currentCart is a string
+          if (currentCart === null) {
+            currentCart === [];
+          }
+          JSON.parse(currentCart).push(product);
+          localStorage.setItem('guestCart', JSON.stringify(currentCart));
         //else logged in user
       } else {
         //dispatch to logged-in thunk

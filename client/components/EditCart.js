@@ -20,9 +20,9 @@ class EditCart extends React.Component {
   }
   async componentDidMount() {
     //how to get the user id before trying to get cart
-    if (this.props.userId) {
-      await this.props.getCart(this.props.userId);
-    }
+    // if (this.props.userId) {
+    await this.props.getCart(this.props.userId);
+    // }
     //check to see if user is logged in
     //put user in local state
     if (this.props.userId) {
@@ -30,8 +30,8 @@ class EditCart extends React.Component {
     }
   }
 
-  async addItemToCart(productId) {
-    await this.props.addProduct(productId, this.props.userId);
+  async addItemToCart(product) {
+    await this.props.addProduct(product, this.props.userId);
     if (this.props.userId) {
       await this.props.getCart(this.props.userId);
     }
@@ -67,12 +67,12 @@ class EditCart extends React.Component {
                     <button
                       type="button"
                       className="add-quantity-button"
-                      onClick={() => this.addItemToCart(product.id)}
+                      onClick={() => this.addItemToCart(product)}
                       value={product.id}
                     >
                       +
                     </button>
-                    <p>Quantity: {product.product_cart.quantity}</p>
+                    {/* <p>Quantity: {product.product_cart.quantity}</p> */}
                     <button
                       type="button"
                       className="remove-quantity-button"
@@ -103,6 +103,12 @@ class EditCart extends React.Component {
               history={this.props.history}
             />
           )}
+          {!this.state.userId &&
+          <button type="button" className="place-order-button">
+            <Link to={`/confirmation`}>
+              <h3>Place Order</h3>
+            </Link>
+          </button>}
         </div>
       </div>
     );
@@ -119,9 +125,8 @@ const mapState = (state) => {
 
 const mapDispatch = (dispatch, { history }) => {
   return {
-    // addProduct: (product, userId, cart) => dispatch(addToCartThunk(product, userId, cart)),
-    addProduct: (productId, userId) =>
-      dispatch(addToCartThunk(productId, userId, history)),
+    addProduct: (product, userId) =>
+      dispatch(addToCartThunk(product, userId, history)),
     removeProduct: (productId, userId) =>
       dispatch(removeFromCartThunk(productId, userId, history)),
     getProduct: (id) => dispatch(fetchProduct(id)),
