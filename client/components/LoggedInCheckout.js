@@ -30,6 +30,7 @@ class LoggedInCheckout extends React.Component {
   }
 
   render() {
+    // o: you can use nullish coalescing here
     const order = this.props.order || {};
     const products = order.products || [];
     const { firstName } = this.props;
@@ -50,6 +51,7 @@ class LoggedInCheckout extends React.Component {
                 <div key={product.id}>
                   <h5>{product.name}</h5>
                   <div className="cart-product-info">
+                    {/* o: since you are doing this in more than one place you might as well create a function for it */}
                     <p>Price: ${product.price / 100}</p>
 
                     <button
@@ -71,6 +73,7 @@ class LoggedInCheckout extends React.Component {
                   </div>
                 </div>
               ))}
+              {/* o: since you are doing this in more than one place you might as well create a function for it */}
               <p>Total cost: ${order.totalPrice / 100}</p>
             </div>
           ) : (

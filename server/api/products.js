@@ -37,8 +37,10 @@ router.put(
   isAdmin,
   async (req, res, next) => {
     try {
+      // o: you can do this in one query
       const product = await Product.findByPk(req.params.id);
       if (!product) {
+        // o: can send this to error middleware
         res.sendStatus(404);
       }
       const updatedProduct = await product.update(req.body);
@@ -64,8 +66,10 @@ router.delete(
   isAdmin,
   async (req, res, next) => {
     try {
+      // o: you can do this in one query
       const product = await Product.findByPk(req.params.id);
       if (!product) {
+        // o: can send this to error middleware
         res.sendStatus(404);
       }
       await product.destroy();

@@ -50,6 +50,8 @@ export const getCartThunk = (userId) => {
   return async (dispatch) => {
     try {
       console.log('hello', userId);
+
+      // o: there is a pattern that I want to highlight here
       if (!userId) {
         let currentCart = localStorage.getItem('guestCart');
         if (currentCart === null) {
@@ -96,6 +98,8 @@ export const addToCartThunk = (product, userId, history) => {
       //dispatch to logged-in thunk
 
       // ih: adjusted data to data:cart
+      // o: this would likely make more sense as a put request towards cart
+      //  and product id as body
       const { data: cart } = await axios.put(
         `/api/users/${userId}/addtocart/${product.id}`
       );

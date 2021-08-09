@@ -45,8 +45,10 @@ class EditCart extends React.Component {
   }
 
   render() {
+    // o: you can use nullish coalescing here this.props.cart ?? {}
     const cart = this.props.cart || {};
     const products = cart.products || [];
+    // o: can just get this from destructuring above
     const openCartId = cart.id;
 
     return (
@@ -84,6 +86,7 @@ class EditCart extends React.Component {
                   </div>
                 </div>
               ))}
+              {/* o: since you are doing this in more than one place you might as well create a function for it */}
               <p>Total cost: ${cart.totalPrice / 100}</p>
             </div>
           ) : (
@@ -97,6 +100,7 @@ class EditCart extends React.Component {
               <h3>Continue Shopping</h3>
             </Link>
           </button>
+          {/* o: this is still being figured out */}
           {this.state.userId && (
             <LoggedInCheckoutButton
               userId={this.state.userId}

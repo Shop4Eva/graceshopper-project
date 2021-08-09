@@ -13,6 +13,7 @@ const requireToken = async (req, res, next) => {
 
 const isLoggedIn = (req, res, next) => {
   if (!req.user.id) {
+    // o: you can send this to error middleware
     return res.status(403).send('You must be a logged-in user to access this page!')
   }
   else {
@@ -32,6 +33,7 @@ const isLoggedIn = (req, res, next) => {
 
 const isAdmin = (req, res, next) => {
   if (!req.user.isAdmin) {
+    // o: you can send this to error middleware
     return res.status(403).send('You shall not pass!');
   }
   else {

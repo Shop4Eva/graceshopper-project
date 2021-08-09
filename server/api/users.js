@@ -41,6 +41,7 @@ router.get(
           fulfilled: false,
         },
       });
+      // o: you can send this to error middleware
       if (!cart) {
         res.sendStatus(404);
       }

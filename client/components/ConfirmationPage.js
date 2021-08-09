@@ -39,6 +39,7 @@ class Confirmation extends React.Component {
           ))}
         </div>
         <div>
+          {/* o: since you are doing this in more than one place you might as well create a function for it */}
           <p>Cart total: {cart.totalPrice/100}</p>
         </div>
       </div>

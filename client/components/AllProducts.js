@@ -59,6 +59,7 @@ const AllProducts = (props) => {
                     </h4>
                   </div>
                   <p className="superpower-prop">
+                    {/* o: since you are doing this in more than one place you might as well create a function for it */}
                     price: ${product.price / 100}
                   </p>
                   <div className="superpower-prop">
