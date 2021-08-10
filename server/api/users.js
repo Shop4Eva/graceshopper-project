@@ -12,9 +12,6 @@ module.exports = router;
 router.get('/', requireToken, isLoggedIn, isAdmin, async (req, res, next) => {
   try {
     const users = await User.findAll({
-      // explicitly select only the id and username fields - even though
-      // users' passwords are encrypted, it won't help if we just
-      // send everything to anyone who asks!
       attributes: ['id', 'email'],
     });
     res.json(users);
@@ -27,11 +24,11 @@ router.get('/', requireToken, isLoggedIn, isAdmin, async (req, res, next) => {
 
 router.get(
   '/:userId/cart',
-  // requireToken,
-  // isLoggedIn,
+  requireToken,
+  isLoggedIn,
   async (req, res, next) => {
     try {
-      // if (req.user.dataValues.id === Number(req.params.userId)) {
+      if (req.user.dataValues.id === Number(req.params.userId)) {
       const cart = await Cart.findOne({
         include: {
           model: Product,
@@ -45,9 +42,9 @@ router.get(
         res.sendStatus(404);
       }
       res.json(cart);
-      // } else {
-      //   res.status(403).send('You are not authorized to view this cart');
-      // }
+      } else {
+        res.status(403).send('You are not authorized to view this cart');
+      }
     } catch (err) {
       next(err);
     }
@@ -56,28 +53,32 @@ router.get(
 
 router.get(
   '/:userId/pastSingleOrder/:orderId',
-  // requireToken,
-  // isLoggedIn,
+  requireToken,
+  isLoggedIn,
   async (req, res, next) => {
     try {
-      // if (req.user.dataValues.id === Number(req.params.userId)) {
+      if (req.user.dataValues.id === Number(req.params.userId)) {
       const order = await Cart.findOne({
         include: {
           model: Product,
         },
         where: {
-          userId: req.params.userId,
           fulfilled: true,
           id: req.params.orderId,
         },
       });
+      if (order.userId !== req.params.userId) {
+        res.status(403).send('You are not authorized to view this cart');
+      }
+      else {
+        res.json(order);
+      }
       if (!order) {
         res.sendStatus(404);
       }
-      res.json(order);
-      // } else {
-      //   res.status(403).send('You are not authorized to view this cart');
-      // }
+      } else {
+        res.status(403).send('You are not authorized to view this cart');
+      }
     } catch (err) {
       next(err);
     }
@@ -86,11 +87,11 @@ router.get(
 
 router.get(
   '/:userId/pastOrders',
-  // requireToken,
-  // isLoggedIn,
+  requireToken,
+  isLoggedIn,
   async (req, res, next) => {
     try {
-      // if (req.user.dataValues.id === Number(req.params.userId)) {
+      if (req.user.dataValues.id === Number(req.params.userId)) {
       const pastOrders = await Cart.findAll({
         include: {
           model: Product,
@@ -104,9 +105,9 @@ router.get(
         res.sendStatus(404);
       }
       res.json(pastOrders);
-      // } else {
-      //   res.status(403).send('You are not authorized to view this cart');
-      // }
+      } else {
+        res.status(403).send('You are not authorized to view this cart');
+      }
     } catch (err) {
       next(err);
     }
@@ -115,11 +116,11 @@ router.get(
 // ih: need to add gatekeeping functions before 'async' to check if cart belongs to that cart's user, otherwise this route is working
 router.put(
   '/:userId/addtocart/:productId',
-  // requireToken,
-  // isLoggedIn,
+  requireToken,
+  isLoggedIn,
   async (req, res, next) => {
     try {
-      // if (req.user.dataValues.id === Number(req.params.userId)) {
+      if (req.user.dataValues.id === Number(req.params.userId)) {
       const product = await Product.findByPk(req.params.productId);
 
       const cart = await Cart.findOne({
@@ -147,9 +148,9 @@ router.put(
       cart.save();
 
       res.json(cart);
-      // } else {
-      //   res.status(403).send('You are not authorized to change this cart');
-      // }
+      } else {
+        res.status(403).send('You are not authorized to change this cart');
+      }
     } catch (err) {
       next(err);
     }
@@ -158,19 +159,19 @@ router.put(
 
 router.put(
   '/:userId/createNewCart/',
-  // requireToken,
-  // isLoggedIn,
+  requireToken,
+  isLoggedIn,
   async (req, res, next) => {
     try {
-      // if (req.user.dataValues.id === Number(req.params.userId)) {
+      if (req.user.dataValues.id === Number(req.params.userId)) {
       const newCart = await Cart.create();
       const user = await User.findByPk(req.params.userId);
       user.addCart(newCart);
       user.save();
       res.json(newCart);
-      // } else {
-      //   res.status(403).send('You are not authorized to change this cart');
-      // }
+      } else {
+        res.status(403).send('You are not authorized to change this cart');
+      }
     } catch (err) {
       next(err);
     }
@@ -179,11 +180,11 @@ router.put(
 
 router.put(
   '/:userId/addOrder/:orderId',
-  // requireToken,
-  // isLoggedIn,
+  requireToken,
+  isLoggedIn,
   async (req, res, next) => {
     try {
-      // if (req.user.dataValues.id === Number(req.params.userId)) {
+      if (req.user.dataValues.id === Number(req.params.userId)) {
       console.log('BODY', req.body);
       const order = await Cart.findByPk(req.params.orderId, {
         include: {
@@ -196,9 +197,9 @@ router.put(
       order.fulfilled = true;
       order.save();
       res.json(order);
-      // } else {
-      //   res.status(403).send('You are not authorized to view this cart');
-      // }
+      } else {
+        res.status(403).send('You are not authorized to view this cart');
+      }
     } catch (err) {
       next(err);
     }
@@ -207,7 +208,7 @@ router.put(
 
 router.put('/:userId/removefromcart/:productId', async (req, res, next) => {
   try {
-    // if (req.user.dataValues.id === Number(req.params.userId)) {
+    if (req.user.dataValues.id === Number(req.params.userId)) {
     const product = await Product.findByPk(req.params.productId);
 
     const cart = await Cart.findOne({
@@ -236,9 +237,9 @@ router.put('/:userId/removefromcart/:productId', async (req, res, next) => {
     cart.save();
 
     res.json(cart);
-    // } else {
-    //   res.status(403).send('You are not authorized to change this cart');
-    // }
+    } else {
+      res.status(403).send('You are not authorized to change this cart');
+    }
   } catch (err) {
     next(err);
   }

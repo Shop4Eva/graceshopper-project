@@ -1,6 +1,15 @@
 /* eslint-disable complexity */
 /* eslint-disable no-case-declarations */
 import axios from 'axios';
+const getToken = () => {
+  const token = window.localStorage.getItem('token');
+  const headers = {
+    headers: {
+      authorization: token,
+    },
+  }
+  return headers;
+}
 
 // const initialState = {
 //   filteredOrders: [],
@@ -21,7 +30,8 @@ export const getOrderThunk = (userId, orderId) => {
   return async (dispatch) => {
     try {
       const { data } = await axios.get(
-        `/api/users/${userId}/pastSingleOrder/${orderId}`
+        `/api/users/${userId}/pastSingleOrder/${orderId}`,
+        getToken()
       );
       console.log(data, 'ORDER IN REDUX');
       dispatch(getOrder(data));

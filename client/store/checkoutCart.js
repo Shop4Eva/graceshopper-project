@@ -1,4 +1,13 @@
 import axios from 'axios';
+const getToken = () => {
+  const token = window.localStorage.getItem('token');
+  const headers = {
+    headers: {
+      authorization: token,
+    },
+  }
+  return headers;
+}
 
 const ADD_TO_CART = 'ADD_TO_CART';
 const GET_CART = 'GET_CART';
@@ -67,7 +76,10 @@ export const getCartThunk = (userId) => {
       } else {
         console.log('userId', userId);
         //getCart from back end
-        const { data } = await axios.get(`/api/users/${userId}/cart`);
+        const { data } = await axios.get(
+          `/api/users/${userId}/cart`,
+          getToken()
+        );
         console.log('getCartThunk data', data);
         dispatch(getCart(data));
       }
@@ -105,14 +117,11 @@ export const addToCartThunk = (product, userId, history) => {
     } else {
       console.log('i got this far');
       //dispatch to logged-in thunk
-
-      // ih: adjusted data to data:cart
       const { data: cart } = await axios.put(
-        `/api/users/${userId}/addtocart/${product.id}`
+        `/api/users/${userId}/addtocart/${product.id}`,
+        getToken()
       );
       console.log('addToCartThunk data', cart);
-
-      // ih: changed data to cart in addToCart
       dispatch(addToCart(cart));
       history.push('/cart');
     }
@@ -142,10 +151,10 @@ export const removeFromCartThunk = (productId, userId, history) => {
         //dispatch to logged-in thunk
         // ih: adjusted data to data:cart
         const { data: cart } = await axios.put(
-          `/api/users/${userId}/removefromcart/${productId}`
+          `/api/users/${userId}/removefromcart/${productId}`,
+          getToken()
         );
         console.log('removeFromCartThunk data', cart);
-        // ih: changed data to cart in addToCart
         dispatch(removeFromCart(cart));
         history.push('/cart');
       }
@@ -159,7 +168,10 @@ export const removeFromCartThunk = (productId, userId, history) => {
 export const createNewCartThunk = (userId) => {
   return async (dispatch) => {
     try {
-      const { data } = await axios.put(`/api/users/${userId}/createNewCart`);
+      const { data } = await axios.put(
+        `/api/users/${userId}/createNewCart`,
+        getToken()
+      );
       dispatch(createNewCart(data));
     } catch (err) {
       console.log(err);
