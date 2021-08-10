@@ -1,13 +1,13 @@
-=√==import axios from 'axios';
+import axios from 'axios';
 const getToken = () => {
   const token = window.localStorage.getItem('token');
   const headers = {
     headers: {
       authorization: token,
     },
-  }
+  };
   return headers;
-}
+};
 // test
 const ADD_TO_CART = 'ADD_TO_CART';
 const GET_CART = 'GET_CART';
@@ -47,10 +47,10 @@ export const _deleteItem = (product) => {
 const createGuestTotalPrice = (productList) => {
   let total = 0;
   for (let i = 0; i < productList.length; i++) {
-    total += productList[i].price * productList[i].quantity
+    total += productList[i].price * productList[i].quantity;
   }
-  return {products: productList, totalPrice: total};
-}
+  return { products: productList, totalPrice: total };
+};
 export const getCartThunk = (userId) => {
   return async (dispatch) => {
     try {
@@ -59,12 +59,11 @@ export const getCartThunk = (userId) => {
         let currentCart = localStorage.getItem('guestCart');
         if (currentCart === null) {
           currentCart = [];
-        }
-        else {
+        } else {
           currentCart = JSON.parse(currentCart);
         }
         const guestCart = createGuestTotalPrice(currentCart);
-        dispatch(getCart(guestCart))
+        dispatch(getCart(guestCart));
       } else {
         console.log('userId', userId);
         //getCart from back end
@@ -90,21 +89,19 @@ export const addToCartThunk = (product, userId, history) => {
       //currentCart is a string
       if (currentCart === null) {
         currentCart = [];
-      }
-      else {
+      } else {
         currentCart = JSON.parse(currentCart);
       }
-      let item = currentCart.find(element => element.id === product.id);
+      let item = currentCart.find((element) => element.id === product.id);
       if (!item) {
         product.quantity = 1;
         currentCart.push(product);
-      }
-      else {
-        item.quantity ++;
+      } else {
+        item.quantity++;
       }
       localStorage.setItem('guestCart', JSON.stringify(currentCart));
       history.push('/cart');
-    //else logged in user
+      //else logged in user
     } else {
       console.log('i got this far');
       //dispatch to logged-in thunk
@@ -129,10 +126,12 @@ export const removeFromCartThunk = (productId, userId, history) => {
       //if guest
       if (!userId) {
         let currentCart = JSON.parse(localStorage.getItem('guestCart'));
-        let item = currentCart.find(element => element.id === productId);
-        item.quantity --;
+        let item = currentCart.find((element) => element.id === productId);
+        item.quantity--;
         if (item.quantity < 1) {
-          currentCart = currentCart.filter(element => element.productId !== item.productId)
+          currentCart = currentCart.filter(
+            (element) => element.productId !== item.productId
+          );
         }
         localStorage.setItem('guestCart', JSON.stringify(currentCart));
         history.push('/cart');

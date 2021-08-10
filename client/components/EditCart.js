@@ -8,7 +8,6 @@ import {
 import { Link } from 'react-router-dom';
 import LoggedInCheckoutButton from './LoggedInCheckoutButton';
 import { formatPrice } from '../utils';
-
 class EditCart extends React.Component {
   constructor(props) {
     super(props);
@@ -29,30 +28,24 @@ class EditCart extends React.Component {
       this.setState({ userId: this.props.userId });
     }
   }
-
   async addItemToCart(product) {
     await this.props.addProduct(product, this.props.userId);
     await this.props.getCart(this.props.userId);
   }
-
   async removeItemFromCart(productId) {
     await this.props.removeProduct(productId, this.props.userId);
     await this.props.getCart(this.props.userId);
   }
-
   render() {
     const cart = this.props.cart || {};
     const products = cart.products || [];
     const openCartId = cart.id;
-
-    console.log("cart: ", cart)
-
+    console.log('cart: ', cart);
     return (
       <div id="single-product">
         <div className="cart-title-container">
           <h3 className="cart-title">Shopping Cart</h3>
         </div>
-
         <div>
           {products.length ? (
             <div>
@@ -61,9 +54,10 @@ class EditCart extends React.Component {
                   <h5>{product.name}</h5>
                   <div className="cart-product-info">
                     <p>Price: ${formatPrice(product.price)}</p>
-
-                    <p>Quantity: {product.quantity ?? product.product_cart.quantity}</p>
-
+                    <p>
+                      Quantity:{' '}
+                      {product.quantity ?? product.product_cart.quantity}
+                    </p>
                     <button
                       type="button"
                       className="add-quantity-button"
@@ -88,7 +82,6 @@ class EditCart extends React.Component {
             <div>You have nothing in your cart</div>
           )}
         </div>
-
         <div>
           <button type="button" className="continue-shopping-button">
             <Link to={`/products`}>
@@ -114,7 +107,6 @@ class EditCart extends React.Component {
     );
   }
 }
-
 const mapState = (state) => {
   return {
     product: state.product,
@@ -122,7 +114,6 @@ const mapState = (state) => {
     cart: state.cart,
   };
 };
-
 const mapDispatch = (dispatch, { history }) => {
   return {
     addProduct: (product, userId) =>
@@ -133,5 +124,4 @@ const mapDispatch = (dispatch, { history }) => {
     getCart: (userId) => dispatch(getCartThunk(userId)),
   };
 };
-
 export default connect(mapState, mapDispatch)(EditCart);
