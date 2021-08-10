@@ -1,4 +1,6 @@
-const { models: { User, Cart }} = require('../db')
+const {
+  models: { User, Cart },
+} = require('../db');
 
 const requireToken = async (req, res, next) => {
   try {
@@ -7,40 +9,31 @@ const requireToken = async (req, res, next) => {
     req.user = user;
     next();
   } catch (err) {
-    next(err)
+    next(err);
   }
-}
+};
 
 const isLoggedIn = (req, res, next) => {
   if (!req.user.id) {
-    return res.status(403).send('You must be a logged-in user to access this page!')
-  }
-  else {
+    next({
+      status: 403,
+      message: 'You must be a logged-in user to access this page!',
+    });
+  } else {
     next();
   }
-}
-
-// const usersCart = async (req, res, next) => {
-//   try {
-//     if (req.user.id !== req.cart.userId) {
-//       return res.status(403).send('You can only access your own cart!')
-//     }
-//   } catch (err) {
-//     next(err)
-//   }
-// }
+};
 
 const isAdmin = (req, res, next) => {
   if (!req.user.isAdmin) {
     return res.status(403).send('You shall not pass!');
-  }
-  else {
+  } else {
     next();
   }
-}
+};
 
 module.exports = {
   requireToken,
   isLoggedIn,
-  isAdmin
-}
+  isAdmin,
+};

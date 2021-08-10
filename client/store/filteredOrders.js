@@ -10,11 +10,6 @@ const getToken = () => {
   };
   return headers;
 };
-// const initialState = {
-//   filteredOrders: [],
-//   numOrderFilters: 0,
-//   OrderFilters: {},
-// };
 const initialState = {};
 const GET_ORDER = 'GET_ORDER';
 export const getOrder = (order) => ({
@@ -28,23 +23,16 @@ export const getOrderThunk = (orderId) => {
         `/api/users/pastSingleOrder/${orderId}`,
         getToken()
       );
-      console.log(data, 'ORDER IN REDUX');
       dispatch(getOrder(data));
     } catch (err) {
       console.log(err);
     }
   };
 };
-// const SET_ORDER_FILTERS = 'SET_FILTERS';
-// export const setRobotFilters = (filters, robots) => ({
-//   type: SET_ROBOT_FILTERS,
-//   filters,
-//   robots,
-// });
+
 export default function filteredOrderReducer(state = initialState, action) {
   switch (action.type) {
     case GET_ORDER:
-      console.log(action.order, 'ORDER IN REDUX1');
       return action.order;
     default:
       return state;

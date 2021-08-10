@@ -12,9 +12,6 @@ import { formatPrice } from '../utils';
 class EditCart extends React.Component {
   constructor(props) {
     super(props);
-    // this.state = {
-    //   userId: this.props.userId,
-    // };
     this.addItemToCart = this.addItemToCart.bind(this);
     this.removeItemFromCart = this.removeItemFromCart.bind(this);
     // this.createNewCartThunk = this.createNewCartThunk.bind(this);
@@ -33,8 +30,7 @@ class EditCart extends React.Component {
   render() {
     const cart = this.props.cart ?? {};
     const products = cart.products ?? [];
-    const openCartId = cart.id;
-    console.log('cart: ', cart);
+
     return (
       <div id="single-product">
         <div className="cart-title-container">
@@ -85,7 +81,7 @@ class EditCart extends React.Component {
           {this.props.userId && (
             <LoggedInCheckoutButton
               userId={this.props.userId}
-              openCartId={openCartId}
+              cartId={cart.id}
               history={this.props.history}
             />
           )}

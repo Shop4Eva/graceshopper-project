@@ -1,6 +1,5 @@
 import React from 'react';
 import { connect } from 'react-redux';
-// import { createNewCartThunk } from '../store/checkoutCart';
 import { getOrderThunk, getOrder } from '../store/filteredOrders';
 import { Link } from 'react-router-dom';
 import { formatPrice } from '../utils';
@@ -11,16 +10,6 @@ class LoggedInCheckout extends React.Component {
   }
   async componentDidMount() {
     await this.props.getOrder(this.props.match.params.orderId);
-    // await this.props.createNewCart();
-  }
-
-  async componentDidUpdate(prevProps) {
-    console.log(prevProps, this.props, 'comparings');
-    // await this.props.getOrder(
-    //   this.props.userId,
-    //   this.props.match.params.orderId
-    // );
-    // await this.props.createNewCart(this.props.userId);
   }
 
   async componentWillUnmount() {
@@ -31,7 +20,6 @@ class LoggedInCheckout extends React.Component {
     const order = this.props.order ?? {};
     const products = order.products ?? [];
     const { firstName } = this.props;
-    console.log('ORDER IN FRONT', order);
 
     return (
       <div id="single-product">
@@ -99,7 +87,6 @@ const mapState = (state) => {
 const mapDispatch = (dispatch, { history }) => {
   return {
     getOrder: (orderId) => dispatch(getOrderThunk(orderId)),
-    // createNewCart: () => dispatch(createNewCartThunk()),
     clearPage: (orderId) => dispatch(getOrder(orderId)),
   };
 };

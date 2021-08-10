@@ -17,8 +17,6 @@ const setAuth = (auth) => ({ type: SET_AUTH, auth });
  * THUNK CREATORS
  */
 
-//create fetchUser thunk to get user id
-
 export const me = () => async (dispatch) => {
   const token = window.localStorage.getItem(TOKEN);
   if (token) {
@@ -60,15 +58,8 @@ export const logout = () => {
 /**
  * REDUCER
  */
-const initialState = {
-  // userId: null,
-};
+const initialState = {};
 
-// export default function(state = initialState, action) {
-//   switch (action.type) {
-//     case SET_AUTH:
-//       action.auth.userId = action.auth.id
-//       return action.auth
 export default function (state = initialState, action) {
   switch (action.type) {
     case SET_AUTH:
