@@ -1,32 +1,36 @@
-import axios from 'axios';
-
+=√==import axios from 'axios';
+const getToken = () => {
+  const token = window.localStorage.getItem('token');
+  const headers = {
+    headers: {
+      authorization: token,
+    },
+  }
+  return headers;
+}
+// test
 const ADD_TO_CART = 'ADD_TO_CART';
 const GET_CART = 'GET_CART';
 const SET_ITEM = 'SET_ITEM';
 const DELETE_ITEM = 'DELETE_ITEM';
 const REMOVE_FROM_CART = 'REMOVE_FROM_CART';
 const CREATE_NEW_CART = 'CREATE_NEW_CART';
-
 export const createNewCart = (cart) => ({
   type: CREATE_NEW_CART,
   cart,
 });
-
 export const addToCart = (cart) => ({
   type: ADD_TO_CART,
   cart,
 });
-
 export const removeFromCart = (cart) => ({
   type: ADD_TO_CART,
   cart,
 });
-
 export const getCart = (cart) => ({
   type: GET_CART,
   cart,
 });
-
 export const _setItem = (productId, cartId) => {
   return {
     type: SET_ITEM,
@@ -34,14 +38,12 @@ export const _setItem = (productId, cartId) => {
     cartId,
   };
 };
-
 export const _deleteItem = (product) => {
   return {
     type: DELETE_ITEM,
     product,
   };
 };
-
 const createGuestTotalPrice = (productList) => {
   let total = 0;
   for (let i = 0; i < productList.length; i++) {
@@ -49,7 +51,6 @@ const createGuestTotalPrice = (productList) => {
   }
   return {products: productList, totalPrice: total};
 }
-
 export const getCartThunk = (userId) => {
   return async (dispatch) => {
     try {
@@ -67,7 +68,10 @@ export const getCartThunk = (userId) => {
       } else {
         console.log('userId', userId);
         //getCart from back end
-        const { data } = await axios.get(`/api/users/${userId}/cart`);
+        const { data } = await axios.get(
+          `/api/users/${userId}/cart`,
+          getToken()
+        );
         console.log('getCartThunk data', data);
         dispatch(getCart(data));
       }
@@ -76,7 +80,6 @@ export const getCartThunk = (userId) => {
     }
   };
 };
-
 export const addToCartThunk = (product, userId, history) => {
   return async (dispatch) => {
     // try {
@@ -105,14 +108,11 @@ export const addToCartThunk = (product, userId, history) => {
     } else {
       console.log('i got this far');
       //dispatch to logged-in thunk
-
-      // ih: adjusted data to data:cart
       const { data: cart } = await axios.put(
-        `/api/users/${userId}/addtocart/${product.id}`
+        `/api/users/${userId}/addtocart/${product.id}`,
+        getToken()
       );
       console.log('addToCartThunk data', cart);
-
-      // ih: changed data to cart in addToCart
       dispatch(addToCart(cart));
       history.push('/cart');
     }
@@ -122,7 +122,6 @@ export const addToCartThunk = (product, userId, history) => {
   // }
   //   };
 };
-
 export const removeFromCartThunk = (productId, userId, history) => {
   return async (dispatch) => {
     try {
@@ -138,14 +137,13 @@ export const removeFromCartThunk = (productId, userId, history) => {
         localStorage.setItem('guestCart', JSON.stringify(currentCart));
         history.push('/cart');
       } else {
-
         //dispatch to logged-in thunk
         // ih: adjusted data to data:cart
         const { data: cart } = await axios.put(
-          `/api/users/${userId}/removefromcart/${productId}`
+          `/api/users/${userId}/removefromcart/${productId}`,
+          getToken()
         );
         console.log('removeFromCartThunk data', cart);
-        // ih: changed data to cart in addToCart
         dispatch(removeFromCart(cart));
         history.push('/cart');
       }
@@ -155,18 +153,19 @@ export const removeFromCartThunk = (productId, userId, history) => {
     //   };
   };
 };
-
 export const createNewCartThunk = (userId) => {
   return async (dispatch) => {
     try {
-      const { data } = await axios.put(`/api/users/${userId}/createNewCart`);
+      const { data } = await axios.put(
+        `/api/users/${userId}/createNewCart`,
+        getToken()
+      );
       dispatch(createNewCart(data));
     } catch (err) {
       console.log(err);
     }
   };
 };
-
 export const setCartProductsThunk = () => {
   return async (dispatch) => {
     try {
@@ -176,22 +175,18 @@ export const setCartProductsThunk = () => {
     }
   };
 };
-
 // export const setItemQuantity = (productId, cartId) => {
 //   return async (dispatch) => {
 //     try {
 //       // if (!cart.userId) {
-
 //       // } else {
 //       //   // dispatch to logged-in thunk
 //       // }
-
 //     } catch (err) {
 //       console.log(err)
 //     }
 //   }
 // }
-
 export const deleteItem = (product) => {
   return async (dispatch) => {
     try {
@@ -205,10 +200,8 @@ export const deleteItem = (product) => {
     }
   };
 };
-
 const initialState = {};
 //create a reducer to look in local store list of productIDs in cart
-
 export default function checkoutReducer(state = initialState, action) {
   switch (action.type) {
     case CREATE_NEW_CART:
