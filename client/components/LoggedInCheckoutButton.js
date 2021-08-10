@@ -11,9 +11,8 @@ class LoggedInCheckoutButton extends React.Component {
   }
 
   async checkout() {
-    await this.props.addOrder(this.props.openCartId);
-    console.log('CARTID', this.props.openCartId);
-    this.props.history.push(`/checkout/${this.props.openCartId}/`);
+    await this.props.addOrder(this.props.cartId);
+    this.props.history.push(`/checkout/${this.props.cartId}/`);
   }
 
   render() {
@@ -31,10 +30,9 @@ class LoggedInCheckoutButton extends React.Component {
   }
 }
 
-const mapDispatch = (dispatch, { history }) => {
+const mapDispatch = (dispatch) => {
   return {
     addOrder: (orderId) => dispatch(addOrderThunk(orderId)),
-    // createNewCart: () => dispatch(createNewCartThunk()),
   };
 };
 

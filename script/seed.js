@@ -6,7 +6,7 @@ const {
 } = require('../server/db');
 
 async function seed() {
-  await db.sync({ force: true }); // clears db and matches models to tables
+  await db.sync({ force: true });
   console.log('db synced!');
 
   // Creating Users
@@ -62,7 +62,6 @@ async function seed() {
     lastName: 'Pug',
     isAdmin: false,
   });
-
 
   // Creating products
   const products = await Promise.all([
@@ -213,7 +212,8 @@ async function seed() {
     }),
     Product.create({
       name: 'SuperHuman Invention Skills',
-      imgUrl: 'https://static.scientificamerican.com/sciam/cache/file/987F7B3E-85C1-47D6-91416FCA62F71B37_source.jpg',
+      imgUrl:
+        'https://static.scientificamerican.com/sciam/cache/file/987F7B3E-85C1-47D6-91416FCA62F71B37_source.jpg',
       price: 5999,
       description: "Invent to your heart's content!",
     }),
@@ -277,14 +277,8 @@ async function runSeed() {
   }
 }
 
-/*
-  Execute the `seed` function, IF we ran this module directly (`node seed`).
-  `Async` functions always return a promise, so we can use `catch` to handle
-  any errors that might occur inside of `seed`.
-*/
 if (module === require.main) {
   runSeed();
 }
 
-// we export the seed function for testing purposes (see `./seed.spec.js`)
 module.exports = seed;

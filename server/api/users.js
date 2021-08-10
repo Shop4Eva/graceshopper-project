@@ -19,7 +19,7 @@ router.get('/', requireToken, isLoggedIn, isAdmin, async (req, res, next) => {
     next(err);
   }
 });
-// ih: need to add gatekeeping functions before 'async' to check if cart belongs to that cart's user, otherwise this route is working
+
 router.get('/cart', requireToken, isLoggedIn, async (req, res, next) => {
   try {
     const user = await User.findByToken(req.headers.authorization);
@@ -38,6 +38,11 @@ router.get('/cart', requireToken, isLoggedIn, async (req, res, next) => {
         user.save();
       }
       res.json(cart);
+    } else {
+      next({
+        status: 403,
+        message: 'You are not authorized to view this cart',
+      });
     }
   } catch (err) {
     next(err);
@@ -61,16 +66,16 @@ router.get(
             id: req.params.orderId,
           },
         });
-        if (order.userId !== user.id) {
-          res.status(403).send('You are not authorized to view this cart');
+        if (!order) {
+          next({ status: 404 });
+        } else if (order.userId !== user.id) {
+          next({
+            status: 403,
+            message: 'You are not authorized to view this cart',
+          });
         } else {
           res.json(order);
         }
-        if (!order) {
-          res.sendStatus(404);
-        }
-      } else {
-        res.status(403).send('You are not authorized to view this cart');
       }
     } catch (err) {
       next(err);
@@ -92,17 +97,20 @@ router.get('/pastOrders', requireToken, isLoggedIn, async (req, res, next) => {
         },
       });
       if (!pastOrders) {
-        res.sendStatus(404);
+        next({ status: 404 });
       }
       res.json(pastOrders);
     } else {
-      res.status(403).send('You are not authorized to view this cart');
+      next({
+        status: 403,
+        message: 'You are not authorized to view this cart',
+      });
     }
   } catch (err) {
     next(err);
   }
 });
-// ih: need to add gatekeeping functions before 'async' to check if cart belongs to that cart's user, otherwise this route is working
+
 router.put('/addtocart/', requireToken, isLoggedIn, async (req, res, next) => {
   try {
     const user = await User.findByToken(req.headers.authorization);
@@ -129,56 +137,36 @@ router.put('/addtocart/', requireToken, isLoggedIn, async (req, res, next) => {
       cart.save();
       res.json(cart);
     } else {
-      res.status(403).send('You are not authorized to change this cart');
+      next({
+        status: 403,
+        message: 'You are not authorized to change this cart',
+      });
     }
   } catch (err) {
     next(err);
   }
 });
-// router.put(
-//   '/createNewCart/',
-//   requireToken,
-//   isLoggedIn,
-//   async (req, res, next) => {
-//     try {
-//       console.log('I GOT HERE');
-//       const user = await User.findByToken(req.headers.authorization);
-//       console.log('USER', req.user.dataValues.id, user.id);
-//       console.log('requser', req.user);
-//       if (req.user.dataValues.id === user.id) {
-//         const newCart = await Cart.create();
-//         const user = await User.findByPk(user.id);
-//         console.log('USER HERE', user);
-//         user.addCart(newCart);
-//         user.save();
-//         res.json(newCart);
-//       } else {
-//         res.status(403).send('You are not authorized to change this cart');
-//       }
-//     } catch (err) {
-//       next(err);
-//     }
-//   }
-// );
+
 router.put('/addOrder/', requireToken, isLoggedIn, async (req, res, next) => {
   try {
     const user = await User.findByToken(req.headers.authorization);
-    console.log('USER', req.user.dataValues.id, user.id);
     if (req.user.dataValues.id === user.id) {
-      console.log('BODY', req.body);
       const order = await Cart.findByPk(req.body.orderId, {
         include: {
           model: Product,
         },
       });
       if (!order) {
-        res.sendStatus(404);
+        next({ status: 404 });
       }
       order.fulfilled = true;
       order.save();
       res.json(order);
     } else {
-      res.status(403).send('You are not authorized to view this cart');
+      next({
+        status: 403,
+        message: 'You are not authorized to view this cart',
+      });
     }
   } catch (err) {
     next(err);
@@ -192,7 +180,6 @@ router.put(
   async (req, res, next) => {
     try {
       const user = await User.findByToken(req.headers.authorization);
-      console.log('REMOVE', user.id, req.user.dataValues.id);
       if (req.user.dataValues.id === user.id) {
         const product = await Product.findByPk(req.body.productId);
         const cart = await Cart.findOne({
@@ -218,7 +205,10 @@ router.put(
         cart.save();
         res.json(cart);
       } else {
-        res.status(403).send('You are not authorized to change this cart');
+        next({
+          status: 403,
+          message: 'You are not authorized to change this cart',
+        });
       }
     } catch (err) {
       next(err);

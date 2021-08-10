@@ -36,7 +36,6 @@ export const getOrdersThunk = () => {
 
 export const addOrderThunk = (orderId) => {
   return async (dispatch) => {
-    console.log('OrderId', orderId);
     try {
       const { data } = await axios.put(
         '/api/users/addOrder/',
@@ -51,7 +50,6 @@ export const addOrderThunk = (orderId) => {
 };
 
 const initialState = [];
-//create a reducer to look in local store list of productIDs in cart
 
 export default function pastOrdersReducer(state = initialState, action) {
   switch (action.type) {

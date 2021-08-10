@@ -14,11 +14,8 @@ class Product extends React.Component {
   }
 
   async componentDidMount() {
-    //how to get the user id before trying to get cart
     await this.props.getCart();
     await this.props.getProduct(this.props.match.params.id);
-    //check to see if user is logged in
-    //put user in local state
   }
   async addItemToCart() {
     await this.props.addProduct(this.props.product);
@@ -26,7 +23,6 @@ class Product extends React.Component {
   }
 
   render() {
-    console.log(this.props);
     const product = this.props.product ?? {};
 
     return (
@@ -55,7 +51,6 @@ const mapState = (state) => {
 
 const mapDispatch = (dispatch, { history }) => {
   return {
-    // addProduct: (product, userId, cart) => dispatch(addToCartThunk(product, userId, cart)),
     addProduct: (product) => dispatch(addToCartThunk(product, history)),
     getProduct: (id) => dispatch(fetchProduct(id)),
     getCart: () => dispatch(getCartThunk()),

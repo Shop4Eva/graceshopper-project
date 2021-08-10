@@ -84,7 +84,6 @@ const mapState = (state) => {
 const mapDispatch = (dispatch) => {
   return {
     setProductsThunk: () => dispatch(setProductsThunk()),
-    // setProducts: (products) => dispatch(setProducts(products)),
   };
 };
 
