@@ -14,11 +14,7 @@ const GET_CART = 'GET_CART';
 const SET_ITEM = 'SET_ITEM';
 const DELETE_ITEM = 'DELETE_ITEM';
 const REMOVE_FROM_CART = 'REMOVE_FROM_CART';
-const CREATE_NEW_CART = 'CREATE_NEW_CART';
-export const createNewCart = (cart) => ({
-  type: CREATE_NEW_CART,
-  cart
-});
+
 export const addToCart = (cart) => ({
   type: ADD_TO_CART,
   cart,
@@ -51,10 +47,10 @@ const createGuestTotalPrice = (productList) => {
   }
   return { products: productList, totalPrice: total };
 };
-export const getCartThunk = () => {
+export const getCartThunk = (userId) => {
   return async (dispatch) => {
     try {
-      if (!getToken()) {
+      if (!userId) {
         let currentCart = localStorage.getItem('guestCart');
         if (currentCart === null) {
           currentCart = [];
@@ -62,7 +58,7 @@ export const getCartThunk = () => {
           currentCart = JSON.parse(currentCart);
         }
         const guestCart = createGuestTotalPrice(currentCart);
-        dispatch(getCart(guestCart))
+        dispatch(getCart(guestCart));
       } else {
         const { data } = await axios.get(`/api/users/cart`, getToken());
         dispatch(getCart(data));
@@ -73,11 +69,10 @@ export const getCartThunk = () => {
   };
 };
 
-export const addToCartThunk = (product, history) => {
+export const addToCartThunk = (product, userId) => {
   return async (dispatch) => {
     try {
-      const headers = getToken();
-      if (!headers) {
+      if (!userId) {
         let currentCart = localStorage.getItem('guestCart');
         if (currentCart === null) {
           currentCart = [];
@@ -96,7 +91,7 @@ export const addToCartThunk = (product, history) => {
         const { data: cart } = await axios.put(
           '/api/users/addtocart/',
           { productId: product.id },
-          headers
+          getToken()
         );
         dispatch(addToCart(cart));
       }
@@ -105,11 +100,10 @@ export const addToCartThunk = (product, history) => {
     }
   };
 };
-export const removeFromCartThunk = (productId, history) => {
+export const removeFromCartThunk = (productId, userId, history) => {
   return async (dispatch) => {
     try {
-      const headers = getToken();
-      if (!headers) {
+      if (!userId) {
         let currentCart = JSON.parse(localStorage.getItem('guestCart'));
         let item = currentCart.find((element) => element.id === productId);
         item.quantity--;
@@ -124,7 +118,7 @@ export const removeFromCartThunk = (productId, history) => {
         const { data: cart } = await axios.put(
           '/api/users/removefromcart/',
           { productId: productId },
-          headers
+          getToken()
         );
         dispatch(removeFromCart(cart));
         history.push('/cart');
@@ -136,24 +130,22 @@ export const removeFromCartThunk = (productId, history) => {
 };
 
 export const createNewCartThunk = (userId) => {
-  return async (dispatch) => {
+  return async () => {
     try {
       if (!userId) {
         let currentCart = JSON.parse(localStorage.getItem('guestCart'));
         const guestCart = createGuestTotalPrice(currentCart);
-        console.log('guestCart price test', guestCart.totalPrice)
-
-        const { data } = await axios.post('/api/users/createNewCart', {totalPrice: guestCart.totalPrice});
-        console.log('data', data)
-        dispatch(createNewCart(data));
+        await axios.post('/api/users/createNewCart', {
+          totalPrice: guestCart.totalPrice,
+        });
+        localStorage.clear();
       }
-      const { data } = await axios.put(`/api/users/${userId}/createNewCart`);
-      dispatch(createNewCart(data));
     } catch (err) {
       console.log(err);
     }
   };
 };
+
 export const setCartProductsThunk = () => {
   return async (dispatch) => {
     try {
@@ -167,8 +159,6 @@ export const setCartProductsThunk = () => {
 const initialState = {};
 export default function checkoutReducer(state = initialState, action) {
   switch (action.type) {
-    case CREATE_NEW_CART:
-      return action.cart;
     case GET_CART:
       return action.cart;
     case ADD_TO_CART:
