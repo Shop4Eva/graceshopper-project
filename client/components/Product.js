@@ -21,7 +21,10 @@ class Product extends React.Component {
     //put user in local state
   }
   async addItemToCart() {
-    await this.props.addProduct(this.props.product);
+    console.log('before add', this.props.cart);
+    await this.props.addProduct(this.props.product, this.props.userId);
+    alert('Added to cart!');
+    console.log('addItemToCart', this.props.cart);
     this.props.history.push('/products');
   }
 

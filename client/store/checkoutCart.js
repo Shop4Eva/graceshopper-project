@@ -17,7 +17,7 @@ const REMOVE_FROM_CART = 'REMOVE_FROM_CART';
 const CREATE_NEW_CART = 'CREATE_NEW_CART';
 export const createNewCart = (cart) => ({
   type: CREATE_NEW_CART,
-  cart,
+  cart
 });
 export const addToCart = (cart) => ({
   type: ADD_TO_CART,
@@ -63,11 +63,10 @@ export const getCartThunk = () => {
           currentCart = JSON.parse(currentCart);
         }
         const guestCart = createGuestTotalPrice(currentCart);
-        dispatch(getCart(guestCart));
+        dispatch(getCart(guestCart))
       } else {
         //getCart from back end
         const { data } = await axios.get(`/api/users/cart`, getToken());
-        console.log('getCartThunk data', data);
         dispatch(getCart(data));
       }
     } catch (err) {
@@ -146,6 +145,28 @@ export const removeFromCartThunk = (productId, history) => {
     //   };
   };
 };
+
+
+export const createNewCartThunk = (userId) => {
+  return async (dispatch) => {
+    try {
+      if (!userId) {
+        let currentCart = JSON.parse(localStorage.getItem('guestCart'));
+        const guestCart = createGuestTotalPrice(currentCart);
+        console.log('guestCart price test', guestCart.totalPrice)
+
+        const { data } = await axios.post('/api/users/createNewCart', {totalPrice: guestCart.totalPrice});
+        console.log('data', data)
+        dispatch(createNewCart(data));
+      }
+      const { data } = await axios.put(`/api/users/${userId}/createNewCart`);
+      dispatch(createNewCart(data));
+    } catch (err) {
+      console.log(err);
+    }
+  };
+};
+
 // export const createNewCartThunk = () => {
 //   return async (dispatch) => {
 //     try {
@@ -160,6 +181,7 @@ export const removeFromCartThunk = (productId, history) => {
 //     }
 //   };
 // };
+  
 export const setCartProductsThunk = () => {
   return async (dispatch) => {
     try {

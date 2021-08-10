@@ -128,6 +128,48 @@ router.put('/addtocart/', requireToken, isLoggedIn, async (req, res, next) => {
       productInCart.save();
       cart.save();
       res.json(cart);
+
+      // } else {
+      //   res.status(403).send('You are not authorized to change this cart');
+      // }
+    } catch (err) {
+      next(err);
+    }
+  }
+);
+
+router.post('/createNewCart/',
+  // requireToken,
+  async (req, res, next) => {
+    try {
+      console.log('req.body', req.body)
+      const newCart = await Cart.create({
+        userId: null,
+        totalPrice: req.body.totalPrice,
+        fulfilled: true
+      });
+      res.json(newCart);
+    } catch (err) {
+      next(err)
+    }
+  }
+)
+
+router.put(
+  '/:userId/createNewCart/',
+  // requireToken,
+  // isLoggedIn,
+  async (req, res, next) => {
+    try {
+      // if (req.user.dataValues.id === Number(req.params.userId)) {
+      const newCart = await Cart.create();
+      const user = await User.findByPk(req.params.userId);
+      user.addCart(newCart);
+      user.save();
+      res.json(newCart);
+      // } else {
+      //   res.status(403).send('You are not authorized to change this cart');
+      // }
     } else {
       res.status(403).send('You are not authorized to change this cart');
     }
