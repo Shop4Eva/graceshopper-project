@@ -13,6 +13,9 @@ const Product_Cart = require('./models/Product_Cart');
 Cart.hasMany(Product_Cart);
 Product_Cart.belongsTo(Cart);
 
+Product.hasMany(Product_Cart);
+Product_Cart.belongsTo(Product);
+
 Cart.belongsToMany(Product, { through: Product_Cart });
 Product.belongsToMany(Cart, { through: Product_Cart });
 

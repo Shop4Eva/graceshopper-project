@@ -27,7 +27,7 @@ class Product extends React.Component {
 
   render() {
     console.log(this.props);
-    const product = this.props.product || {};
+    const product = this.props.product ?? {};
 
     return (
       <div id="single-product">

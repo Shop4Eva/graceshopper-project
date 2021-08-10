@@ -28,8 +28,8 @@ class LoggedInCheckout extends React.Component {
   }
 
   render() {
-    const order = this.props.order || {};
-    const products = order.products || [];
+    const order = this.props.order ?? {};
+    const products = order.products ?? [];
     const { firstName } = this.props;
     console.log('ORDER IN FRONT', order);
 
@@ -92,7 +92,7 @@ const mapState = (state) => {
   return {
     userId: state.auth.id,
     firstName: state.auth.firstName,
-    order: state.filteredOrders[0],
+    order: state.filteredOrders,
   };
 };
 

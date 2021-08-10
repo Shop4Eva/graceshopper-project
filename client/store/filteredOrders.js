@@ -15,7 +15,7 @@ const getToken = () => {
 //   numOrderFilters: 0,
 //   OrderFilters: {},
 // };
-const initialState = [];
+const initialState = {};
 const GET_ORDER = 'GET_ORDER';
 export const getOrder = (order) => ({
   type: GET_ORDER,
@@ -45,7 +45,7 @@ export default function filteredOrderReducer(state = initialState, action) {
   switch (action.type) {
     case GET_ORDER:
       console.log(action.order, 'ORDER IN REDUX1');
-      return [...state, action.order];
+      return action.order;
     default:
       return state;
   }

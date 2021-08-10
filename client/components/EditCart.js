@@ -29,8 +29,8 @@ class EditCart extends React.Component {
     await this.props.getCart();
   }
   render() {
-    const cart = this.props.cart || {};
-    const products = cart.products || [];
+    const cart = this.props.cart ?? {};
+    const products = cart.products ?? [];
     const openCartId = cart.id;
     console.log('cart: ', cart);
     return (
