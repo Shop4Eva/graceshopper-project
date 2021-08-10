@@ -4,7 +4,7 @@ import {
   getCartThunk,
   addToCartThunk,
   removeFromCartThunk,
-  createNewCartThunk
+  createNewCartThunk,
 } from '../store/checkoutCart';
 import { Link } from 'react-router-dom';
 import LoggedInCheckoutButton from './LoggedInCheckoutButton';
@@ -14,18 +14,17 @@ class EditCart extends React.Component {
     super(props);
     this.addItemToCart = this.addItemToCart.bind(this);
     this.removeItemFromCart = this.removeItemFromCart.bind(this);
-    // this.createNewCartThunk = this.createNewCartThunk.bind(this);
   }
   async componentDidMount() {
-    await this.props.getCart();
+    await this.props.getCart(this.props.userId);
   }
   async addItemToCart(product) {
-    await this.props.addProduct(product);
-    await this.props.getCart();
+    await this.props.addProduct(product, this.props.userId);
+    await this.props.getCart(this.props.userId);
   }
   async removeItemFromCart(productId) {
-    await this.props.removeProduct(productId);
-    await this.props.getCart();
+    await this.props.removeProduct(productId, this.props.userId);
+    await this.props.getCart(this.props.userId);
   }
   render() {
     const cart = this.props.cart ?? {};
@@ -78,15 +77,19 @@ class EditCart extends React.Component {
               <h3>Continue Shopping</h3>
             </Link>
           </button>
-          {this.props.userId && (
+          {this.props.userId ? (
             <LoggedInCheckoutButton
+              className="place-order-button"
               userId={this.props.userId}
               cartId={cart.id}
               history={this.props.history}
             />
-          )}
-          {!this.state.userId && (
-            <button type="button" className="place-order-button" onClick={createNewCartThunk(this.state.userId)}>
+          ) : (
+            <button
+              type="button"
+              className="place-order-button"
+              onClick={createNewCartThunk(this.props.userId)}
+            >
               <Link to={`/confirmation`}>
                 <h3>Place Order</h3>
               </Link>
@@ -106,12 +109,12 @@ const mapState = (state) => {
 };
 const mapDispatch = (dispatch, { history }) => {
   return {
-    addProduct: (product) => dispatch(addToCartThunk(product, history)),
-    removeProduct: (productId) =>
-      dispatch(removeFromCartThunk(productId, history)),
+    addProduct: (product, userId) => dispatch(addToCartThunk(product, userId)),
+    removeProduct: (productId, userId) =>
+      dispatch(removeFromCartThunk(productId, userId, history)),
     getProduct: (id) => dispatch(fetchProduct(id)),
     getCart: (userId) => dispatch(getCartThunk(userId)),
-    getGuestCart: (userId) => dispatch(createNewCartThunk(userId))
+    getGuestCart: (userId) => dispatch(createNewCartThunk(userId)),
   };
 };
 export default connect(mapState, mapDispatch)(EditCart);
