@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { setProductsThunk, setProducts } from '../store/products';
 import { Link } from 'react-router-dom';
+import { formatPrice } from '../utils';
 
 const AllProducts = (props) => {
   const [error, setError] = useState(null);
@@ -59,7 +60,7 @@ const AllProducts = (props) => {
                     </h4>
                   </div>
                   <p className="superpower-prop">
-                    price: ${product.price / 100}
+                    price: ${formatPrice(product.price)}
                   </p>
                   <div className="superpower-prop">
                     {product.description && <p>{product.description}</p>}
