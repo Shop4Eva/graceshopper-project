@@ -1,4 +1,8 @@
 import axios from 'axios';
+const token = localStorage.getItem('token');
+const headers = {
+  Authorization: `Bearer ${token}`
+}
 
 const ADD_TO_CART = 'ADD_TO_CART';
 const GET_CART = 'GET_CART';
@@ -94,14 +98,11 @@ export const addToCartThunk = (product, userId, history) => {
     } else {
       console.log('i got this far');
       //dispatch to logged-in thunk
-
-      // ih: adjusted data to data:cart
       const { data: cart } = await axios.put(
-        `/api/users/${userId}/addtocart/${product.id}`
+        `/api/users/${userId}/addtocart/${product.id}`,
+        headers
       );
       console.log('addToCartThunk data', cart);
-
-      // ih: changed data to cart in addToCart
       dispatch(addToCart(cart));
       history.push('/cart');
     }
@@ -129,14 +130,11 @@ export const removeFromCartThunk = (productId, userId, history) => {
         //else logged in user
       } else {
         //dispatch to logged-in thunk
-
-        // ih: adjusted data to data:cart
         const { data: cart } = await axios.put(
-          `/api/users/${userId}/removefromcart/${productId}`
+          `/api/users/${userId}/removefromcart/${productId}`,
+          headers
         );
         console.log('removeFromCartThunk data', cart);
-
-        // ih: changed data to cart in addToCart
         dispatch(removeFromCart(cart));
         history.push('/cart');
       }
@@ -150,7 +148,10 @@ export const removeFromCartThunk = (productId, userId, history) => {
 export const createNewCartThunk = (userId) => {
   return async (dispatch) => {
     try {
-      const { data } = await axios.put(`/api/users/${userId}/createNewCart`);
+      const { data } = await axios.put(
+        `/api/users/${userId}/createNewCart`,
+        headers
+      );
       dispatch(createNewCart(data));
     } catch (err) {
       console.log(err);
