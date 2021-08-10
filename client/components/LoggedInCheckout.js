@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { createNewCartThunk } from '../store/checkoutCart';
+// import { createNewCartThunk } from '../store/checkoutCart';
 import { getOrderThunk, getOrder } from '../store/filteredOrders';
 import { Link } from 'react-router-dom';
 import { formatPrice } from '../utils';
@@ -10,11 +10,8 @@ class LoggedInCheckout extends React.Component {
     super(props);
   }
   async componentDidMount() {
-    await this.props.getOrder(
-      this.props.userId,
-      this.props.match.params.orderId
-    );
-    await this.props.createNewCart(this.props.userId);
+    await this.props.getOrder(this.props.match.params.orderId);
+    // await this.props.createNewCart();
   }
 
   async componentDidUpdate(prevProps) {
@@ -27,12 +24,12 @@ class LoggedInCheckout extends React.Component {
   }
 
   async componentWillUnmount() {
-    this.props.clearPage();
+    this.props.clearPage(this.props.match.params.orderId);
   }
 
   render() {
-    const order = this.props.order || {};
-    const products = order.products || [];
+    const order = this.props.order ?? {};
+    const products = order.products ?? [];
     const { firstName } = this.props;
     console.log('ORDER IN FRONT', order);
 
@@ -95,15 +92,15 @@ const mapState = (state) => {
   return {
     userId: state.auth.id,
     firstName: state.auth.firstName,
-    order: state.filteredOrders[0],
+    order: state.filteredOrders,
   };
 };
 
 const mapDispatch = (dispatch, { history }) => {
   return {
-    getOrder: (userId, orderId) => dispatch(getOrderThunk(userId, orderId)),
-    createNewCart: (userId) => dispatch(createNewCartThunk(userId)),
-    clearPage: () => dispatch(getOrder({})),
+    getOrder: (orderId) => dispatch(getOrderThunk(orderId)),
+    // createNewCart: () => dispatch(createNewCartThunk()),
+    clearPage: (orderId) => dispatch(getOrder(orderId)),
   };
 };
 

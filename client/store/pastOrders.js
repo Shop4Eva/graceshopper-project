@@ -1,5 +1,15 @@
 import axios from 'axios';
 
+const getToken = () => {
+  const token = window.localStorage.getItem('token');
+  const headers = {
+    headers: {
+      authorization: token,
+    },
+  };
+  return headers;
+};
+
 const ADD_ORDER = 'ADD_ORDERS';
 const GET_ORDERS = 'GET_ORDERS';
 
@@ -13,10 +23,10 @@ export const getOrders = (cart) => ({
   cart,
 });
 
-export const getOrdersThunk = (userId) => {
+export const getOrdersThunk = () => {
   return async (dispatch) => {
     try {
-      const { data } = await axios.get(`/api/users/${userId}/pastOrders`);
+      const { data } = await axios.get(`/api/users/pastOrders`, getToken());
       dispatch(getOrders(data));
     } catch (err) {
       console.log(err);
@@ -24,12 +34,14 @@ export const getOrdersThunk = (userId) => {
   };
 };
 
-export const addOrderThunk = (userId, orderId) => {
+export const addOrderThunk = (orderId) => {
   return async (dispatch) => {
-    console.log('OrderId', orderId, userId);
+    console.log('OrderId', orderId);
     try {
       const { data } = await axios.put(
-        `/api/users/${userId}/addOrder/${orderId}`
+        '/api/users/addOrder/',
+        { orderId: orderId },
+        getToken()
       );
       dispatch(addOrder(data));
     } catch (err) {
