@@ -1,8 +1,9 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { deleteItem, createNewCartThunk } from '../store/checkoutCart';
+import { createNewCartThunk } from '../store/checkoutCart';
 import { getOrderThunk, getOrder } from '../store/filteredOrders';
 import { Link } from 'react-router-dom';
+import { formatPrice } from '../utils';
 
 class LoggedInCheckout extends React.Component {
   constructor(props) {
@@ -50,7 +51,7 @@ class LoggedInCheckout extends React.Component {
                 <div key={product.id}>
                   <h5>{product.name}</h5>
                   <div className="cart-product-info">
-                    <p>Price: ${product.price / 100}</p>
+                    <p>Price: ${formatPrice(product.price)}</p>
 
                     <button
                       type="button"
@@ -71,7 +72,7 @@ class LoggedInCheckout extends React.Component {
                   </div>
                 </div>
               ))}
-              <p>Total cost: ${order.totalPrice / 100}</p>
+              <p>Total cost: ${formatPrice(order.totalPrice)}</p>
             </div>
           ) : (
             <div>You have nothing in your cart</div>

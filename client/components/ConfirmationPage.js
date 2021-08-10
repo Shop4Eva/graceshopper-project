@@ -1,7 +1,7 @@
 import React from 'react'
 import {connect} from 'react-redux'
 import { getCartThunk } from '../store/checkoutCart';
-import { Link } from 'react-router-dom';
+import { formatPrice } from '../utils';
 
 class Confirmation extends React.Component {
   async componentDidMount() {
@@ -33,7 +33,7 @@ class Confirmation extends React.Component {
             <div key={product.id}>
               <h5>{product.name}</h5>
               <img src={product.imgUrl} width={200} height={200}/>
-              <p>Price: ${product.price / 100}</p>
+              <p>Price: ${formatPrice(product.price)}</p>
               <p>Quantity: {product.quantity}</p>
             </div>
           ))}

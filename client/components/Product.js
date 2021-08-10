@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 import { fetchProduct } from '../store/singleProduct';
 import { getCartThunk, addToCartThunk } from '../store/checkoutCart';
-import { Link } from 'react-router-dom';
+import { formatPrice } from '../utils'
 
 class Product extends React.Component {
   constructor(props) {
@@ -46,7 +46,7 @@ class Product extends React.Component {
         <h1>{product.name}</h1>
 
         <img src={product.imgUrl} width={200} height={200} />
-        <p>price: ${product.price / 100}</p>
+        <p>price: ${formatPrice(product.price)}</p>
         {product.description && <p>description: {product.description}</p>}
 
         <button className="add-to-cart-button" onClick={this.addItemToCart}>

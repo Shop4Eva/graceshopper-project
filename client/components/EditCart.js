@@ -1,6 +1,5 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { deleteItem } from '../store/checkoutCart';
 import {
   getCartThunk,
   addToCartThunk,
@@ -8,6 +7,7 @@ import {
 } from '../store/checkoutCart';
 import { Link } from 'react-router-dom';
 import LoggedInCheckoutButton from './LoggedInCheckoutButton';
+import { formatPrice } from '../utils';
 
 class EditCart extends React.Component {
   constructor(props) {
@@ -32,22 +32,20 @@ class EditCart extends React.Component {
 
   async addItemToCart(product) {
     await this.props.addProduct(product, this.props.userId);
-    if (this.props.userId) {
-      await this.props.getCart(this.props.userId);
-    }
+    await this.props.getCart(this.props.userId);
   }
 
   async removeItemFromCart(productId) {
     await this.props.removeProduct(productId, this.props.userId);
-    if (this.props.userId) {
-      await this.props.getCart(this.props.userId);
-    }
+    await this.props.getCart(this.props.userId);
   }
 
   render() {
     const cart = this.props.cart || {};
     const products = cart.products || [];
     const openCartId = cart.id;
+
+    console.log("cart: ", cart)
 
     return (
       <div id="single-product">
@@ -62,7 +60,9 @@ class EditCart extends React.Component {
                 <div key={product.id}>
                   <h5>{product.name}</h5>
                   <div className="cart-product-info">
-                    <p>Price: ${product.price / 100}</p>
+                    <p>Price: ${formatPrice(product.price)}</p>
+
+                    <p>Quantity: {product.quantity ?? product.product_cart.quantity}</p>
 
                     <button
                       type="button"
@@ -72,8 +72,6 @@ class EditCart extends React.Component {
                     >
                       +
                     </button>
-                    <p>Quantity: {product.product_cart.quantity}</p>
-                    {/* if logged in */}
                     <button
                       type="button"
                       className="remove-quantity-button"
@@ -84,7 +82,7 @@ class EditCart extends React.Component {
                   </div>
                 </div>
               ))}
-              <p>Total cost: ${cart.totalPrice / 100}</p>
+              <p>Total cost: ${formatPrice(cart.totalPrice)}</p>
             </div>
           ) : (
             <div>You have nothing in your cart</div>
