@@ -1,5 +1,7 @@
 body {
   font-family: Roboto;
+  background-color: white;
+  color: black;
 }
 
 a {
@@ -13,6 +15,7 @@ label {
 nav a {
   display: inline-flex;
   margin: 1em;
+  color: orange;
 }
 
 .nav {
@@ -21,6 +24,11 @@ nav a {
   display: flex;
   height: 50px;
   font-size: 18px;
+}
+
+.home-img {
+  display: flex;
+  justify-content: center;
 }
 
 form div {
@@ -33,11 +41,22 @@ form div {
   flex-direction: column;
 }
 
-.headder-title,
+.header-title,
 .title {
   display: flex;
   justify-content: center;
-  color: black;
+  color: #3836fd;
+}
+
+.welcome-title {
+  display: flex;
+  justify-content: center;
+}
+
+.welcome-intro {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 15px;
 }
 
 .superpower-name {
@@ -63,7 +82,7 @@ form div {
   padding: 15px;
   justify-content: space-between;
   height: 185px;
-  bcart-radius: 5px;
+  border-radius: 5px;
 }
 
 .card-info {
@@ -88,7 +107,6 @@ form div {
 
 .card-title {
   align-items: center;
-  margin: ;
 }
 
 .superpower-prop {
