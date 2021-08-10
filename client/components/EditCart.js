@@ -4,6 +4,7 @@ import {
   getCartThunk,
   addToCartThunk,
   removeFromCartThunk,
+  createNewCartThunk
 } from '../store/checkoutCart';
 import { Link } from 'react-router-dom';
 import LoggedInCheckoutButton from './LoggedInCheckoutButton';
@@ -13,6 +14,7 @@ class EditCart extends React.Component {
     super(props);
     this.addItemToCart = this.addItemToCart.bind(this);
     this.removeItemFromCart = this.removeItemFromCart.bind(this);
+    // this.createNewCartThunk = this.createNewCartThunk.bind(this);
   }
   async componentDidMount() {
     await this.props.getCart();
@@ -83,8 +85,8 @@ class EditCart extends React.Component {
               history={this.props.history}
             />
           )}
-          {!this.props.userId && (
-            <button type="button" className="place-order-button">
+          {!this.state.userId && (
+            <button type="button" className="place-order-button" onClick={createNewCartThunk(this.state.userId)}>
               <Link to={`/confirmation`}>
                 <h3>Place Order</h3>
               </Link>
@@ -108,7 +110,8 @@ const mapDispatch = (dispatch, { history }) => {
     removeProduct: (productId) =>
       dispatch(removeFromCartThunk(productId, history)),
     getProduct: (id) => dispatch(fetchProduct(id)),
-    getCart: () => dispatch(getCartThunk()),
+    getCart: (userId) => dispatch(getCartThunk(userId)),
+    getGuestCart: (userId) => dispatch(createNewCartThunk(userId))
   };
 };
 export default connect(mapState, mapDispatch)(EditCart);
