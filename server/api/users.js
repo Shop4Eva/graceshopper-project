@@ -20,51 +20,49 @@ router.get('/', requireToken, isLoggedIn, isAdmin, async (req, res, next) => {
   }
 });
 // ih: need to add gatekeeping functions before 'async' to check if cart belongs to that cart's user, otherwise this route is working
-router.get(
-  '/:userId/cart',
-  requireToken,
-  isLoggedIn,
-  async (req, res, next) => {
-    try {
-      if (req.user.dataValues.id === Number(req.params.userId)) {
-        const cart = await Cart.findOne({
-          include: {
-            model: Product,
-          },
-          where: {
-            userId: req.params.userId,
-            fulfilled: false,
-          },
-        });
-        if (!cart) {
-          res.sendStatus(404);
-        }
-        res.json(cart);
-      } else {
-        res.status(403).send('You are not authorized to view this cart');
+router.get('/cart', requireToken, isLoggedIn, async (req, res, next) => {
+  try {
+    const user = await User.findByToken(req.headers.authorization);
+    console.log('USER', req.user.dataValues.id, user.id);
+    if (req.user.dataValues.id === user.id) {
+      const cart = await Cart.findOne({
+        include: {
+          model: Product,
+        },
+        where: {
+          userId: user.id,
+          fulfilled: false,
+        },
+      });
+      if (!cart) {
+        res.sendStatus(404);
       }
-    } catch (err) {
-      next(err);
+      res.json(cart);
+    } else {
+      res.status(403).send('You are not authorized to view this cart');
     }
+  } catch (err) {
+    next(err);
   }
-);
+});
 router.get(
-  '/:userId/pastSingleOrder/:orderId',
+  '/pastSingleOrder/:orderId',
   requireToken,
   isLoggedIn,
   async (req, res, next) => {
     try {
-      if (req.user.dataValues.id === Number(req.params.userId)) {
+      const user = await User.findByToken(req.headers.authorization);
+      if (req.user.dataValues.id === user.id) {
         const order = await Cart.findOne({
           include: {
             model: Product,
           },
           where: {
             fulfilled: true,
-            id: req.params.orderId,
+            id: user.id,
           },
         });
-        if (order.userId !== req.params.userId) {
+        if (order.userId !== user.id) {
           res.status(403).send('You are not authorized to view this cart');
         } else {
           res.json(order);
@@ -80,46 +78,43 @@ router.get(
     }
   }
 );
-router.get(
-  '/:userId/pastOrders',
-  requireToken,
-  isLoggedIn,
-  async (req, res, next) => {
-    try {
-      if (req.user.dataValues.id === Number(req.params.userId)) {
-        const pastOrders = await Cart.findAll({
-          include: {
-            model: Product,
-          },
-          where: {
-            userId: req.params.userId,
-            fulfilled: true,
-          },
-        });
-        if (!pastOrders) {
-          res.sendStatus(404);
-        }
-        res.json(pastOrders);
-      } else {
-        res.status(403).send('You are not authorized to view this cart');
+router.get('/pastOrders', requireToken, isLoggedIn, async (req, res, next) => {
+  try {
+    const user = await User.findByToken(req.headers.authorization);
+    if (req.user.dataValues.id === user.id) {
+      const pastOrders = await Cart.findAll({
+        include: {
+          model: Product,
+        },
+        where: {
+          userId: user.id,
+          fulfilled: true,
+        },
+      });
+      if (!pastOrders) {
+        res.sendStatus(404);
       }
-    } catch (err) {
-      next(err);
+      res.json(pastOrders);
+    } else {
+      res.status(403).send('You are not authorized to view this cart');
     }
+  } catch (err) {
+    next(err);
   }
-);
+});
 // ih: need to add gatekeeping functions before 'async' to check if cart belongs to that cart's user, otherwise this route is working
 router.put(
-  '/:userId/addtocart/:productId',
+  '/addtocart/:productId',
   requireToken,
   isLoggedIn,
   async (req, res, next) => {
     try {
-      if (req.user.dataValues.id === Number(req.params.userId)) {
+      const user = await User.findByToken(req.headers.authorization);
+      if (req.user.dataValues.id === user.id) {
         const product = await Product.findByPk(req.params.productId);
         const cart = await Cart.findOne({
           where: {
-            userId: req.params.userId,
+            userId: user.id,
             fulfilled: false,
           },
         });
@@ -146,14 +141,16 @@ router.put(
   }
 );
 router.put(
-  '/:userId/createNewCart/',
+  '/createNewCart/',
   requireToken,
   isLoggedIn,
   async (req, res, next) => {
     try {
-      if (req.user.dataValues.id === Number(req.params.userId)) {
+      const user = await User.findByToken(req.headers.authorization);
+      console.log('USER', req.user.dataValues.id, user.id);
+      if (req.user.dataValues.id === user.id) {
         const newCart = await Cart.create();
-        const user = await User.findByPk(req.params.userId);
+        const user = await User.findByPk(user.id);
         user.addCart(newCart);
         user.save();
         res.json(newCart);
@@ -166,12 +163,14 @@ router.put(
   }
 );
 router.put(
-  '/:userId/addOrder/:orderId',
+  '/addOrder/:orderId',
   requireToken,
   isLoggedIn,
   async (req, res, next) => {
     try {
-      if (req.user.dataValues.id === Number(req.params.userId)) {
+      const user = await User.findByToken(req.headers.authorization);
+      console.log('USER', req.user.dataValues.id, user.id);
+      if (req.user.dataValues.id === user.id) {
         console.log('BODY', req.body);
         const order = await Cart.findByPk(req.params.orderId, {
           include: {
@@ -192,13 +191,14 @@ router.put(
     }
   }
 );
-router.put('/:userId/removefromcart/:productId', async (req, res, next) => {
+router.put('removefromcart/:productId', async (req, res, next) => {
   try {
-    if (req.user.dataValues.id === Number(req.params.userId)) {
+    const user = await User.findByToken(req.headers.authorization);
+    if (req.user.dataValues.id === user.id) {
       const product = await Product.findByPk(req.params.productId);
       const cart = await Cart.findOne({
         where: {
-          userId: req.params.userId,
+          userId: user.id,
           fulfilled: false,
         },
       });

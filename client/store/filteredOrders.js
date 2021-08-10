@@ -21,11 +21,11 @@ export const getOrder = (order) => ({
   type: GET_ORDER,
   order,
 });
-export const getOrderThunk = (userId, orderId) => {
+export const getOrderThunk = (orderId) => {
   return async (dispatch) => {
     try {
       const { data } = await axios.get(
-        `/api/users/${userId}/pastSingleOrder/${orderId}`,
+        `/api/users/pastSingleOrder/${orderId}`,
         getToken()
       );
       console.log(data, 'ORDER IN REDUX');
