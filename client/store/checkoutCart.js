@@ -1,7 +1,12 @@
 import axios from 'axios';
-const token = localStorage.getItem('token');
-const headers = {
-  Authorization: `Bearer ${token}`
+const getToken = () => {
+  const token = window.localStorage.getItem('token');
+  const headers = {
+    headers: {
+      authorization: token,
+    },
+  }
+  return headers;
 }
 
 const ADD_TO_CART = 'ADD_TO_CART';
@@ -71,7 +76,10 @@ export const getCartThunk = (userId) => {
       } else {
         console.log('userId', userId);
         //getCart from back end
-        const { data } = await axios.get(`/api/users/${userId}/cart`);
+        const { data } = await axios.get(
+          `/api/users/${userId}/cart`,
+          getToken()
+        );
         console.log('getCartThunk data', data);
         dispatch(getCart(data));
       }
@@ -111,7 +119,7 @@ export const addToCartThunk = (product, userId, history) => {
       //dispatch to logged-in thunk
       const { data: cart } = await axios.put(
         `/api/users/${userId}/addtocart/${product.id}`,
-        headers
+        getToken()
       );
       console.log('addToCartThunk data', cart);
       dispatch(addToCart(cart));
@@ -144,10 +152,9 @@ export const removeFromCartThunk = (productId, userId, history) => {
         // ih: adjusted data to data:cart
         const { data: cart } = await axios.put(
           `/api/users/${userId}/removefromcart/${productId}`,
-          headers
+          getToken()
         );
         console.log('removeFromCartThunk data', cart);
-        // ih: changed data to cart in addToCart
         dispatch(removeFromCart(cart));
         history.push('/cart');
       }
@@ -163,7 +170,7 @@ export const createNewCartThunk = (userId) => {
     try {
       const { data } = await axios.put(
         `/api/users/${userId}/createNewCart`,
-        headers
+        getToken()
       );
       dispatch(createNewCart(data));
     } catch (err) {
