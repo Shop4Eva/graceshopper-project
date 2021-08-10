@@ -23,9 +23,8 @@ router.get('/', requireToken, isLoggedIn, isAdmin, async (req, res, next) => {
 router.get('/cart', requireToken, isLoggedIn, async (req, res, next) => {
   try {
     const user = await User.findByToken(req.headers.authorization);
-    console.log('USER', req.user.dataValues.id, user.id);
     if (req.user.dataValues.id === user.id) {
-      const cart = await Cart.findOne({
+      const [cart, created] = await Cart.findOrCreate({
         include: {
           model: Product,
         },
@@ -34,17 +33,17 @@ router.get('/cart', requireToken, isLoggedIn, async (req, res, next) => {
           fulfilled: false,
         },
       });
-      if (!cart) {
-        res.sendStatus(404);
+      if (created) {
+        user.addCart(cart);
+        user.save();
       }
       res.json(cart);
-    } else {
-      res.status(403).send('You are not authorized to view this cart');
     }
   } catch (err) {
     next(err);
   }
 });
+
 router.get(
   '/pastSingleOrder/:orderId',
   requireToken,
@@ -59,7 +58,7 @@ router.get(
           },
           where: {
             fulfilled: true,
-            id: user.id,
+            id: req.params.orderId,
           },
         });
         if (order.userId !== user.id) {
@@ -78,6 +77,7 @@ router.get(
     }
   }
 );
+
 router.get('/pastOrders', requireToken, isLoggedIn, async (req, res, next) => {
   try {
     const user = await User.findByToken(req.headers.authorization);
@@ -135,28 +135,31 @@ router.put('/addtocart/', requireToken, isLoggedIn, async (req, res, next) => {
     next(err);
   }
 });
-router.put(
-  '/createNewCart/',
-  requireToken,
-  isLoggedIn,
-  async (req, res, next) => {
-    try {
-      const user = await User.findByToken(req.headers.authorization);
-      console.log('USER', req.user.dataValues.id, user.id);
-      if (req.user.dataValues.id === user.id) {
-        const newCart = await Cart.create();
-        const user = await User.findByPk(user.id);
-        user.addCart(newCart);
-        user.save();
-        res.json(newCart);
-      } else {
-        res.status(403).send('You are not authorized to change this cart');
-      }
-    } catch (err) {
-      next(err);
-    }
-  }
-);
+// router.put(
+//   '/createNewCart/',
+//   requireToken,
+//   isLoggedIn,
+//   async (req, res, next) => {
+//     try {
+//       console.log('I GOT HERE');
+//       const user = await User.findByToken(req.headers.authorization);
+//       console.log('USER', req.user.dataValues.id, user.id);
+//       console.log('requser', req.user);
+//       if (req.user.dataValues.id === user.id) {
+//         const newCart = await Cart.create();
+//         const user = await User.findByPk(user.id);
+//         console.log('USER HERE', user);
+//         user.addCart(newCart);
+//         user.save();
+//         res.json(newCart);
+//       } else {
+//         res.status(403).send('You are not authorized to change this cart');
+//       }
+//     } catch (err) {
+//       next(err);
+//     }
+//   }
+// );
 router.put('/addOrder/', requireToken, isLoggedIn, async (req, res, next) => {
   try {
     const user = await User.findByToken(req.headers.authorization);
@@ -181,37 +184,44 @@ router.put('/addOrder/', requireToken, isLoggedIn, async (req, res, next) => {
     next(err);
   }
 });
-router.put('removefromcart/', async (req, res, next) => {
-  try {
-    const user = await User.findByToken(req.headers.authorization);
-    if (req.user.dataValues.id === user.id) {
-      const product = await Product.findByPk(req.body.productId);
-      const cart = await Cart.findOne({
-        where: {
-          userId: user.id,
-          fulfilled: false,
-        },
-      });
-      const productInCart = await Product_Cart.findOne({
-        include: [Cart],
-        where: {
-          cartId: cart.id,
-          productId: product.id,
-        },
-      });
-      productInCart.quantity--;
-      productInCart.subtotalPrice = product.price * productInCart.quantity;
-      if (!productInCart.quantity) {
-        await cart.removeProduct(product);
+
+router.put(
+  '/removefromcart/',
+  requireToken,
+  isLoggedIn,
+  async (req, res, next) => {
+    try {
+      const user = await User.findByToken(req.headers.authorization);
+      console.log('REMOVE', user.id, req.user.dataValues.id);
+      if (req.user.dataValues.id === user.id) {
+        const product = await Product.findByPk(req.body.productId);
+        const cart = await Cart.findOne({
+          where: {
+            userId: user.id,
+            fulfilled: false,
+          },
+        });
+        const productInCart = await Product_Cart.findOne({
+          include: [Cart],
+          where: {
+            cartId: cart.id,
+            productId: product.id,
+          },
+        });
+        productInCart.quantity--;
+        productInCart.subtotalPrice = product.price * productInCart.quantity;
+        if (!productInCart.quantity) {
+          await cart.removeProduct(product);
+        }
+        cart.totalPrice -= product.price;
+        productInCart.save();
+        cart.save();
+        res.json(cart);
+      } else {
+        res.status(403).send('You are not authorized to change this cart');
       }
-      cart.totalPrice -= product.price;
-      productInCart.save();
-      cart.save();
-      res.json(cart);
-    } else {
-      res.status(403).send('You are not authorized to change this cart');
+    } catch (err) {
+      next(err);
     }
-  } catch (err) {
-    next(err);
   }
-});
+);

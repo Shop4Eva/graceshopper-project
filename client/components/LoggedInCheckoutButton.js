@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { createNewCartThunk, getCartThunk } from '../store/checkoutCart';
+import { getCartThunk } from '../store/checkoutCart';
 import { addOrderThunk } from '../store/pastOrders';
 
 class LoggedInCheckoutButton extends React.Component {
@@ -34,7 +34,7 @@ class LoggedInCheckoutButton extends React.Component {
 const mapDispatch = (dispatch, { history }) => {
   return {
     addOrder: (orderId) => dispatch(addOrderThunk(orderId)),
-    createNewCart: () => dispatch(createNewCartThunk()),
+    // createNewCart: () => dispatch(createNewCartThunk()),
   };
 };
 

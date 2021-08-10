@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { createNewCartThunk } from '../store/checkoutCart';
+// import { createNewCartThunk } from '../store/checkoutCart';
 import { getOrderThunk, getOrder } from '../store/filteredOrders';
 import { Link } from 'react-router-dom';
 import { formatPrice } from '../utils';
@@ -11,7 +11,7 @@ class LoggedInCheckout extends React.Component {
   }
   async componentDidMount() {
     await this.props.getOrder(this.props.match.params.orderId);
-    await this.props.createNewCart();
+    // await this.props.createNewCart();
   }
 
   async componentDidUpdate(prevProps) {
@@ -24,7 +24,7 @@ class LoggedInCheckout extends React.Component {
   }
 
   async componentWillUnmount() {
-    this.props.clearPage();
+    this.props.clearPage(this.props.match.params.orderId);
   }
 
   render() {
@@ -99,8 +99,8 @@ const mapState = (state) => {
 const mapDispatch = (dispatch, { history }) => {
   return {
     getOrder: (orderId) => dispatch(getOrderThunk(orderId)),
-    createNewCart: () => dispatch(createNewCartThunk()),
-    clearPage: () => dispatch(getOrder({})),
+    // createNewCart: () => dispatch(createNewCartThunk()),
+    clearPage: (orderId) => dispatch(getOrder(orderId)),
   };
 };
 

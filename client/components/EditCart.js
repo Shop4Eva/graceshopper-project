@@ -11,22 +11,14 @@ import { formatPrice } from '../utils';
 class EditCart extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      userId: this.props.userId,
-    };
+    // this.state = {
+    //   userId: this.props.userId,
+    // };
     this.addItemToCart = this.addItemToCart.bind(this);
     this.removeItemFromCart = this.removeItemFromCart.bind(this);
   }
   async componentDidMount() {
-    //how to get the user id before trying to get cart
-    // if (this.props.userId) {
     await this.props.getCart();
-    // }
-    //check to see if user is logged in
-    //put user in local state
-    if (this.props.userId) {
-      this.setState({ userId: this.props.userId });
-    }
   }
   async addItemToCart(product) {
     await this.props.addProduct(product);
@@ -88,14 +80,14 @@ class EditCart extends React.Component {
               <h3>Continue Shopping</h3>
             </Link>
           </button>
-          {this.state.userId && (
+          {this.props.userId && (
             <LoggedInCheckoutButton
-              userId={this.state.userId}
+              userId={this.props.userId}
               openCartId={openCartId}
               history={this.props.history}
             />
           )}
-          {!this.state.userId && (
+          {!this.props.userId && (
             <button type="button" className="place-order-button">
               <Link to={`/confirmation`}>
                 <h3>Place Order</h3>

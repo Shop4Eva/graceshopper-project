@@ -20,21 +20,9 @@ class Product extends React.Component {
     //check to see if user is logged in
     //put user in local state
   }
-
-  //adding logic for local storage add to cart
-  // addItemToCart(productId) {
-  //   const currentCart = localStorage.getItem(loggedOutUserCart);
-  //   if (currentCart == null) {
-  //     currentCart === []
-  //   }
-  //   currentCart.push(productId);
-  //   localStorage.setItem(loggedOutUserCart, currentCart);
-  // }
-
   async addItemToCart() {
-    console.log('before add', this.props.cart);
     await this.props.addProduct(this.props.product);
-    console.log('addItemToCart', this.props.cart);
+    this.props.history.push('/products');
   }
 
   render() {
