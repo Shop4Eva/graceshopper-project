@@ -9,7 +9,7 @@ const CREATE_NEW_CART = 'CREATE_NEW_CART';
 
 export const createNewCart = (cart) => ({
   type: CREATE_NEW_CART,
-  cart,
+  cart
 });
 
 export const addToCart = (cart) => ({
@@ -63,6 +63,7 @@ export const getCartThunk = (userId) => {
           currentCart = JSON.parse(currentCart);
         }
         const guestCart = createGuestTotalPrice(currentCart);
+        console.log('guestCart', guestCart)
         dispatch(getCart(guestCart))
       } else {
         console.log('userId', userId);
@@ -159,6 +160,15 @@ export const removeFromCartThunk = (productId, userId, history) => {
 export const createNewCartThunk = (userId) => {
   return async (dispatch) => {
     try {
+      if (!userId) {
+        let currentCart = JSON.parse(localStorage.getItem('guestCart'));
+        const guestCart = createGuestTotalPrice(currentCart);
+        console.log('guestCart price test', guestCart.totalPrice)
+
+        const { data } = await axios.post('/api/users/createNewCart', {totalPrice: guestCart.totalPrice});
+        console.log('data', data)
+        dispatch(createNewCart(data));
+      }
       const { data } = await axios.put(`/api/users/${userId}/createNewCart`);
       dispatch(createNewCart(data));
     } catch (err) {

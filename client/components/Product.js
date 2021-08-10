@@ -34,6 +34,7 @@ class Product extends React.Component {
   async addItemToCart() {
     console.log('before add', this.props.cart);
     await this.props.addProduct(this.props.product, this.props.userId);
+    alert('Added to cart!');
     console.log('addItemToCart', this.props.cart);
   }
 

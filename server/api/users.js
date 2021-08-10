@@ -156,6 +156,23 @@ router.put(
   }
 );
 
+router.post('/createNewCart/',
+  // requireToken,
+  async (req, res, next) => {
+    try {
+      console.log('req.body', req.body)
+      const newCart = await Cart.create({
+        userId: null,
+        totalPrice: req.body.totalPrice,
+        fulfilled: true
+      });
+      res.json(newCart);
+    } catch (err) {
+      next(err)
+    }
+  }
+)
+
 router.put(
   '/:userId/createNewCart/',
   // requireToken,

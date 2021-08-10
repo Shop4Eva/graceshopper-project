@@ -4,6 +4,7 @@ import {
   getCartThunk,
   addToCartThunk,
   removeFromCartThunk,
+  createNewCartThunk
 } from '../store/checkoutCart';
 import { Link } from 'react-router-dom';
 import LoggedInCheckoutButton from './LoggedInCheckoutButton';
@@ -17,6 +18,7 @@ class EditCart extends React.Component {
     };
     this.addItemToCart = this.addItemToCart.bind(this);
     this.removeItemFromCart = this.removeItemFromCart.bind(this);
+    // this.createNewCartThunk = this.createNewCartThunk.bind(this);
   }
   async componentDidMount() {
     //how to get the user id before trying to get cart
@@ -103,7 +105,7 @@ class EditCart extends React.Component {
             />
           )}
           {!this.state.userId && (
-            <button type="button" className="place-order-button">
+            <button type="button" className="place-order-button" onClick={createNewCartThunk(this.state.userId)}>
               <Link to={`/confirmation`}>
                 <h3>Place Order</h3>
               </Link>
@@ -131,6 +133,7 @@ const mapDispatch = (dispatch, { history }) => {
       dispatch(removeFromCartThunk(productId, userId, history)),
     getProduct: (id) => dispatch(fetchProduct(id)),
     getCart: (userId) => dispatch(getCartThunk(userId)),
+    getGuestCart: (userId) => dispatch(createNewCartThunk(userId))
   };
 };
 
