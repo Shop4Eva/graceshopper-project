@@ -20,7 +20,7 @@ class EditCart extends React.Component {
   async componentDidMount() {
     //how to get the user id before trying to get cart
     // if (this.props.userId) {
-    await this.props.getCart(this.props.userId);
+    await this.props.getCart();
     // }
     //check to see if user is logged in
     //put user in local state
@@ -29,12 +29,12 @@ class EditCart extends React.Component {
     }
   }
   async addItemToCart(product) {
-    await this.props.addProduct(product, this.props.userId);
-    await this.props.getCart(this.props.userId);
+    await this.props.addProduct(product);
+    await this.props.getCart();
   }
   async removeItemFromCart(productId) {
-    await this.props.removeProduct(productId, this.props.userId);
-    await this.props.getCart(this.props.userId);
+    await this.props.removeProduct(productId);
+    await this.props.getCart();
   }
   render() {
     const cart = this.props.cart || {};
@@ -116,12 +116,11 @@ const mapState = (state) => {
 };
 const mapDispatch = (dispatch, { history }) => {
   return {
-    addProduct: (product, userId) =>
-      dispatch(addToCartThunk(product, userId, history)),
-    removeProduct: (productId, userId) =>
-      dispatch(removeFromCartThunk(productId, userId, history)),
+    addProduct: (product) => dispatch(addToCartThunk(product, history)),
+    removeProduct: (productId) =>
+      dispatch(removeFromCartThunk(productId, history)),
     getProduct: (id) => dispatch(fetchProduct(id)),
-    getCart: (userId) => dispatch(getCartThunk(userId)),
+    getCart: () => dispatch(getCartThunk()),
   };
 };
 export default connect(mapState, mapDispatch)(EditCart);

@@ -51,11 +51,11 @@ const createGuestTotalPrice = (productList) => {
   }
   return { products: productList, totalPrice: total };
 };
-export const getCartThunk = (userId) => {
+export const getCartThunk = () => {
   return async (dispatch) => {
     try {
-      console.log('hello', userId);
-      if (!userId) {
+      console.log('TOKEN', getToken());
+      if (!getToken()) {
         let currentCart = localStorage.getItem('guestCart');
         if (currentCart === null) {
           currentCart = [];
@@ -65,7 +65,6 @@ export const getCartThunk = (userId) => {
         const guestCart = createGuestTotalPrice(currentCart);
         dispatch(getCart(guestCart));
       } else {
-        console.log('userId', userId);
         //getCart from back end
         const { data } = await axios.get(`/api/users/cart`, getToken());
         console.log('getCartThunk data', data);
@@ -104,7 +103,8 @@ export const addToCartThunk = (product, history) => {
       console.log('i got this far');
       //dispatch to logged-in thunk
       const { data: cart } = await axios.put(
-        `/api/users/addtocart/${product.id}`,
+        '/api/users/addtocart/',
+        { productId: product.id },
         headers
       );
       console.log('addToCartThunk data', cart);
@@ -137,7 +137,8 @@ export const removeFromCartThunk = (productId, history) => {
         //dispatch to logged-in thunk
         // ih: adjusted data to data:cart
         const { data: cart } = await axios.put(
-          `/api/users/removefromcart/${productId}`,
+          '/api/users/removefromcart/',
+          { productId: productId },
           headers
         );
         console.log('removeFromCartThunk data', cart);
@@ -153,7 +154,11 @@ export const removeFromCartThunk = (productId, history) => {
 export const createNewCartThunk = () => {
   return async (dispatch) => {
     try {
-      const { data } = await axios.put(`/api/users/createNewCart`, getToken());
+      const { data } = await axios.put(
+        `/api/users/createNewCart`,
+        {},
+        getToken()
+      );
       dispatch(createNewCart(data));
     } catch (err) {
       console.log(err);

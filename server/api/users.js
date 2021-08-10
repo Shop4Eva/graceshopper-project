@@ -103,43 +103,38 @@ router.get('/pastOrders', requireToken, isLoggedIn, async (req, res, next) => {
   }
 });
 // ih: need to add gatekeeping functions before 'async' to check if cart belongs to that cart's user, otherwise this route is working
-router.put(
-  '/addtocart/:productId',
-  requireToken,
-  isLoggedIn,
-  async (req, res, next) => {
-    try {
-      const user = await User.findByToken(req.headers.authorization);
-      if (req.user.dataValues.id === user.id) {
-        const product = await Product.findByPk(req.params.productId);
-        const cart = await Cart.findOne({
-          where: {
-            userId: user.id,
-            fulfilled: false,
-          },
-        });
-        await cart.addProduct(product);
-        const productInCart = await Product_Cart.findOne({
-          include: [Cart],
-          where: {
-            cartId: cart.id,
-            productId: product.id,
-          },
-        });
-        productInCart.quantity++;
-        productInCart.subtotalPrice = product.price * productInCart.quantity;
-        cart.totalPrice += product.price;
-        productInCart.save();
-        cart.save();
-        res.json(cart);
-      } else {
-        res.status(403).send('You are not authorized to change this cart');
-      }
-    } catch (err) {
-      next(err);
+router.put('/addtocart/', requireToken, isLoggedIn, async (req, res, next) => {
+  try {
+    const user = await User.findByToken(req.headers.authorization);
+    if (req.user.dataValues.id === user.id) {
+      const product = await Product.findByPk(req.body.productId);
+      const cart = await Cart.findOne({
+        where: {
+          userId: user.id,
+          fulfilled: false,
+        },
+      });
+      await cart.addProduct(product);
+      const productInCart = await Product_Cart.findOne({
+        include: [Cart],
+        where: {
+          cartId: cart.id,
+          productId: product.id,
+        },
+      });
+      productInCart.quantity++;
+      productInCart.subtotalPrice = product.price * productInCart.quantity;
+      cart.totalPrice += product.price;
+      productInCart.save();
+      cart.save();
+      res.json(cart);
+    } else {
+      res.status(403).send('You are not authorized to change this cart');
     }
+  } catch (err) {
+    next(err);
   }
-);
+});
 router.put(
   '/createNewCart/',
   requireToken,
@@ -162,40 +157,35 @@ router.put(
     }
   }
 );
-router.put(
-  '/addOrder/:orderId',
-  requireToken,
-  isLoggedIn,
-  async (req, res, next) => {
-    try {
-      const user = await User.findByToken(req.headers.authorization);
-      console.log('USER', req.user.dataValues.id, user.id);
-      if (req.user.dataValues.id === user.id) {
-        console.log('BODY', req.body);
-        const order = await Cart.findByPk(req.params.orderId, {
-          include: {
-            model: Product,
-          },
-        });
-        if (!order) {
-          res.sendStatus(404);
-        }
-        order.fulfilled = true;
-        order.save();
-        res.json(order);
-      } else {
-        res.status(403).send('You are not authorized to view this cart');
+router.put('/addOrder/', requireToken, isLoggedIn, async (req, res, next) => {
+  try {
+    const user = await User.findByToken(req.headers.authorization);
+    console.log('USER', req.user.dataValues.id, user.id);
+    if (req.user.dataValues.id === user.id) {
+      console.log('BODY', req.body);
+      const order = await Cart.findByPk(req.body.orderId, {
+        include: {
+          model: Product,
+        },
+      });
+      if (!order) {
+        res.sendStatus(404);
       }
-    } catch (err) {
-      next(err);
+      order.fulfilled = true;
+      order.save();
+      res.json(order);
+    } else {
+      res.status(403).send('You are not authorized to view this cart');
     }
+  } catch (err) {
+    next(err);
   }
-);
-router.put('removefromcart/:productId', async (req, res, next) => {
+});
+router.put('removefromcart/', async (req, res, next) => {
   try {
     const user = await User.findByToken(req.headers.authorization);
     if (req.user.dataValues.id === user.id) {
-      const product = await Product.findByPk(req.params.productId);
+      const product = await Product.findByPk(req.body.productId);
       const cart = await Cart.findOne({
         where: {
           userId: user.id,

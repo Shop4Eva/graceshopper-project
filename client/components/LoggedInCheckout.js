@@ -10,11 +10,8 @@ class LoggedInCheckout extends React.Component {
     super(props);
   }
   async componentDidMount() {
-    await this.props.getOrder(
-      this.props.userId,
-      this.props.match.params.orderId
-    );
-    await this.props.createNewCart(this.props.userId);
+    await this.props.getOrder(this.props.match.params.orderId);
+    await this.props.createNewCart();
   }
 
   async componentDidUpdate(prevProps) {
@@ -101,8 +98,8 @@ const mapState = (state) => {
 
 const mapDispatch = (dispatch, { history }) => {
   return {
-    getOrder: (userId, orderId) => dispatch(getOrderThunk(userId, orderId)),
-    createNewCart: (userId) => dispatch(createNewCartThunk(userId)),
+    getOrder: (orderId) => dispatch(getOrderThunk(orderId)),
+    createNewCart: () => dispatch(createNewCartThunk()),
     clearPage: () => dispatch(getOrder({})),
   };
 };

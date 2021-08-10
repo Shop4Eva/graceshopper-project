@@ -39,7 +39,8 @@ export const addOrderThunk = (orderId) => {
     console.log('OrderId', orderId);
     try {
       const { data } = await axios.put(
-        `/api/users/addOrder/${orderId}`,
+        '/api/users/addOrder/',
+        { orderId: orderId },
         getToken()
       );
       dispatch(addOrder(data));
