@@ -10,6 +10,7 @@ import { Link } from 'react-router-dom';
 import LoggedInCheckoutButton from './LoggedInCheckoutButton';
 import SuperpowerCard from './SuperpowerCard';
 import { formatPrice } from '../utils';
+
 class EditCart extends React.Component {
   constructor(props) {
     super(props);
