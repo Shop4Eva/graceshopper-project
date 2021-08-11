@@ -8,6 +8,7 @@ import {
 } from '../store/checkoutCart';
 import { Link } from 'react-router-dom';
 import LoggedInCheckoutButton from './LoggedInCheckoutButton';
+import SuperpowerCard from './SuperpowerCard';
 import { formatPrice } from '../utils';
 class EditCart extends React.Component {
   constructor(props) {
@@ -31,70 +32,87 @@ class EditCart extends React.Component {
     const products = cart.products ?? [];
 
     return (
-      <div id="single-product">
+      <div className="cart-wrapper">
         <div className="cart-title-container">
-          <h3 className="cart-title">Shopping Cart</h3>
-        </div>
-        <div>
-          {products.length ? (
-            <div>
-              {products.map((product, index) => (
-                <div key={index}>
-                  <h5>{product.name}</h5>
-                  <div className="cart-product-info">
-                    <p>Price: ${formatPrice(product.price)}</p>
-                    <p>
-                      Quantity:{' '}
-                      {product.quantity ?? product.product_cart.quantity}
-                    </p>
-                    <button
-                      type="button"
-                      className="add-quantity-button"
-                      onClick={() => this.addItemToCart(product)}
-                      value={product.id}
-                    >
-                      +
-                    </button>
-                    <button
-                      type="button"
-                      className="remove-quantity-button"
-                      onClick={() => this.removeItemFromCart(product.id)}
-                    >
-                      -
-                    </button>
+            <h1 className="cart-title">Shopping Cart</h1>
+          </div>
+        <div id="single-product">
+          <div>
+            {products.length ? (
+              <div>
+                {products.map((product, index) => (
+                  <div key={index}>
+                    <h5 className="cart-product-name">{product.name}</h5>
+                    <div className="cart-product-info">
+                      <img
+                        className="superpower-img"
+                        src={product.imgUrl}
+                        width={200}
+                        height={200}
+                      />
+                    <div className="details">
+                      <p>Price: ${formatPrice(product.price)}</p>
+                      <span className="quantity-line">
+                        <p>Quantity: </p>
+                        <div className="quantity-button-container">
+                          <button
+                            type="button"
+                            className="remove-quantity-button"
+                            onClick={() => this.removeItemFromCart(product.id)}
+                          >
+                            -
+                          </button>
+                          <p className="quantity-cart-info">
+                            {product.quantity ?? product.product_cart.quantity}
+                          </p>
+                          <button
+                            type="button"
+                            className="add-quantity-button"
+                            onClick={() => this.addItemToCart(product)}
+                            value={product.id}
+                          >
+                            +
+                          </button>
+                        </div>
+                      </span>
+                    </div>
                   </div>
                 </div>
-              ))}
-              <p>Total cost: ${formatPrice(cart.totalPrice)}</p>
-            </div>
-          ) : (
-            <div>You have nothing in your cart</div>
-          )}
-        </div>
-        <div>
-          <button type="button" className="continue-shopping-button">
-            <Link to={`/products`}>
-              <h3>Continue Shopping</h3>
-            </Link>
-          </button>
-          {this.props.userId ? (
-            <LoggedInCheckoutButton
-              className="place-order-button"
-              userId={this.props.userId}
-              cartId={cart.id}
-              history={this.props.history}
-            />
-          ) : (
-            <button
-              type="button"
-              className="place-order-button"
-              onClick={createNewCartThunk(this.props.userId)}
-            >
-              <Link to={`/confirmation`}>
-                <h3>Place Order</h3>
+                ))}
+                <div className="total-price-container">
+                  <p className="total-title">Total cost: </p>
+                  <p className="total-price">${formatPrice(cart.totalPrice)}</p>
+                </div>
+              </div>
+            ) : (
+              <div>You have nothing in your cart</div>
+            )}
+          </div>
+          <div>
+            <button type="button" className="continue-shopping-button">
+              <Link to={`/products`}>
+                Continue Shopping
               </Link>
             </button>
-          )}
+            {this.props.userId ? (
+              <LoggedInCheckoutButton
+                className="place-order-button"
+                userId={this.props.userId}
+                cartId={cart.id}
+                history={this.props.history}
+              />
+            ) : (
+              <button
+                type="button"
+                className="place-order-button"
+                onClick={createNewCartThunk(this.props.userId)}
+              >
+                <Link to={`/confirmation`}>
+                  Place Order
+                </Link>
+              </button>
+            )}
+          </div>
         </div>
       </div>
     );

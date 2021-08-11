@@ -109,7 +109,7 @@ export const removeFromCartThunk = (productId, userId, history) => {
         item.quantity--;
         if (item.quantity < 1) {
           currentCart = currentCart.filter(
-            (element) => element.productId !== item.productId
+            (element) => element.id !== item.id
           );
         }
         localStorage.setItem('guestCart', JSON.stringify(currentCart));

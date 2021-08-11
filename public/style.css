@@ -130,3 +130,86 @@ form div {
 .superpower-prop {
   margin-bottom: 0px;
 }
+
+.single-product {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+button {
+  background-color: lightblue;
+  color: black;
+  border-radius: 5px;
+  border: none;
+  padding: 10px;
+  margin: 15px;
+  font-size: 15px;
+}
+
+.single-product-info {
+  margin-bottom: 5px;
+  margin-top: 5px;
+}
+
+.cart-product-name {
+  font-size: 18px;
+}
+
+.quantity-button-container {
+  display: flex;
+  flex-direction: row;
+}
+
+.cart-wrapper {
+  margin-left: 30px;
+}
+
+.details {
+  margin-right: 15px;
+}
+
+.cart-product-info {
+  display: flex;
+  flex-direction: row;
+}
+.cart-wrapper .superpower-img {
+  margin-right: 30px;
+}
+
+.quantity-line {
+  display: flex;
+  align-items: center;
+}
+
+.quantity-cart-info {
+  align-self: center;
+}
+
+.total-price-container {
+  display: inline-flex;
+  font-size: 20px;
+  margin-top: 20px;
+}
+
+.total-title {
+  font-weight: bold;
+}
+
+.total-price {
+  margin-left: 10px;
+}
+
+.continue-shopping-button {
+  margin-left: 0px;
+}
+
+.continue-shopping-button a, .place-order-button a {
+  font-size: 16px;
+  color: black;
+  font-weight: bold;
+}
+
+.continue-shopping-button, .place-order-button {
+  margin-top: 0px;
+}
