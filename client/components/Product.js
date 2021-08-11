@@ -22,12 +22,12 @@ class Product extends React.Component {
     const product = this.props.product ?? {};
 
     return (
-      <div id="single-product">
-        <h1>{product.name}</h1>
+      <div className="single-product">
+        <h1 className="single-product-title" >{product.name}</h1>
 
         <img src={product.imgUrl} width={200} height={200} />
-        <p>price: ${formatPrice(product.price)}</p>
-        {product.description && <p>description: {product.description}</p>}
+        <p className="single-product-info">price: ${formatPrice(product.price)}</p>
+        {product.description && <p className="single-product-info" >description: {product.description}</p>}
 
         <button className="add-to-cart-button" onClick={this.addItemToCart}>
           Add To Cart

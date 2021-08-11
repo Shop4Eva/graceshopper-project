@@ -1,5 +1,7 @@
 body {
-  font-family: Roboto;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  background-color: white;
+  color: black;
 }
 
 a {
@@ -13,6 +15,7 @@ label {
 nav a {
   display: inline-flex;
   margin: 1em;
+  color: lavender;
 }
 
 .nav {
@@ -23,6 +26,15 @@ nav a {
   font-size: 18px;
 }
 
+hr {
+  background-color: #f30003;
+}
+
+.home-img {
+  display: flex;
+  justify-content: center;
+}
+
 form div {
   margin: 1em;
   display: inline-block;
@@ -31,17 +43,37 @@ form div {
 .all-superpowers-container {
   display: flex;
   flex-direction: column;
+  background-color: lightblue;
 }
 
-.headder-title,
-.title {
+.header-title {
   display: flex;
   justify-content: center;
-  color: black;
+  color: orange;
+  margin-top: 0;
+  margin-bottom: 10px;
+  padding-top: 25px;
+  font-size: 45px;
+}
+
+.nav-container {
+  background-color: rebeccapurple;
+}
+
+.welcome-title, .all-products-title {
+  display: flex;
+  justify-content: center;
+}
+
+.welcome-intro {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 15px;
 }
 
 .superpower-name {
-  margin-left: 10px;
+  color: rebeccapurple;
+  font-weight: 800;
 }
 
 .all-products-container {
@@ -50,6 +82,7 @@ form div {
   flex-direction: row;
   padding-left: 25px;
   padding-right: 25px;
+  justify-content: space-evenly;
 }
 
 /* .all-products-container > .superpower-card {
@@ -58,25 +91,28 @@ form div {
 
 .superpower-card {
   display: flex;
-  margin: 25px;
-  background-color: #c4c4c4;
-  padding: 15px;
-  justify-content: space-between;
+  margin: 20px;
+  background-color: #f2f4f5;
+  padding-left: 20px;
+  padding-right: 20px;
   height: 185px;
-  bcart-radius: 5px;
+  border-radius: 5px;
+  flex-basis: 40%;
 }
 
 .card-info {
   display: flex;
   flex-direction: column;
+  flex-grow: 1;
+  width: 100%;
 }
 
 .superpower-img-container {
   width: 200px;
   display: flex;
-  justify-content: space-evenly;
   align-items: center;
   margin-right: 25px;
+  flex-grow: 0;
 }
 
 .superpower-img {
@@ -84,13 +120,96 @@ form div {
   width: 150px;
   height: 150px;
   object-fit: cover;
+  border-radius: 5px;
 }
 
 .card-title {
   align-items: center;
-  margin: ;
 }
 
 .superpower-prop {
   margin-bottom: 0px;
+}
+
+.single-product {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+button {
+  background-color: lightblue;
+  color: black;
+  border-radius: 5px;
+  border: none;
+  padding: 10px;
+  margin: 15px;
+  font-size: 15px;
+}
+
+.single-product-info {
+  margin-bottom: 5px;
+  margin-top: 5px;
+}
+
+.cart-product-name {
+  font-size: 18px;
+}
+
+.quantity-button-container {
+  display: flex;
+  flex-direction: row;
+}
+
+.cart-wrapper {
+  margin-left: 30px;
+}
+
+.details {
+  margin-right: 15px;
+}
+
+.cart-product-info {
+  display: flex;
+  flex-direction: row;
+}
+.cart-wrapper .superpower-img {
+  margin-right: 30px;
+}
+
+.quantity-line {
+  display: flex;
+  align-items: center;
+}
+
+.quantity-cart-info {
+  align-self: center;
+}
+
+.total-price-container {
+  display: inline-flex;
+  font-size: 20px;
+  margin-top: 20px;
+}
+
+.total-title {
+  font-weight: bold;
+}
+
+.total-price {
+  margin-left: 10px;
+}
+
+.continue-shopping-button {
+  margin-left: 0px;
+}
+
+.continue-shopping-button a, .place-order-button a {
+  font-size: 16px;
+  color: black;
+  font-weight: bold;
+}
+
+.continue-shopping-button, .place-order-button {
+  margin-top: 0px;
 }
