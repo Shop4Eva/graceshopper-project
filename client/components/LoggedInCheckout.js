@@ -20,6 +20,7 @@ class LoggedInCheckout extends React.Component {
     const order = this.props.order ?? {};
     const products = order.products ?? [];
     const { firstName } = this.props;
+    console.log('order', order)
 
     return (
       <div>
@@ -47,13 +48,13 @@ class LoggedInCheckout extends React.Component {
                       <h5>{product.name}</h5>
                       <img src={product.imgUrl} width={200} height={200} />
                       <p>Price: ${formatPrice(product.price)}</p>
-                      <p>Quantity: {product.quantity}</p>
+                      <p>Quantity: {product.product_cart.quantity}</p>
                     </div>
                   ))}
                 </div>
 
                 <div>
-                  <p>Cart total: {order.totalPrice / 100}</p>
+                  <p>Cart total: ${formatPrice(order.totalPrice)}</p>
                 </div>
               </div>
             ) : (

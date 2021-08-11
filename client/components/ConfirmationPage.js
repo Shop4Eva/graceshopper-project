@@ -41,7 +41,7 @@ class Confirmation extends React.Component {
           ))}
         </div>
         <div>
-          <p>Cart total: {cart.totalPrice / 100}</p>
+          <p>Cart total: ${formatPrice(cart.totalPrice)}</p>
         </div>
       </div>
     );
