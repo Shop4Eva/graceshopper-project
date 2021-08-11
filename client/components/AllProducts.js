@@ -33,7 +33,7 @@ const AllProducts = (props) => {
       ) : (
         <React.Fragment>
           <header className="Header">
-            <h2 className="title">Superpowers!</h2>
+            <h2 className="all-products-title">Superpowers!</h2>
           </header>
           <div className="all-products-container">
             {products.map((product) => (
