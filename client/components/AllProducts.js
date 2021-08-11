@@ -36,7 +36,7 @@ const AllProducts = (props) => {
           </header>
           <div className="all-products-container">
             {products.map((product) => (
-              <SuperpowerCard product={product}/>
+              <SuperpowerCard product={product} key={product.id} />
             ))}
           </div>
         </React.Fragment>
