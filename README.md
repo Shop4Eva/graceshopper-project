@@ -2,6 +2,8 @@
 
 Are you looking to improve your skillset? Shop our superpowers to become your town's next biggest hero!
 
+An e-commerce site.
+
 ### Deployed Site
 https://superpower-box.herokuapp.com/home
 
